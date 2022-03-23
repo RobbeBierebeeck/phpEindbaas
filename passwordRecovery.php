@@ -29,9 +29,13 @@ if (!empty($_POST)) {
         $mail->Subject = "Password reset";
         $mail->Body = "<h1>You requested a password reset</h1>
                         <p>Click <a href= ''>this link</a> to reset your password</p>";
-        $mail->addAddress($_POST["email"]);
-        $mail->send();
-        $send = "E-mail is verzonden";
+
+        if(!User::existUser($_POST["email"])){
+            $mail->addAddress($_POST["email"]);
+            $mail->send();
+            $send = "E-mail is verzonden";
+        }else throw new Exception("User does not exist");
+
 
     } catch (\Exception $e) {
 

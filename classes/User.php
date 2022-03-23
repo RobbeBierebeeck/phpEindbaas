@@ -19,7 +19,7 @@ class User
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
        if ($user) {
-            throw new Exception("User does already exist");
+           return false;
         } else return true;
     }
 
