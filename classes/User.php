@@ -67,6 +67,10 @@ class User
         if ($password != $passwordConf) {
             throw new Exception("Passwords should be the same");
         } else {
+            $options = [
+                'cost' => 13
+            ];
+            $password = password_hash($password, PASSWORD_DEFAULT, $options);
             $this->password = $password;
             //throw new Exception("Passwords match");
         }
@@ -129,17 +133,14 @@ class User
     public
     function save()
     {
-        $options = [
-            'cost' => 13
-        ];
-        $password = password_hash($this->password, PASSWORD_DEFAULT, $options);
+
 
         $conn = DB::getConnection();
         $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
-        $statement->bindValue(':password', $password);
+        $statement->bindValue(':password', $this->password);
         $statement->execute();
     }
 
