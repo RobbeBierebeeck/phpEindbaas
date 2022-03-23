@@ -3,17 +3,29 @@ include_once(__DIR__ . '/DB.php');
 
 class User
 {
-    protected $email;
-    protected $password;
-    protected $firstName;
-    protected $lastName;
-    protected $dateCreated;
-    protected $profilePicture;
+    private $email;
+    private $password;
+    private $firstName;
+    private $lastName;
+    private $profilePicture;
+
+
+    public static function existUser($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select email from User where email = :email");
+        $statement->bindValue("email", $email);
+       $user =  $statement->execute();$statement->fetch(PDO::FETCH_ASSOC);
+        if ($user) {
+            return true;
+        } else throw new Exception("User does already exist");
+    }
 
     /**
      * @return mixed
      */
-    public function getEmail()
+    public
+    function getEmail()
     {
         return $this->email;
     }
@@ -21,20 +33,25 @@ class User
     /**
      * @param mixed $email
      */
+
     public function setEmail($email)
     {
-        //first part -> allowed chars , student <- possible to have makes a group , has to have thomasmore.be
-        $regex = '/[a-zA-Z0-9_.+-]+@(student\.)?thomasmore\.be/';
-        if(preg_match($regex,$email)){
-        $this->email = $email;
-        return $this;
-        }
+
+            //first part -> allowed chars , student <- possible to have makes a group , has to have thomasmore.be
+            $regex = '/[a-zA-Z0-9_.+-]+@(student\.)?thomasmore\.be/';
+
+            if (preg_match($regex, $email)) {
+                $this->email = $email;
+            }else throw new Exception("Please use your thomasmore account to register");
+
+
     }
 
     /**
      * @return mixed
      */
-    public function getPassword()
+    public
+    function getPassword()
     {
         return $this->password;
     }
@@ -42,9 +59,10 @@ class User
     /**
      * @param mixed $password
      */
-    public function setPassword($password, $passwordConf)
+    public
+    function setPassword($password, $passwordConf)
     {
-        if($password != $passwordConf){
+        if ($password != $passwordConf) {
             throw new Exception("Passwords should be the same");
         } else {
             $this->password = $password;
@@ -55,7 +73,8 @@ class User
     /**
      * @return mixed
      */
-    public function getFirstName()
+    public
+    function getFirstName()
     {
         return $this->firstName;
     }
@@ -63,7 +82,8 @@ class User
     /**
      * @param mixed $firstName
      */
-    public function setFirstName($firstName)
+    public
+    function setFirstName($firstName)
     {
         $this->firstName = $firstName;
     }
@@ -71,7 +91,8 @@ class User
     /**
      * @return mixed
      */
-    public function getLastName()
+    public
+    function getLastName()
     {
         return $this->lastName;
     }
@@ -79,7 +100,8 @@ class User
     /**
      * @param mixed $lastName
      */
-    public function setLastName($lastName)
+    public
+    function setLastName($lastName)
     {
         $this->lastName = $lastName;
     }
@@ -87,7 +109,8 @@ class User
     /**
      * @return mixed
      */
-    public function getProfilePicture()
+    public
+    function getProfilePicture()
     {
         return $this->profilePicture;
     }
@@ -95,40 +118,26 @@ class User
     /**
      * @param mixed $profilePicture
      */
-    public function setProfilePicture($profilePicture)
+    public
+    function setProfilePicture($profilePicture)
     {
-        $this->profilePicture = null;
-    }
-    /**
-     * @return mixed
-     */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
+        $this->profilePicture = $profilePicture;
     }
 
-    /**
-     * @param mixed $dateCreated
-     */
-    public function setDateCreated()
+    public
+    function save()
     {
-        $time = new DateTime();
-        $this->dateCreated = $time->format("Y-m-d H:i:s");
-    }
-
-    public function register(){
         $options = [
             'cost' => 13
         ];
         $password = password_hash($this->password, PASSWORD_DEFAULT, $options);
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, :created_at)");
+        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', $password);
-        $statement->bindValue(':created_at', $this->dateCreated);
         $statement->execute();
     }
 }
