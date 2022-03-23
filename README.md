@@ -26,7 +26,7 @@ Project is created with:
 
 Deadline: **25 maart 2022**
 
-- [ ] User registration
+- [x] User registration
 - [ ] User account login
 - [ ] Password reset with email
 - [ ] User account logout

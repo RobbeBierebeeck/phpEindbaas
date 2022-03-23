@@ -8,13 +8,10 @@ if (!empty($_POST)) {
         $user->setPassword($_POST['password'],$_POST['passwordConf']);
         $user->setFirstName($_POST['firstName']);
         $user->setLastName($_POST['lastName']);
-        $user->setDateCreated();
-        if (isset($_FILES['profilePicture']['name'])){
-            $user->setProfilePicture($_FILES["profilePicture"]);
-        } else {
-            $user->setProfilePicture(null);
+        if(User::existUser($_POST['email'])){
+            $user->save();
         }
-        $user->register();
+
 
     } catch (Throwable $e) {
         $error = $e->getMessage();

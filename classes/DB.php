@@ -5,9 +5,7 @@ abstract class DB
 {
     private static $conn;
 
-    public static function getConnection()
-    {
-
+    public static function getConnection(){
         if (self::$conn) {
             //connection found
             return self::$conn;
