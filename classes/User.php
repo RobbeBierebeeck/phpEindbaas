@@ -164,6 +164,8 @@ class User
     {
         if ($password != $passwordConf) {
             throw new Exception("Passwords should be the same");
+        } else if(strlen($password)<6){
+            throw new Exception("Passwords is to short");
         } else return true;
     }
     public static function hashPassword($password)
