@@ -1,4 +1,44 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+require_once(__DIR__ . '/PHPMailer/src/Exception.php');
+require_once(__DIR__ . '/PHPMailer/src/PHPMailer.php');
+require_once(__DIR__ . '/PHPMailer/src/SMTP.php');
+include_once(__DIR__ . '/bootstrap.php');
+$mail = new PHPMailer(true);
+
+if (!empty($_POST)) {
+
+    try {
+        // Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = false;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        $mail->Username = 'dddddddrop@gmail.com'; // YOUR gmail email
+        $mail->Password = 'TeamDrop'; // YOUR gmail password
+        // Sender and recipient settings
+        $mail->setFrom('dddddddrop@gmail.com', 'drop');
+        $mail->addReplyTo('dddddddrop@gmail.com', 'drop'); // to set the reply to
+        // Setting the email content
+        $mail->IsHTML(true);
+        $mail->Subject = "Password reset";
+        $mail->Body = "<h1>You requested a password reset</h1>
+                        <p>Click <a href= ''>this link</a> to reset your password</p>";
+        $mail->addAddress($_POST["email"]);
+        $mail->send();
+        $send = "E-mail is verzonden";
+
+    } catch (\Exception $e) {
+
+        $e = $e->getMessage();
+        //echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -11,13 +51,20 @@
 </head>
 <body >
 <div class=" vw-100 vh-100 d-flex flex-column justify-content-center align-items-center">
-    <form class="col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4 container d-flex flex-column ">
+    <form action="" method="post" class="col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4 container d-flex flex-column ">
         <div class="d-flex flex-column align-items-center"> <img class="mb-4" src="images/logo.svg" alt="" width="72" height="57">
             <h1 class="h3 mb-3 fw-normal">Je e-mailadres</h1>
         </div>
-        <div class="alert alert-danger" role="alert">
-           De email dat u ingeeft bestaat niet.
-        </div>
+        <?php if (isset($e)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $e ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($send)): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo $send ?>
+            </div>
+        <?php endif; ?>
         <div class="form-floating">
             <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required name="email">
             <label for="emailInput">Email</label>
