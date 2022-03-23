@@ -15,10 +15,12 @@ class User
         $conn = Db::getConnection();
         $statement = $conn->prepare("select email from User where email = :email");
         $statement->bindValue("email", $email);
-       $user =  $statement->execute();$statement->fetch(PDO::FETCH_ASSOC);
-        if ($user) {
-            return true;
-        } else throw new Exception("User does already exist");
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+       if ($user) {
+            throw new Exception("User does already exist");
+        } else return true;
     }
 
     /**
