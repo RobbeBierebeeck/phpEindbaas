@@ -17,7 +17,6 @@ class User
         $statement->bindValue("email", $email);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-
        if ($user) {
            return false;
         } else return true;
@@ -64,16 +63,12 @@ class User
     public
     function setPassword($password, $passwordConf)
     {
-        if ($password != $passwordConf) {
-            throw new Exception("Passwords should be the same");
-        } else {
-            $options = [
-                'cost' => 13
-            ];
-            $password = password_hash($password, PASSWORD_DEFAULT, $options);
-            $this->password = $password;
-            //throw new Exception("Passwords match");
+
+        if(self::checkPasswords($password, $passwordConf)){
+            $this->password = self::hashPassword($password);
         }
+
+
     }
 
     /**
@@ -162,6 +157,28 @@ class User
         $statement->bindValue("userId", $userId);
         $statement->bindValue("key",$code);
         $statement->bindValue("time",$t);
+        $statement->execute();
+    }
+
+    public static function checkPasswords($password, $passwordConf)
+    {
+        if ($password != $passwordConf) {
+            throw new Exception("Passwords should be the same");
+        } else return true;
+    }
+    public static function hashPassword($password)
+    {
+        $options = [
+            'cost' => 13
+        ];
+        return password_hash($password, PASSWORD_DEFAULT, $options);
+    }
+    public static function updatePassword($code, $password)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code)");
+        $statement->bindValue("code", $code);
+        $statement->bindValue("password",$password);
         $statement->execute();
     }
 }

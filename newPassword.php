@@ -1,4 +1,16 @@
 <?php
+include_once(__DIR__ . '/bootstrap.php');
+try {
+    if (!isset($_GET['code'])) {
+        Throw new Exception("Can't find page you are lookig for...");
+    }
+    if (!empty($_POST)) {
+        User::updatePassword($_GET['code']);
+    }
+} catch (Throwable $e) {
+    $e = $e->getMessage();
+}
+
 ?><!doctype html>
 <html lang="en">
 <head>
