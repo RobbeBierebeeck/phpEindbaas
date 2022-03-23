@@ -5,7 +5,10 @@ try {
         Throw new Exception("Can't find page you are lookig for...");
     }
     if (!empty($_POST)) {
-        User::updatePassword($_GET['code']);
+        if(User::checkPasswords($_POST["password"], $_POST['passwordConf'])){
+            User::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
+        }
+
     }
 } catch (Throwable $e) {
     $e = $e->getMessage();
@@ -29,7 +32,11 @@ try {
     <h1>Reset your password</h1>
     <p>No worries we all have been here</p>
     <form method="POST" class="row g-3 mx-0 col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4" enctype="multipart/form-data">
-
+        <?php if (isset($e)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $e ?>
+            </div>
+        <?php endif; ?>
         <div class="form-floating mb-2">
             <input type="password" name="password" class="form-control" id="password" placeholder="name@example.com"
                    required>
