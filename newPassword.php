@@ -7,8 +7,8 @@ try {
     if (!empty($_POST)) {
         if(User::checkPasswords($_POST["password"], $_POST['passwordConf'])){
             User::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
+            User::deletePasswordReset($_GET['code']);
         }
-
     }
 } catch (Throwable $e) {
     $e = $e->getMessage();

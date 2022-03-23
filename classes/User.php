@@ -181,4 +181,12 @@ class User
         $statement->bindValue("password",$password);
         $statement->execute();
     }
+    public static function deletePasswordReset($code)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("delete from Password_Reset_Temp where code = :code ");
+        $statement->bindValue("code", $code);
+        $statement->execute();
+
+    }
 }
