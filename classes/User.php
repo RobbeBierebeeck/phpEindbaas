@@ -142,4 +142,25 @@ class User
         $statement->bindValue(':password', $password);
         $statement->execute();
     }
+
+    public static function getUserId($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select id from User where email = :email");
+        $statement->bindValue("email", $email);
+        $statement->execute();
+        $id= $statement->fetch(PDO::FETCH_ASSOC);
+        return $id['id'];
+
+    }
+    public static function setResetData($userId, $code)
+    {
+        $t = time();
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("insert into Password_Reset_Temp(User_id, exp_date,code) values (:userId, :time , :key)");
+        $statement->bindValue("userId", $userId);
+        $statement->bindValue("key",$code);
+        $statement->bindValue("time",$t);
+        $statement->execute();
+    }
 }

@@ -21,19 +21,21 @@ if (!empty($_POST)) {
         $mail->Port = 587;
         $mail->Username = 'dddddddrop@gmail.com'; // YOUR gmail email
         $mail->Password = 'TeamDrop'; // YOUR gmail password
+        $code = uniqid(true); //generating random code
         // Sender and recipient settings
         $mail->setFrom('dddddddrop@gmail.com', 'drop');
         $mail->addReplyTo('dddddddrop@gmail.com', 'drop'); // to set the reply to
         // Setting the email content
         $mail->IsHTML(true);
         $mail->Subject = "Password reset";
+        $url = "http://". $_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF'])."/resetPassword.php?code=".$code;
         $mail->Body = "<h1>You requested a password reset</h1>
-                        <p>Click <a href= ''>this link</a> to reset your password</p>";
-
+                        <p>Click <a href= '$url'>this link</a> to reset your password</p>";
         if(!User::existUser($_POST["email"])){
             $mail->addAddress($_POST["email"]);
             $mail->send();
             $send = "E-mail is verzonden";
+            User::setResetData(User::getUserId($_POST["email"]), $code);
         }else throw new Exception("User does not exist");
 
 
