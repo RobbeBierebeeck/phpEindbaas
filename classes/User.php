@@ -189,4 +189,25 @@ class User
         $statement->execute();
 
     }
+
+    public static function isExpired($code)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code");
+        $statement->bindValue("code", $code);
+        $statement->execute();
+        $expDate = $statement->fetch(PDO::FETCH_ASSOC);
+        if(!$expDate){
+            throw new Exception("The link is outdated");;
+        }else{
+            $t = time();
+            $diff = $t - $expDate['exp_date'];
+            if($diff>86400){
+                //throw new Exception("The link is outdated");
+                self::deletePasswordReset($code);
+            }
+        }
+
+
+    }
 }

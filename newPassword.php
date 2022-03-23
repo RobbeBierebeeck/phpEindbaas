@@ -1,11 +1,14 @@
 <?php
 include_once(__DIR__ . '/bootstrap.php');
 try {
+    if (!empty($_GET)){
+        User::isExpired($_GET['code']);
+    }
     if (!isset($_GET['code'])) {
-        Throw new Exception("Can't find page you are lookig for...");
+        throw new Exception("Can't find page you are lookig for...");
     }
     if (!empty($_POST)) {
-        if(User::checkPasswords($_POST["password"], $_POST['passwordConf'])){
+        if (User::checkPasswords($_POST["password"], $_POST['passwordConf'])) {
             User::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
             User::deletePasswordReset($_GET['code']);
         }
