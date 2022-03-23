@@ -54,6 +54,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>password recovery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body >
 <div class=" vw-100 vh-100 d-flex flex-column justify-content-center align-items-center">
