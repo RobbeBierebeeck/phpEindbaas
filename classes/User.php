@@ -121,11 +121,15 @@ class User
         try {
             $conn = DB::getConnection();
             //$statement = $conn->prepare("INSERT INTO user (profile_image) VALUES (:picture)");
+
             $targetDirectory = "./upload/";
             $targetFile = $targetDirectory . basename($profilePicture["name"]);
-            $fileName = $profilePicture["name"];
+            //$fileName = $profilePicture["name"];
             $tempFile = $profilePicture["tmp_name"];
-            var_dump($fileName);
+
+            $imageData = file_get_contents($profilePicture['tmp_name']);
+
+            //var_dump($fileName);
 
             if (empty($profilePicture["name"])) {
                 //use placeholder as default if no local file is selected
@@ -135,9 +139,8 @@ class User
 
             if (move_uploaded_file($tempFile, $targetFile)) {
                 // Insert image file name into database
-
                 $statement = $conn->prepare("insert into user (profile_image) values (:picture)");
-                $statement->bindValue(":picture", $fileName);
+                $statement->bindValue(":picture", $imageData);
                 $statement->execute();
             }
         } catch (Exception $ex) {
