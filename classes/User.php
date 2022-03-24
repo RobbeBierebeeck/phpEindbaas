@@ -122,31 +122,25 @@ class User
             $conn = DB::getConnection();
             //$statement = $conn->prepare("INSERT INTO user (profile_image) VALUES (:picture)");
 
-            $targetDirectory = "./upload/";
-            $targetFile = $targetDirectory . basename($profilePicture["name"]);
-            //$fileName = $profilePicture["name"];
-            $tempFile = $profilePicture["tmp_name"];
+            $targetDirectory = './upload/';
+            $targetFile = $targetDirectory . basename($profilePicture['name']);
+            $tempFile = $profilePicture['tmp_name'];
 
-            $imageData = file_get_contents($profilePicture['tmp_name']);
-
-            //var_dump($fileName);
-
-            if (empty($profilePicture["name"])) {
+            if (empty($profilePicture['name'])) {
                 //use placeholder as default if no local file is selected
                 $targetFile = $targetDirectory . "avatar_template.png";
-                $fileName = "avatar_template.png";
             }
 
             if (move_uploaded_file($tempFile, $targetFile)) {
                 // Insert image file name into database
                 $statement = $conn->prepare("insert into user (profile_image) values (:picture)");
-                $statement->bindValue(":picture", $imageData);
+                $statement->bindValue(":picture", $targetFile);
                 $statement->execute();
             }
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
-        //$this->profilePicture = $profilePicture;
+        $this->profilePicture = $targetFile;
     }
 
     public
