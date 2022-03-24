@@ -17,8 +17,8 @@ class User
         $statement->bindValue("email", $email);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-       if ($user) {
-           return false;
+        if ($user) {
+            return false;
         } else return true;
     }
 
@@ -38,14 +38,12 @@ class User
     public function setEmail($email)
     {
 
-            //first part -> allowed chars , student <- possible to have makes a group , has to have thomasmore.be
-            $regex = '/[a-zA-Z0-9_.+-]+@(student\.)?thomasmore\.be/';
+        //first part -> allowed chars , student <- possible to have makes a group , has to have thomasmore.be
+        $regex = '/[a-zA-Z0-9_.+-]+@(student\.)?thomasmore\.be/';
 
-            if (preg_match($regex, $email)) {
-                $this->email = $email;
-            }else throw new Exception("Please use your thomasmore account to register");
-
-
+        if (preg_match($regex, $email)) {
+            $this->email = $email;
+        } else throw new Exception("Please use your thomasmore account to register");
     }
 
     /**
@@ -64,11 +62,9 @@ class User
     function setPassword($password, $passwordConf)
     {
 
-        if(self::checkPasswords($password, $passwordConf)){
+        if (self::checkPasswords($password, $passwordConf)) {
             $this->password = self::hashPassword($password);
         }
-
-
     }
 
     /**
@@ -122,20 +118,44 @@ class User
     public
     function setProfilePicture($profilePicture)
     {
-        $this->profilePicture = $profilePicture;
+        try {
+            $conn = DB::getConnection();
+            //$statement = $conn->prepare("INSERT INTO user (profile_image) VALUES (:picture)");
+            $targetDirectory = "./upload/";
+            $targetFile = $targetDirectory . basename($profilePicture["name"]);
+            $fileName = $profilePicture["name"];
+            $tempFile = $profilePicture["tmp_name"];
+            var_dump($fileName);
+
+            if (empty($profilePicture["name"])) {
+                //use placeholder as default if no local file is selected
+                $targetFile = $targetDirectory . "avatar_template.png";
+                $fileName = "avatar_template.png";
+            }
+
+            if (move_uploaded_file($tempFile, $targetFile)) {
+                // Insert image file name into database
+
+                $statement = $conn->prepare("insert into user (profile_image) values (:picture)");
+                $statement->bindValue(":picture", $fileName);
+                $statement->execute();
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        //$this->profilePicture = $profilePicture;
     }
 
     public
     function save()
     {
-
-
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
+        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at, profile_image) values (:firstname, :lastname, :email, :password, NOW(), :profilepic)");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', $this->password);
+        $statement->bindValue(':profilepic', $this->profilePicture);
         $statement->execute();
     }
 
@@ -145,9 +165,8 @@ class User
         $statement = $conn->prepare("select id from User where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
-        $id= $statement->fetch(PDO::FETCH_ASSOC);
+        $id = $statement->fetch(PDO::FETCH_ASSOC);
         return $id['id'];
-
     }
     public static function setResetData($userId, $code)
     {
@@ -155,8 +174,8 @@ class User
         $conn = Db::getConnection();
         $statement = $conn->prepare("insert into Password_Reset_Temp(User_id, exp_date,code) values (:userId, :time , :key)");
         $statement->bindValue("userId", $userId);
-        $statement->bindValue("key",$code);
-        $statement->bindValue("time",$t);
+        $statement->bindValue("key", $code);
+        $statement->bindValue("time", $t);
         $statement->execute();
     }
 
@@ -164,7 +183,7 @@ class User
     {
         if ($password != $passwordConf) {
             throw new Exception("Passwords should be the same");
-        } else if(strlen($password)<6){
+        } else if (strlen($password) < 6) {
             throw new Exception("Passwords is to short");
         } else return true;
     }
@@ -180,7 +199,7 @@ class User
         $conn = Db::getConnection();
         $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code)");
         $statement->bindValue("code", $code);
-        $statement->bindValue("password",$password);
+        $statement->bindValue("password", $password);
         $statement->execute();
     }
     public static function deletePasswordReset($code)
@@ -189,7 +208,6 @@ class User
         $statement = $conn->prepare("delete from Password_Reset_Temp where code = :code ");
         $statement->bindValue("code", $code);
         $statement->execute();
-
     }
 
     public static function isExpired($code)
@@ -199,17 +217,15 @@ class User
         $statement->bindValue("code", $code);
         $statement->execute();
         $expDate = $statement->fetch(PDO::FETCH_ASSOC);
-        if(!$expDate){
+        if (!$expDate) {
             throw new Exception("The link is outdated");;
-        }else{
+        } else {
             $t = time();
             $diff = $t - $expDate['exp_date'];
-            if($diff>86400){
+            if ($diff > 86400) {
                 //throw new Exception("The link is outdated");
                 self::deletePasswordReset($code);
             }
         }
-
-
     }
 }

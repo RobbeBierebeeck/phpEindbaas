@@ -8,6 +8,8 @@ if (!empty($_POST)) {
         $user->setPassword($_POST['password'], $_POST['passwordConf']);
         $user->setFirstName($_POST['firstName']);
         $user->setLastName($_POST['lastName']);
+        $user->setProfilePicture($_FILES['profilePic']);
+
         if (User::existUser($_POST['email'])) {
             $user->save();
         }
