@@ -16,10 +16,8 @@ class User
         $statement = $conn->prepare("select email from User where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-       if ($user) {
-           return false;
-        } else return true;
+        return $statement->fetch(PDO::FETCH_ASSOC);
+
     }
 
     /**
