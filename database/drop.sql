@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.34)
 # Database: drop
-# Generation Time: 2022-03-21 12:01:44 +0000
+# Generation Time: 2022-03-24 21:38:45 +0000
 # ************************************************************
 
 
@@ -75,6 +75,32 @@ CREATE TABLE `Like` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
+# Dump of table Password_Reset_Temp
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `Password_Reset_Temp`;
+
+CREATE TABLE `Password_Reset_Temp` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `User_id` int(11) NOT NULL,
+  `exp_date` varchar(255) NOT NULL DEFAULT '',
+  `code` varchar(255) NOT NULL DEFAULT '',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `Password_Reset_Temp` WRITE;
+/*!40000 ALTER TABLE `Password_Reset_Temp` DISABLE KEYS */;
+
+INSERT INTO `Password_Reset_Temp` (`id`, `User_id`, `exp_date`, `code`, `active`)
+VALUES
+	(2,1,'1648150179','1623cc6a1ecad2',0),
+	(3,1,'1648150897','1623cc96f8c5aa',0);
+
+/*!40000 ALTER TABLE `Password_Reset_Temp` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Project
@@ -190,12 +216,22 @@ CREATE TABLE `User` (
   `email` varchar(255) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `bio` text,
-  `role` varchar(255) NOT NULL DEFAULT '',
+  `role` varchar(255) NOT NULL DEFAULT 'User',
   `created_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `profile_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `User` WRITE;
+/*!40000 ALTER TABLE `User` DISABLE KEYS */;
+
+INSERT INTO `User` (`id`, `firstname`, `lastname`, `email`, `password`, `bio`, `role`, `created_at`, `profile_image`)
+VALUES
+	(1,'Robbe','Bierebeeck','robbe.bierebeeck4@gmail.com','$2y$13$kqECWvXXL/pc1tD8DVWqVOgKcb/4AXe0nCeuAj4UmfIffOidBvfWm',NULL,'0','2022-03-24 20:42:09',NULL),
+	(2,'Hannah','Claes','hannahclaes1@hotmail.com','123456',NULL,'0','2022-03-22 16:19:17',NULL);
+
+/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Views
