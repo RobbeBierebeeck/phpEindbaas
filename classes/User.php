@@ -178,7 +178,7 @@ class User
     public static function updatePassword($code, $password)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code)");
+        $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code and active = 1)");
         $statement->bindValue("code", $code);
         $statement->bindValue("password",$password);
         $statement->execute();
@@ -186,7 +186,7 @@ class User
     public static function deletePasswordReset($code)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("delete from Password_Reset_Temp where code = :code ");
+        $statement = $conn->prepare("update Password_Reset_Temp set active = 0 where code = :code ");
         $statement->bindValue("code", $code);
         $statement->execute();
 
@@ -195,7 +195,7 @@ class User
     public static function isExpired($code)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code");
+        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code and active = 1");
         $statement->bindValue("code", $code);
         $statement->execute();
         $expDate = $statement->fetch(PDO::FETCH_ASSOC);
