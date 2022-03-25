@@ -1,6 +1,7 @@
 <?php
 include_once(__DIR__ . '/bootstrap.php');
 
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,14 +20,15 @@ include_once(__DIR__ . '/bootstrap.php');
 <body>
     <div class="vh-100 vw-100 d-flex flex-column justify-content-center align-items-center">
         <img class="mb-4" src="" alt="" width="72" height="57">
-        <h1>Create an account</h1>
-        <p>Start your journey!</p>
+        <h1>account settings</h1>
+        <p>edit your preferences</p>
         <div>
             <div class="mb-3">
+                <label for="profilePic">Change profile picture</label>
                 <input type="file" name="profilePic" class="form-control" id="profilePic" accept=".png,.gif,.jpg,.webp">
             </div>
             <div class="col-12 pt-3">
-                <button type="submit" class="btn btn-primary">Verstuur email</button>
+                <button type="submit" class="btn btn-primary">change profile picture</button>
             </div>
         </div>
         </form>
