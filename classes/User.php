@@ -10,16 +10,14 @@ class User
     private $profilePicture;
 
 
-    public static function existUser($email)
+    public static function findByEmail($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select email from User where email = :email");
+        $statement = $conn->prepare("select email from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($user) {
-            return false;
-        } else return true;
+        return $statement->fetch(PDO::FETCH_ASSOC); //connectie default instellen
+
     }
 
     /**
@@ -63,7 +61,7 @@ class User
     {
 
         if (self::checkPasswords($password, $passwordConf)) {
-            $this->password = self::hashPassword($password);
+            $this->password = $password;
         }
     }
 
@@ -146,20 +144,21 @@ class User
     public
     function save()
     {
+
+
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at, profile_image) values (:firstname, :lastname, :email, :password, NOW(), :profilepic)");
+        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
-        $statement->bindValue(':password', $this->password);
-        $statement->bindValue(':profilepic', $this->profilePicture);
+        $statement->bindValue(':password', SELF::hashPassword($this->password));
         $statement->execute();
     }
 
     public static function getUserId($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select id from User where email = :email");
+        $statement = $conn->prepare("select id from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         $id = $statement->fetch(PDO::FETCH_ASSOC);
@@ -169,7 +168,7 @@ class User
     {
         $t = time();
         $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into Password_Reset_Temp(User_id, exp_date,code) values (:userId, :time , :key)");
+        $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, :time , :key)");
         $statement->bindValue("userId", $userId);
         $statement->bindValue("key", $code);
         $statement->bindValue("time", $t);
@@ -194,7 +193,7 @@ class User
     public static function updatePassword($code, $password)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code)");
+        $statement = $conn->prepare("update Users set password = :password where id = (select user_id from Password_Reset_Temp where code = :code and active = 1)");
         $statement->bindValue("code", $code);
         $statement->bindValue("password", $password);
         $statement->execute();
@@ -202,7 +201,7 @@ class User
     public static function deletePasswordReset($code)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("delete from Password_Reset_Temp where code = :code ");
+        $statement = $conn->prepare("update Password_Reset_Temp set active = 0 where code = :code ");
         $statement->bindValue("code", $code);
         $statement->execute();
     }
@@ -210,7 +209,7 @@ class User
     public static function isExpired($code)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code");
+        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code and active = 1");
         $statement->bindValue("code", $code);
         $statement->execute();
         $expDate = $statement->fetch(PDO::FETCH_ASSOC);
@@ -223,6 +222,26 @@ class User
                 //throw new Exception("The link is outdated");
                 self::deletePasswordReset($code);
             }
+        }
+    }
+
+    public function canLogin()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select email, password from users where email = :email");
+        $statement->bindValue("email", $this->email);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($user) {
+            $hash = $user['password'];
+            if (password_verify($this->password, $hash)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            throw new Exception("username or password is incorrect");
         }
     }
 }

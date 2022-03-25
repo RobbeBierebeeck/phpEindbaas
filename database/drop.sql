@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.34)
 # Database: drop
-# Generation Time: 2022-03-21 12:01:44 +0000
+# Generation Time: 2022-03-25 12:31:38 +0000
 # ************************************************************
 
 
@@ -20,12 +20,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table Color
+# Dump of table Colors
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Color`;
+DROP TABLE IF EXISTS `Colors`;
 
-CREATE TABLE `Color` (
+CREATE TABLE `Colors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `hex` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
@@ -33,16 +33,16 @@ CREATE TABLE `Color` (
 
 
 
-# Dump of table Comment
+# Dump of table Comments
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Comment`;
+DROP TABLE IF EXISTS `Comments`;
 
-CREATE TABLE `Comment` (
+CREATE TABLE `Comments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `comment` varchar(255) NOT NULL DEFAULT '',
-  `Project_id` int(11) NOT NULL,
-  `User_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -56,121 +56,148 @@ DROP TABLE IF EXISTS `Followers`;
 CREATE TABLE `Followers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `active` tinyint(1) DEFAULT NULL,
-  `Following_id` int(11) NOT NULL,
-  `Follower_id` int(11) NOT NULL,
+  `following_id` int(11) NOT NULL,
+  `follower_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Like
+# Dump of table Likes
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Like`;
+DROP TABLE IF EXISTS `Likes`;
 
-CREATE TABLE `Like` (
+CREATE TABLE `Likes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `Project_id` int(11) NOT NULL,
-  `User_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Project
+# Dump of table Password_Reset_Temp
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Project`;
+DROP TABLE IF EXISTS `Password_Reset_Temp`;
 
-CREATE TABLE `Project` (
+CREATE TABLE `Password_Reset_Temp` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `exp_date` varchar(255) NOT NULL DEFAULT '',
+  `code` varchar(255) NOT NULL DEFAULT '',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `Password_Reset_Temp` WRITE;
+/*!40000 ALTER TABLE `Password_Reset_Temp` DISABLE KEYS */;
+
+INSERT INTO `Password_Reset_Temp` (`id`, `user_id`, `exp_date`, `code`, `active`)
+VALUES
+	(2,1,'1648150179','1623cc6a1ecad2',0),
+	(3,1,'1648150897','1623cc96f8c5aa',0),
+	(4,1,'1648196957','1623d7d5b4c2ae',0);
+
+/*!40000 ALTER TABLE `Password_Reset_Temp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table Projects
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `Projects`;
+
+CREATE TABLE `Projects` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
   `image` varchar(255) NOT NULL DEFAULT '',
   `description` text,
   `posted_at` datetime NOT NULL,
-  `User_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `private_views` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Project_Color
+# Dump of table Project_Colors
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Project_Color`;
+DROP TABLE IF EXISTS `Project_Colors`;
 
-CREATE TABLE `Project_Color` (
+CREATE TABLE `Project_Colors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `Project__id` int(11) NOT NULL,
-  `Color_id` int(11) DEFAULT NULL,
+  `project__id` int(11) NOT NULL,
+  `color_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Project_Tag
+# Dump of table Project_Tags
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Project_Tag`;
+DROP TABLE IF EXISTS `Project_Tags`;
 
-CREATE TABLE `Project_Tag` (
+CREATE TABLE `Project_Tags` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `Project_id` int(11) NOT NULL,
-  `Tag_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Reported_project
+# Dump of table Reported_projects
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Reported_project`;
+DROP TABLE IF EXISTS `Reported_projects`;
 
-CREATE TABLE `Reported_project` (
+CREATE TABLE `Reported_projects` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `reported_at` datetime NOT NULL,
-  `Project_id` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Reported_user
+# Dump of table Reported_users
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Reported_user`;
+DROP TABLE IF EXISTS `Reported_users`;
 
-CREATE TABLE `Reported_user` (
+CREATE TABLE `Reported_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `reported_at` datetime NOT NULL,
-  `User_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Social_link
+# Dump of table Social_links
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Social_link`;
+DROP TABLE IF EXISTS `Social_links`;
 
-CREATE TABLE `Social_link` (
+CREATE TABLE `Social_links` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `User_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `link` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-# Dump of table Tag
+# Dump of table Tags
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Tag`;
+DROP TABLE IF EXISTS `Tags`;
 
-CREATE TABLE `Tag` (
+CREATE TABLE `Tags` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `tag` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
@@ -178,24 +205,34 @@ CREATE TABLE `Tag` (
 
 
 
-# Dump of table User
+# Dump of table Users
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Users`;
 
-CREATE TABLE `User` (
+CREATE TABLE `Users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `firstname` varchar(255) NOT NULL DEFAULT '',
   `lastname` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `bio` text,
-  `role` varchar(255) NOT NULL DEFAULT '',
+  `role` varchar(255) NOT NULL DEFAULT 'User',
   `created_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `profile_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `Users` WRITE;
+/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+
+INSERT INTO `Users` (`id`, `firstname`, `lastname`, `email`, `password`, `bio`, `role`, `created_at`, `profile_image`)
+VALUES
+	(1,'Robbe','Bierebeeck','robbe.bierebeeck4@gmail.com','$2y$13$wvngSvuTcRq.OTkQDJoxQ.7nE2e8E5C2.oty3rwK5iRl79AKgd49a',NULL,'0','2022-03-25 09:36:22',NULL),
+	(2,'Hannah','Claes','hannahclaes1@hotmail.com','123456',NULL,'0','2022-03-22 16:19:17',NULL);
+
+/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Views
@@ -206,7 +243,7 @@ DROP TABLE IF EXISTS `Views`;
 CREATE TABLE `Views` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varchar(255) NOT NULL DEFAULT '',
-  `Project_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

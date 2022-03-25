@@ -31,7 +31,7 @@ if (!empty($_POST)) {
         $url = "http://". $_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF'])."/newPassword.php?code=".$code;
         $mail->Body = "<h1>You requested a password reset</h1>
                         <p>Click <a href= '$url'>this link</a> to reset your password</p>";
-        if(!User::existUser($_POST["email"])){
+        if(User::findByEmail($_POST["email"])){
             $mail->addAddress($_POST["email"]);
             $mail->send();
             $send = "E-mail is verzonden";

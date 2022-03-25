@@ -9,10 +9,9 @@ if (!empty($_POST)) {
         $user->setFirstName($_POST['firstName']);
         $user->setLastName($_POST['lastName']);
         $user->setProfilePicture($_FILES['profilePic']);
-
-        if (User::existUser($_POST['email'])) {
+        if (!User::findByEmail($_POST['email'])) {
             $user->save();
-        }
+        } else throw new Exception("User does already exist");
     } catch (Throwable $e) {
         $error = $e->getMessage();
     }
@@ -72,12 +71,8 @@ if (!empty($_POST)) {
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="profilePic">Choose a profile picture</label>
-                <input type="file" name="profilePic" class="form-control" id="profilePic" accept=".png,.gif,.jpg,.webp">
-            </div>
             <div class="col-12 pt-3">
-                <button type="submit" class="btn btn-primary">join now</button>
+                <button type="submit" class="btn btn-primary">Verstuur email</button>
             </div>
         </form>
     </div>
