@@ -1,4 +1,22 @@
-<!doctype html>
+<?php
+    include_once(__DIR__ . '/bootstrap.php');
+    if (!empty($_POST)) {
+        try {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password'],$_POST['password']);
+            if ($user->canLogin()) {
+                session_start();
+                $_SESSION['user'] = $user->getEmail();
+                header("Location:feed.php");
+            }
+        }catch (\Throwable $e){
+            $error = $e->getMessage();
+        }
+    
+    }
+
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
