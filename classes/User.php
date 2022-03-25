@@ -13,7 +13,7 @@ class User
     public static function findByEmail($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select email from User where email = :email");
+        $statement = $conn->prepare("select email from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC); //connectie default instellen
@@ -129,7 +129,7 @@ class User
 
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into User (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
+        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
@@ -140,7 +140,7 @@ class User
     public static function getUserId($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select id from User where email = :email");
+        $statement = $conn->prepare("select id from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         $id= $statement->fetch(PDO::FETCH_ASSOC);
@@ -176,7 +176,7 @@ class User
     public static function updatePassword($code, $password)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("update User set password = :password where id = (select User_id from Password_Reset_Temp where code = :code and active = 1)");
+        $statement = $conn->prepare("update Users set password = :password where id = (select User_id from Password_Reset_Temp where code = :code and active = 1)");
         $statement->bindValue("code", $code);
         $statement->bindValue("password",$password);
         $statement->execute();
