@@ -210,4 +210,26 @@ class User
 
 
     }
+
+    public function canLogin()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select email, password from users where email = :email");
+        $statement->bindValue("email", $this->email);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($user) {
+            $hash = $user['password'];
+            if (password_verify($this->password, $hash)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            throw new Exception("username or password is incorrect");
+        }
+
+
+    }
 }
