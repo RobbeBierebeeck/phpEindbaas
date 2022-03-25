@@ -104,10 +104,18 @@ class User
     /**
      * @return mixed
      */
-    public
+    public static
     function getProfilePicture()
     {
-        return $this->profilePicture;
+        $email = $_SESSION['user'];
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select profile_image from users where email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $imageTable = $statement->fetch();
+        $imagePath = $imageTable["profile_image"];
+        var_dump($imagePath);
+        return $imagePath;
     }
 
     /**
@@ -130,8 +138,8 @@ class User
             }
 
             if (move_uploaded_file($tempFile, $targetFile)) {
-                // Insert image file name into database
-                $statement = $conn->prepare("insert into user (profile_image) values (:picture)");
+                //Insert image file path into database
+                $statement = $conn->prepare("insert into users (profile_image) values (:picture)");
                 $statement->bindValue(":picture", $targetFile);
                 $statement->execute();
             }
@@ -147,11 +155,12 @@ class User
 
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at) values (:firstname, :lastname, :email, :password, NOW())");
+        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at, profile_image) values (:firstname, :lastname, :email, :password, NOW(), :profilePic)");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', SELF::hashPassword($this->password));
+        $statement->bindValue(':profilePic', $this->profilePicture);
         $statement->execute();
     }
 

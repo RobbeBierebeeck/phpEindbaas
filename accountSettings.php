@@ -1,7 +1,9 @@
 <?php
+include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
-
-
+Security::onlyLoggedInUsers();
+$profileImg = User::getProfilePicture();
+var_dump($profileImg);
 ?>
 <!doctype html>
 <html lang="en">
@@ -14,13 +16,13 @@ include_once(__DIR__ . '/bootstrap.php');
     <link rel="stylesheet" href="style/style.css">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title>Register</title>
+    <title>account settings</title>
 </head>
 
 <body>
     <div class="vh-100 vw-100 d-flex flex-column justify-content-center align-items-center">
-        <img class="mb-4" src="" alt="" width="72" height="57">
-        <h1>account settings</h1>
+        <img class="mb-4" src="<?php echo $profileImg ?>" alt="" width="72" height="57">
+        <h1></h1>
         <p>edit your preferences</p>
         <div>
             <div class="mb-3">
