@@ -63,7 +63,7 @@ class User
     {
 
         if(self::checkPasswords($password, $passwordConf)){
-            $this->password = self::hashPassword($password);
+            $this->password = $password;
         }
 
 
@@ -133,7 +133,7 @@ class User
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
-        $statement->bindValue(':password', $this->password);
+        $statement->bindValue(':password', SELF::hashPassword($this->password));
         $statement->execute();
     }
 
