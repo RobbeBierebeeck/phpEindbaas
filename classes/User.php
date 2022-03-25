@@ -10,13 +10,13 @@ class User
     private $profilePicture;
 
 
-    public static function existUser($email)
+    public static function findByEmail($email)
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("select email from User where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetch(PDO::FETCH_ASSOC); //connectie default instellen
 
     }
 

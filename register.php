@@ -8,7 +8,7 @@ if (!empty($_POST)) {
         $user->setPassword($_POST['password'],$_POST['passwordConf']);
         $user->setFirstName($_POST['firstName']);
         $user->setLastName($_POST['lastName']);
-        if(!User::existUser($_POST['email'])){
+        if(!User::findByEmail($_POST['email'])){
             $user->save();
         }else throw new Exception("User does already exist");
 
