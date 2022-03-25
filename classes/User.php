@@ -151,7 +151,7 @@ class User
     {
         $t = time();
         $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into Password_Reset_Temp(User_id, exp_date,code) values (:userId, :time , :key)");
+        $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, :time , :key)");
         $statement->bindValue("userId", $userId);
         $statement->bindValue("key",$code);
         $statement->bindValue("time",$t);
@@ -176,7 +176,7 @@ class User
     public static function updatePassword($code, $password)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("update Users set password = :password where id = (select User_id from Password_Reset_Temp where code = :code and active = 1)");
+        $statement = $conn->prepare("update Users set password = :password where id = (select user_id from Password_Reset_Temp where code = :code and active = 1)");
         $statement->bindValue("code", $code);
         $statement->bindValue("password",$password);
         $statement->execute();
