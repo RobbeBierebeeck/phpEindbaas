@@ -3,7 +3,6 @@ include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture();
-var_dump($profileImg);
 ?>
 <!doctype html>
 <html lang="en">

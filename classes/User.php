@@ -114,7 +114,7 @@ class User
         $statement->execute();
         $imageTable = $statement->fetch();
         $imagePath = $imageTable["profile_image"];
-        var_dump($imagePath);
+        //var_dump($imagePath);
         return $imagePath;
     }
 
