@@ -10,7 +10,7 @@ abstract class PasswordTemp
         $statement->execute();
         $expDate = $statement->fetch(PDO::FETCH_ASSOC);
         if (!$expDate) {
-            throw new Exception("The link is outdated");;
+            header("Location: 404.html");
         } else {
             $t = time();
             $diff = $t - strtotime($expDate['exp_date']);
