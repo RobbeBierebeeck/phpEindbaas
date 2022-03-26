@@ -136,13 +136,6 @@ class User
                 //use placeholder as default if no local file is selected
                 $targetFile = $targetDirectory . "avatar_template.png";
             }
-
-            if (move_uploaded_file($tempFile, $targetFile)) {
-                //Insert image file path into database
-                $statement = $conn->prepare("insert into users (profile_image) values (:picture)");
-                $statement->bindValue(":picture", $targetFile);
-                $statement->execute();
-            }
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }

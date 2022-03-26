@@ -20,8 +20,8 @@ $profileImg = User::getProfilePicture();
 
 <body>
     <div class="vh-100 vw-100 d-flex flex-column justify-content-center align-items-center">
-        <img class="mb-4" src="<?php echo $profileImg ?>" alt="" width="72" height="57">
-        <h1></h1>
+        <img class="mb-4 rounded-circle" src="<?php echo $profileImg ?>" alt="" width="84" height="84">
+        <!--<h1>should output firstname and lastname here</h1>-->
         <p>edit your preferences</p>
         <div>
             <div class="mb-3">
