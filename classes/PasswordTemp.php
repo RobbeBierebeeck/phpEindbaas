@@ -13,7 +13,7 @@ abstract class PasswordTemp
             throw new Exception("The link is outdated");;
         } else {
             $t = time();
-            $diff = $t - $expDate['exp_date'];
+            $diff = $t - strtotime($expDate['exp_date']);
             if ($diff > 86400) {
                 //throw new Exception("The link is outdated");
                 self::deletePasswordReset($code);
@@ -39,10 +39,9 @@ abstract class PasswordTemp
     {
         $t = time();
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, :time , :key)");
+        $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, now() , :key)");
         $statement->bindValue("userId", $userId);
         $statement->bindValue("key", $code);
-        $statement->bindValue("time", $t);
         $statement->execute();
     }
 
