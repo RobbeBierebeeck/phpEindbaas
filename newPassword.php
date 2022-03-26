@@ -5,7 +5,7 @@ try {
        PasswordTemp::isExpired($_GET['code']);
     }
     if (!isset($_GET['code'])) {
-        throw new Exception("Can't find page you are lookig for...");
+       header('Location: 404.html');
     }
     if (!empty($_POST)) {
         if (User::checkPasswords($_POST["password"], $_POST['passwordConf'])) {
