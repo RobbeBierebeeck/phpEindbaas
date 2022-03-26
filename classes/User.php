@@ -114,7 +114,6 @@ class User
         $statement->execute();
         $imageTable = $statement->fetch();
         $imagePath = $imageTable["profile_image"];
-        //var_dump($imagePath);
         return $imagePath;
     }
 
@@ -130,7 +129,6 @@ class User
 
             $targetDirectory = './upload/';
             $targetFile = $targetDirectory . basename($profilePicture['name']);
-            $tempFile = $profilePicture['tmp_name'];
 
             if (empty($profilePicture['name'])) {
                 //use placeholder as default if no local file is selected
