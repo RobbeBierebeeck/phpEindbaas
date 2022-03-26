@@ -37,7 +37,6 @@ abstract class PasswordTemp
     }
     public static function setResetData($userId, $code)
     {
-        $t = time();
         $conn = DB::getConnection();
         $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, now() , :key)");
         $statement->bindValue("userId", $userId);

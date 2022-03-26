@@ -11,6 +11,7 @@ try {
         if (User::checkPasswords($_POST["password"], $_POST['passwordConf'])) {
             PasswordTemp::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
            PasswordTemp::deletePasswordReset($_GET['code']);
+           $reset = "Your password is successfully reset please <a href='login.php'>login</a> again";
         }
     }
 } catch (Throwable $e) {
@@ -39,6 +40,11 @@ try {
         <?php if (isset($e)): ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $e ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($reset)): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo $reset ?>
             </div>
         <?php endif; ?>
         <div class="form-floating mb-2">

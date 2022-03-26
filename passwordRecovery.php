@@ -34,9 +34,9 @@ if (!empty($_POST)) {
         if(User::findByEmail($_POST["email"])){
             $mail->addAddress($_POST["email"]);
             $mail->send();
-            $send = "E-mail is verzonden";
+            $send = "Check your inbox";
             PasswordTemp::setResetData(User::getUserId($_POST["email"]), $code);
-        }else throw new Exception("User does not exist");
+        }else $send = "Check your inbox";
 
 
     } catch (\Exception $e) {
@@ -60,7 +60,7 @@ if (!empty($_POST)) {
 <div class=" vw-100 vh-100 d-flex flex-column justify-content-center align-items-center">
     <form action="" method="post" class="col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4 container d-flex flex-column ">
         <div class="d-flex flex-column align-items-center"> <img class="mb-4" src="images/logo.svg" alt="" width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">Je e-mailadres</h1>
+            <h1 class="h3 mb-3 fw-normal">Reset your password</h1>
         </div>
         <?php if (isset($e)): ?>
             <div class="alert alert-danger" role="alert">
@@ -77,9 +77,9 @@ if (!empty($_POST)) {
             <label for="emailInput">Email</label>
         </div>
         <div class="col-12 pt-3">
-            <button type="submit" class="btn btn-primary">Verstuur email</button>
+            <button type="submit" class="btn btn-primary">Send email</button>
         </div>
-    <span class="pt-1">of <a href="">login</a></span>
+    <span class="pt-1">or <a href="">login</a></span>
     </form>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
