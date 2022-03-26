@@ -35,7 +35,7 @@ if (!empty($_POST)) {
             $mail->addAddress($_POST["email"]);
             $mail->send();
             $send = "E-mail is verzonden";
-            User::setResetData(User::getUserId($_POST["email"]), $code);
+            PasswordTemp::setResetData(User::getUserId($_POST["email"]), $code);
         }else throw new Exception("User does not exist");
 
 

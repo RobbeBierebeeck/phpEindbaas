@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . '/../bootstrap.php');
+include_once(__DIR__ .'/../bootstrap.php');
 
 abstract class DB
 {
@@ -13,7 +13,7 @@ abstract class DB
         } else {
             //no connection found
             $config = parse_ini_file(__DIR__ . '/../config/config.ini');
-            self::$conn = new PDO("mysql:host=" . $config['server'] . ";dbname=" . $config['database'], $config['user'], $config['password']);
+            self::$conn = new PDO("mysql:host=" . $config['server'] . ";dbname=" . $config['database'], $config['username'], $config['password']);
             return self::$conn;
         }
     }

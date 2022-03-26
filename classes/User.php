@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . '/DB.php');
+include_once(__DIR__ . '/../bootstrap.php');
 
 class User
 {
@@ -12,7 +12,7 @@ class User
 
     public static function findByEmail($email)
     {
-        $conn = Db::getConnection();
+        $conn = DB::getConnection();
         $statement = $conn->prepare("select email from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
@@ -157,22 +157,12 @@ class User
 
     public static function getUserId($email)
     {
-        $conn = Db::getConnection();
+        $conn = DB::getConnection();
         $statement = $conn->prepare("select id from Users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         $id = $statement->fetch(PDO::FETCH_ASSOC);
         return $id['id'];
-    }
-    public static function setResetData($userId, $code)
-    {
-        $t = time();
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into Password_Reset_Temp(user_id, exp_date,code) values (:userId, :time , :key)");
-        $statement->bindValue("userId", $userId);
-        $statement->bindValue("key", $code);
-        $statement->bindValue("time", $t);
-        $statement->execute();
     }
 
     public static function checkPasswords($password, $passwordConf)
@@ -190,40 +180,7 @@ class User
         ];
         return password_hash($password, PASSWORD_DEFAULT, $options);
     }
-    public static function updatePassword($code, $password)
-    {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("update Users set password = :password where id = (select user_id from Password_Reset_Temp where code = :code and active = 1)");
-        $statement->bindValue("code", $code);
-        $statement->bindValue("password", $password);
-        $statement->execute();
-    }
-    public static function deletePasswordReset($code)
-    {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("update Password_Reset_Temp set active = 0 where code = :code ");
-        $statement->bindValue("code", $code);
-        $statement->execute();
-    }
 
-    public static function isExpired($code)
-    {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("select exp_date from Password_Reset_Temp where code = :code and active = 1");
-        $statement->bindValue("code", $code);
-        $statement->execute();
-        $expDate = $statement->fetch(PDO::FETCH_ASSOC);
-        if (!$expDate) {
-            throw new Exception("The link is outdated");;
-        } else {
-            $t = time();
-            $diff = $t - $expDate['exp_date'];
-            if ($diff > 86400) {
-                //throw new Exception("The link is outdated");
-                self::deletePasswordReset($code);
-            }
-        }
-    }
 
     public function canLogin()
     {
