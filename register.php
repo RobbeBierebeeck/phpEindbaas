@@ -11,6 +11,9 @@ if (!empty($_POST)) {
         $user->setProfilePicture($_FILES['profilePic']);
         if (!User::findByEmail($_POST['email'])) {
             $user->save();
+            session_start();
+            $_SESSION['user'] = $user->getEmail();
+            header("Location:feed.php");
         } else throw new Exception("User does already exist");
     } catch (Throwable $e) {
         $error = $e->getMessage();
