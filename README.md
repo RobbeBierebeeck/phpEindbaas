@@ -22,7 +22,7 @@ Project is created with:
 
 
 
-### level1
+### level 1
 
 Deadline: **25 maart 2022**
 
@@ -31,6 +31,17 @@ Deadline: **25 maart 2022**
 - [x] Password reset with email
 - [x] User account logout
 - [x] Editing user account picture
+
+### level 1.5
+
+Deadline: **22 april 2022**
+
+- [x] Backup email adress + extended account (bio, social links) 
+- [x] Edit password 
+- [x] Delete user profile according with GDPR ruling
+- [x] Add projects (title, pictures, tags)
+- [x] Show projects in feed
+
 
 ## Collaborators️
 
