@@ -27,10 +27,10 @@ Project is created with:
 Deadline: **25 maart 2022**
 
 - [x] User registration
-- [ ] User account login
-- [ ] Password reset with email
-- [ ] User account logout
-- [ ] Editing user account
+- [x] User account login
+- [x] Password reset with email
+- [x] User account logout
+- [x] Editing user account picture
 
 ## Collaborators️
 
