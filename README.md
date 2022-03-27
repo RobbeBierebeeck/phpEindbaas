@@ -36,11 +36,11 @@ Deadline: **25 maart 2022**
 
 Deadline: **22 april 2022**
 
-- [x] Backup email adress + extended account (bio, social links) 
-- [x] Edit password 
-- [x] Delete user profile according with GDPR ruling
-- [x] Add projects (title, pictures, tags)
-- [x] Show projects in feed
+- [ ] Backup email adress + extended account (bio, social links) 
+- [ ] Edit password 
+- [ ] Delete user profile according with GDPR ruling
+- [ ] Add projects (title, pictures, tags)
+- [ ] Show projects in feed
 
 
 ## Collaborators️
