@@ -105,9 +105,8 @@ class User
      * @return mixed
      */
     public static
-    function getProfilePicture()
+    function getProfilePicture($email)
     {
-        $email = $_SESSION['user'];
         $conn = DB::getConnection();
         $statement = $conn->prepare("select profile_image from users where email = :email");
         $statement->bindValue(":email", $email);
@@ -124,9 +123,6 @@ class User
     function setProfilePicture($profilePicture)
     {
         try {
-            $conn = DB::getConnection();
-            //$statement = $conn->prepare("INSERT INTO user (profile_image) VALUES (:picture)");
-
             $targetDirectory = './upload/';
             $targetFile = $targetDirectory . basename($profilePicture['name']);
             $tempFile = $profilePicture['tmp_name'];
@@ -146,8 +142,6 @@ class User
     public
     function save()
     {
-
-
         $conn = DB::getConnection();
         $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at, profile_image) values (:firstname, :lastname, :email, :password, NOW(), :profilePic)");
         $statement->bindValue(':firstname', $this->firstName);
