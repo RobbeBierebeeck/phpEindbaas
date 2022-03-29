@@ -32,14 +32,14 @@
     <title>Login</title>
 </head>
 <body>
-    <?php if(isset($error)): ?>
-        <div class="alert alert-danger"><?php echo $error; ?></div>
-    <?php endif; ?>
     <div class="vh-100 vw-100 d-flex flex-column justify-content-center align-items-center">
         <img class="mb-4" src="images/logo.svg" alt="" width="72" height="57">
         <h1>Log in to your account!</h1>
         <p>Welcome back! Please enter your details!</p>
         <form method="POST" class="row g-3 mx-0 col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4" enctype="multipart/form-data">
+            <?php if(isset($error)): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+            <?php endif; ?>
             <div class="mb-3">
                 <label>Email</label>
                 <div class="form-floating">
