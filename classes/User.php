@@ -129,11 +129,14 @@ class User
 
             $targetDirectory = './upload/';
             $targetFile = $targetDirectory . basename($profilePicture['name']);
+            $tempFile = $profilePicture['tmp_name'];
 
             if (empty($profilePicture['name'])) {
                 //use placeholder as default if no local file is selected
                 $targetFile = $targetDirectory . "avatar_template.png";
             }
+
+            move_uploaded_file($tempFile, $targetFile);
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
