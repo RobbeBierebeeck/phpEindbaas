@@ -14,7 +14,7 @@ if (!empty($_POST)) {
             session_start();
             $_SESSION['user'] = $user->getEmail();
             header("Location:feed.php");
-        } else throw new Exception("User does already exist");
+        } else throw new Exception("User already exists.");
     } catch (Throwable $e) {
         $error = $e->getMessage();
     }
@@ -43,6 +43,9 @@ if (!empty($_POST)) {
         <h1>Create an account</h1>
         <p>Start your journey!</p>
         <form method="POST" class="row g-3 mx-0 col-8 col-sm-8 col-lg-6 col-xl-6 col-xxl-4" enctype="multipart/form-data">
+            <?php if (isset($error)) : ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+            <?php endif; ?>
             <div class="mb-3">
                 <label>Leakable data</label>
                 <div class="form-floating">
