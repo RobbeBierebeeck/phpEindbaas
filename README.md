@@ -32,6 +32,7 @@ Deadline: **25 maart 2022**
 - [x] User account logout
 - [x] Editing user account picture
 
+<<<<<<< HEAD
 ### level 1.5
 
 Deadline: **22 april 2022**
@@ -44,6 +45,41 @@ Deadline: **22 april 2022**
 
 
 ## Collaborators️
+=======
+##Logins 🔐
+Login with cloudinary:
+- password: **TeamDrop@1**
+- email: *dddddddrop@gmail.com*
+
+Login gmail:
+- password: **TeamDrop**
+- email: *dddddddrop@gmail.com*
+
+##What to add in config folder 📂
+1. file **config.ini**
+```
+[db] 
+server=localhost
+database = drop
+username = root
+password = root
+```
+2. file **configCloud.php**
+``` php
+<?php
+use Cloudinary\Configuration\Configuration;
+
+Configuration::instance([
+    'cloud' => [
+        'cloud_name' => 'df5hbsklz',
+        'api_key' => '627277231668949',
+        'api_secret' => '9zd0V-IFmk3Wc4i33bt3O7eWNm0'],
+    'url' => [
+        'secure' => true]]);
+```
+    
+## Collaborators️ 🤝
+>>>>>>> myFeature
 
 - [lukasHaentjens](https://github.com/lukasHaentjens "Named link title")
 - [RobinVanOverloop](https://github.com/12345123454321 "Named link title")
