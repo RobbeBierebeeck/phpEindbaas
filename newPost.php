@@ -1,4 +1,7 @@
 <?php
+    if (!empty($_POST)){
+        var_dump($_POST);
+    }
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -16,7 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Ready to drop a post?</h1>
-            <form action="savePost.php" method="post">
+            <form action="#" method="post">
                 <div class="form-group mt-3">
                     <label for="formFile" class="form-label">Drop your shot</label>
                     <input class="form-control" type="file" id="formFile">
