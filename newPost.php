@@ -1,6 +1,22 @@
 <?php
+    include_once (__DIR__.'/helpers/Security.php');
+    include_once (__DIR__.'/bootstrap.php');
+
+ Security::onlyLoggedInUsers();
+
     if (!empty($_POST)){
-        var_dump($_POST);
+        $post = new Post();
+        $post->setTitle($_POST['title']);
+        $post->setDescription($_POST['description']);
+        $post->setUserId(User::getUserId($_SESSION['user']));
+        if (isset($_POST['views'])){
+            $post->setEnableViews(1);
+        }
+        else{
+            $post->setEnableViews(0);
+        }
+        $post->save();
+
     }
 ?><!doctype html>
 <html lang="en">
@@ -29,7 +45,7 @@
                     <label class="form-label" for="floatingInput">Tags</label>
                     <div class="input form-control" id="floatingInput">
                         <div class="input__tags"></div>
-                        <input type="text" id="tags">
+                        <input type="text"  id="tags">
                     </div>
                 </div>
                 <input type="text" name="tags" id="tags-fake">
@@ -41,11 +57,15 @@
                 <!-- Content input feeld -->
                 <div class="form-group mt-3">
                     <label for="content">Content</label>
-                    <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+                    <textarea class="form-control" id="content" name="description" rows="3"></textarea>
                 </div>
-
-
-
+                <!--- Checkbox -->
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="views">
+                    <label class="form-check-label" for="flexCheckDefault" >
+                        Make views public
+                    </label>
+                </div>
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary mt-3">Drop it</button>
             </form>

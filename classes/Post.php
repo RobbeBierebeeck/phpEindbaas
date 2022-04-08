@@ -1,11 +1,38 @@
 <?php
 
+    include_once (__DIR__.'/../bootstrap.php');
 class Post
 {
     private $title;
-    private $content;
+    private $description;
     private $image;
+    private $userId;
+    private $enableViews;
 
+    /**
+     * @return mixed
+     */
+    public function getEnableViews()
+    {
+        return $this->enableViews;
+    }
+
+    /**
+     * @param mixed $enableViews
+     */
+    public function setEnableViews($enableViews): void
+    {
+        $this->enableViews = $enableViews;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId): void
+    {
+        $this->userId = $userId;
+
+    }
     /**
      * @return mixed
      */
@@ -20,22 +47,24 @@ class Post
     public function setTitle($title): void
     {
         $this->title = $title;
+
     }
 
     /**
      * @return mixed
      */
-    public function getContent()
+    public function getDescription()
     {
-        return $this->content;
+        return $this->description;
     }
 
     /**
-     * @param mixed $content
+     * @param mixed $description
      */
-    public function setContent($content): void
+    public function setDescription($description): void
     {
-        $this->content = $content;
+        $this->description = $description;
+
     }
 
     /**
@@ -54,5 +83,15 @@ class Post
         $this->image = $image;
     }
 
+    public function save()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("INSERT INTO Projects (title, description,posted_at , user_id,private_views) VALUES (:title, :description,NOW(), :user_id, :private_views)");
+        $statement->bindParam(':title', $this->title);
+        $statement->bindParam(':description', $this->description);
+        $statement->bindParam(':user_id', $this->userId);
+        $statement->bindParam(':private_views', $this->enableViews);
+        $statement->execute();
 
+    }
 }
