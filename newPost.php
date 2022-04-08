@@ -5,17 +5,22 @@
  Security::onlyLoggedInUsers();
 
     if (!empty($_POST)){
-        $post = new Post();
-        $post->setTitle($_POST['title']);
-        $post->setDescription($_POST['description']);
-        $post->setUserId(User::getUserId($_SESSION['user']));
-        if (isset($_POST['views'])){
-            $post->setEnableViews(1);
+        try {
+            $post = new Post();
+            $post->setTitle($_POST['title']);
+            $post->setDescription($_POST['description']);
+            $post->setUserId(User::getUserId($_SESSION['user']));
+            if (isset($_POST['views'])){
+                $post->setEnableViews(1);
+            }
+            else{
+                $post->setEnableViews(0);
+            }
+            $post->save();
+        } catch (Throwable $e) {
+            $error= $e->getMessage();
         }
-        else{
-            $post->setEnableViews(0);
-        }
-        $post->save();
+
 
     }
 ?><!doctype html>
@@ -35,6 +40,11 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Ready to drop a post?</h1>
+            <?php if (isset($error)):?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $error?>
+            </div>
+            <?php endif;?>
             <form action="#" method="post">
                 <div class="form-group mt-3">
                     <label for="formFile" class="form-label">Drop your shot</label>

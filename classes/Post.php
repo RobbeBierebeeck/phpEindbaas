@@ -46,7 +46,11 @@ class Post
      */
     public function setTitle($title): void
     {
-        $this->title = $title;
+        if (strlen($title) > 0) {
+            $this->title = $title;
+        }else{
+            throw new Exception("Title can't be empty");
+        }
 
     }
 
