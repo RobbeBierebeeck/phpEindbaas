@@ -5,11 +5,14 @@
  Security::onlyLoggedInUsers();
 
     if (!empty($_POST)){
+
+
         try {
             $post = new Post();
             $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
             $post->setUserId(User::getUserId($_SESSION['user']));
+            $post->setImage($_FILES['file']);
             if (isset($_POST['views'])){
                 $post->setEnableViews(1);
             }
@@ -45,10 +48,10 @@
                 <?php echo $error?>
             </div>
             <?php endif;?>
-            <form action="#" method="post">
+            <form enctype="multipart/form-data" action="#" method="post">
                 <div class="form-group mt-3">
                     <label for="formFile" class="form-label">Drop your shot</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <input class="form-control" name="file" type="file" id="formFile" accept=".png,.gif,.jpg,.webp">
                 </div>
                 <!-- Tag input feeld -->
                 <div class="mt-3">
@@ -67,7 +70,7 @@
                 <!-- Content input feeld -->
                 <div class="form-group mt-3">
                     <label for="content">Content</label>
-                    <textarea class="form-control" id="content" name="description" rows="3"></textarea>
+                    <textarea class="form-control" id="content" name="description" rows="3" ></textarea>
                 </div>
                 <!--- Checkbox -->
                 <div class="form-check mt-3">
