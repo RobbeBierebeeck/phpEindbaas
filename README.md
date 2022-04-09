@@ -45,7 +45,7 @@ Deadline: **22 april 2022**
 
 
 ## Collaborators️
-=======
+
 ##Logins 🔐
 Login with cloudinary:
 - password: **TeamDrop@1**
@@ -79,7 +79,6 @@ Configuration::instance([
 ```
     
 ## Collaborators️ 🤝
->>>>>>> myFeature
 
 - [lukasHaentjens](https://github.com/lukasHaentjens "Named link title")
 - [RobinVanOverloop](https://github.com/12345123454321 "Named link title")

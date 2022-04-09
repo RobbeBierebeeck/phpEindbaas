@@ -3,11 +3,10 @@
 include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
-<<<<<<< HEAD
+
 $profileImg = User::getProfilePicture($_SESSION['user']);
-=======
-echo User::getProfilePicture();
->>>>>>> myFeature
+
+// User::getProfilePicture();
 
 ?>
 <!DOCTYPE html>
