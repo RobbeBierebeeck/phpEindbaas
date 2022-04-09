@@ -50,7 +50,7 @@ Deadline: **22 april 2022**
 composer install
 ```
 
-##Logins 🔐
+## Logins 🔐
 Login with cloudinary:
 - password: **TeamDrop@1**
 - email: *dddddddrop@gmail.com*
@@ -59,7 +59,7 @@ Login gmail:
 - password: **TeamDrop**
 - email: *dddddddrop@gmail.com*
 
-##What to add in config folder 📂
+## What to add in config folder 📂
 1. file **config.ini**
 ```
 [db] 
