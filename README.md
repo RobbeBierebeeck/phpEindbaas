@@ -32,7 +32,6 @@ Deadline: **25 maart 2022**
 - [x] User account logout
 - [x] Editing user account picture
 
-<<<<<<< HEAD
 ### level 1.5
 
 Deadline: **22 april 2022**
@@ -44,7 +43,12 @@ Deadline: **22 april 2022**
 - [ ] Show projects in feed
 
 
-## Collaborators️
+## What to do if vendor folder is not there 🤔
+1 command to rule them all:
+
+```
+composer install
+```
 
 ##Logins 🔐
 Login with cloudinary:
