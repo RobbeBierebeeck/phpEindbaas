@@ -8,6 +8,7 @@
 
 
         try {
+
             $post = new Post();
             $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
@@ -20,6 +21,10 @@
                 $post->setEnableViews(0);
             }
             $post->save();
+            $tags = new Tag();
+            $tags->setTags($_POST['tags']);
+            $tags->setProjectId($post->getId());
+            $tags->save();
         } catch (Throwable $e) {
             $error= $e->getMessage();
         }

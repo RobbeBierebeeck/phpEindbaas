@@ -8,6 +8,23 @@ use Cloudinary\Api\Upload\UploadApi;
 
 class Post
 {
+    private $id;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
     private $title;
     private $description;
     private $image;
@@ -106,7 +123,6 @@ class Post
     }
 
 
-
     public function save()
     {
         $conn = DB::getConnection();
@@ -117,6 +133,7 @@ class Post
         $statement->bindParam(':user_id', $this->userId);
         $statement->bindParam(':private_views', $this->enableViews);
         $statement->execute();
+        $this->id = $conn->lastInsertId();
 
     }
 }

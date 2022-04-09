@@ -8,8 +8,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 
 // User::getProfilePicture();
 
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
