@@ -1,11 +1,12 @@
 <?php
 
-include_once(__DIR__ . '/helpers/Security.php');
-include_once(__DIR__ . '/bootstrap.php');
+include_once(__DIR__ . '/../helpers/Security.php');
+include_once(__DIR__ . '/../bootstrap.php');
 Security::onlyLoggedInUsers();
 
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
+$userName = User::getUserName($id);
 
 if ($_POST['delete']){
     User::removeUser($id);
@@ -21,7 +22,7 @@ if ($_POST['delete']){
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="../style/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-avatar@latest/dist/avatar.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
@@ -31,7 +32,7 @@ if ($_POST['delete']){
 <nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <img src="../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
         <form>
@@ -42,11 +43,11 @@ if ($_POST['delete']){
                 <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg?>">
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><strong>Profiel</strong></a></li>
-                    <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="accountSettings.php">Instellingen</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="logout.php">Afmelden</a></li>
+                    <li><a class="dropdown-item" href="../logout.php">Afmelden</a></li>
                 </ul>
             </div>
             <i class="bi bi-bell fs-5 me-2"></i>
@@ -56,7 +57,7 @@ if ($_POST['delete']){
 </nav>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <img src="<?php echo $profileImg ?>">
-    <p><?php echo $id;?></p>
+    <p><?php echo $userName['firstname'];?> <?php echo $userName['lastname'];?></p>
     <form id="logout" action="" method="post">
         <input type="submit" name="delete" value="Delete account">
     </form>
@@ -64,7 +65,7 @@ if ($_POST['delete']){
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body d-flex flex-row justify-content-between">
                 <h5 class="card-title">Card title</h5>
                 <div class="d-flex">
@@ -77,7 +78,7 @@ if ($_POST['delete']){
     </div>
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
 
@@ -86,7 +87,7 @@ if ($_POST['delete']){
     </div>
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
 
@@ -95,7 +96,7 @@ if ($_POST['delete']){
     </div>
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
 
@@ -104,7 +105,7 @@ if ($_POST['delete']){
     </div>
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
             </div>
@@ -112,7 +113,7 @@ if ($_POST['delete']){
     </div>
     <div class="col mt-4">
         <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
+            <img src="../images/post_template.webp" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
             </div>
