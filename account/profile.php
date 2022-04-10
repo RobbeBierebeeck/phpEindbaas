@@ -42,7 +42,7 @@ if ($_POST['delete']){
                 <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg?>">
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><strong>Profiel</strong></a></li>
-                    <li><a class="dropdown-item" href="accountSettings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

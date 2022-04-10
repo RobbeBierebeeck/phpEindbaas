@@ -205,7 +205,7 @@ class User
         $conn = DB::getConnection();
         $statement = $conn->prepare("
 delete
-Users, Social_links, Reported_users, Projects, Password_Reset_Temp, Likes, Comments, Followers
+Users, Social_links, Reported_users, Projects, Password_Reset_Temp, Likes, Comments
 from
 Users
 INNER JOIN Social_links on Users.id = Social_links.user_id
@@ -217,5 +217,14 @@ INNER JOIN Comments on Users.id = Comments.user_id
 WHERE Users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
+    }
+    public static function getUserName($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select firstname, lastname from Users where id = :id");
+        $statement->bindValue("id", $id);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        return $user;
     }
 }
