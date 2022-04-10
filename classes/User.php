@@ -198,4 +198,18 @@ class User
             throw new Exception("username or password is incorrect");
         }
     }
+    public static function removeUser($id){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete Users, Social_links, Reported_users, Projects, Password_Reset_Temp, Likes, Comments 
+        from Users
+        INNER JOIN Social_links on id = Social_links.user_id
+        INNER JOIN Reported_users on id = Reported_users.user_id
+        INNER JOIN Projects on id = Projects.user_id
+        INNER JOIN Password_Reset_Temp on id = Password_Reset_Temp.user_id
+        INNER JOIN Likes on id = Likes.user_id
+        INNER JOIN Comments on id = Comments.user_id
+        where id = :id");
+        $statement->bindValue("id" , $id);
+        $statement->execute();
+    }
 }
