@@ -36,7 +36,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
         </form>
         <div class="d-flex align-items-center">
             <div class="dropdown">
-                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo User::getProfilePicture()?>">
+                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg?>">
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Profiel</a></li>
                     <li><a class="dropdown-item" href="accountSettings.php">Instellingen</a></li>
@@ -48,9 +48,8 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
             </div>
             <i class="bi bi-bell fs-5 me-2"></i>
             <button type="button" class="btn btn-primary">Drop your shot</button>
-            </img>
-
         </div>
+    </div>
 </nav>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-5 container-lg">
     <div class="col mt-4">
