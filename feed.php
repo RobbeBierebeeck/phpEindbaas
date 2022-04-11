@@ -8,14 +8,12 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 
 // User::getProfilePicture();
 
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>Bootstrap</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/style.css">
@@ -29,7 +27,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 
     <nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../feed.php">
+        <a class="navbar-brand" href="feed.php">
             <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
@@ -51,7 +49,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
                 </ul>
             </div>
             <i class="bi bi-bell fs-5 me-2"></i>
-            <button type="button" class="btn btn-primary">Drop your shot</button>
+            <a href="newPost.php" button" class="btn btn-primary">Drop your shot</a>
         </div>
     </div>
     </nav>
@@ -115,7 +113,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
             </div>
         </div>
     </div>
-    <script src="js/bootstrap.bundle.js"></script>
+
 </body>
 
 </html>
