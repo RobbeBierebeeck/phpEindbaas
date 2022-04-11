@@ -27,9 +27,9 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 
 <body>
 
-<nav class="navbar navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="../feed.php">
             <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
@@ -54,8 +54,8 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
             <button type="button" class="btn btn-primary">Drop your shot</button>
         </div>
     </div>
-</nav>
-<div>
+    </nav>
+    <div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
             <div class="col mt-4">
                 <div class="card">
