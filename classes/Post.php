@@ -142,7 +142,8 @@ class Post
     public function setImage($image): void
     {
         if ($image !== null) {
-            $image= (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts"]);
+
+            $image= (new UploadApi())->upload( $image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp"]);
             $this->image = $image['url'];
         } else {
             throw new Exception("Image can't be empty");
