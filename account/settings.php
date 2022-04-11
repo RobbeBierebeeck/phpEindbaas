@@ -96,7 +96,7 @@ if ($_POST['delete']) {
         <div class=" col-12 col-lg-10 mb-3">
             <div class="card p-3">
                 <div class="e-navlist--active-bg">
-                    <form action="" class="">
+                    <form action="" class="" method="post">
                         <div class="mb-3">
                             <label class="mb-1">Username</label>
                             <div class="form">
@@ -104,7 +104,7 @@ if ($_POST['delete']) {
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="mb-1">Username</label>
+                            <label class="mb-1">Email</label>
                             <div class="form">
                                 <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['email']; ?>" required>
                             </div>
