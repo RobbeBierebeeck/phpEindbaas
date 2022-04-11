@@ -205,7 +205,7 @@ class User
         $conn = DB::getConnection();
         $statement = $conn->prepare("
 delete
-Users, Social_links, Reported_users, Projects, Password_Reset_Temp, Likes, Comments
+Users, Social_links, Reported_users, Projects, Password_Reset_Temp, Likes, Comments, Followers
 from
 Users
 INNER JOIN Social_links on Users.id = Social_links.user_id
@@ -214,6 +214,7 @@ INNER JOIN Projects on Users.id = Projects.user_id
 INNER JOIN Password_Reset_Temp on Users.id = Password_Reset_Temp.user_id
 INNER JOIN Likes on Users.id = Likes.user_id
 INNER JOIN Comments on Users.id = Comments.user_id
+INNER JOIN Followers on Users.id = Followers.following_id OR Users.id = Followers.follower_id
 WHERE Users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
