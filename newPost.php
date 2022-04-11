@@ -22,6 +22,7 @@
             }
             $post->setTags($_POST['tags']);
             $post->save();
+            header('Location: feed.php');
         } catch (Throwable $e) {
             $error= $e->getMessage();
         }
