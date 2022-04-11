@@ -219,10 +219,10 @@ WHERE Users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
-    public static function getUserName($id)
+    public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
