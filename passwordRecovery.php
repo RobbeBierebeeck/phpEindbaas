@@ -2,9 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
-require_once(__DIR__ . '/PHPMailer/src/Exception.php');
-require_once(__DIR__ . '/PHPMailer/src/PHPMailer.php');
-require_once(__DIR__ . '/PHPMailer/src/SMTP.php');
+include_once (__DIR__.'/vendor/autoload.php');
 include_once(__DIR__ . '/bootstrap.php');
 $mail = new PHPMailer(true);
 
@@ -42,7 +40,6 @@ if (!empty($_POST)) {
     } catch (\Exception $e) {
 
         $e = $e->getMessage();
-        //echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
     }
 }
 ?><!doctype html>
