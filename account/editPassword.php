@@ -5,9 +5,6 @@ Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
-if ($_POST['delete']){
-    User::removeUser($id);
-}
 ?>
 <!doctype html>
 <html lang="en">
