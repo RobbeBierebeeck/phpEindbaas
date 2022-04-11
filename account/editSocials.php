@@ -4,10 +4,7 @@ include_once(__DIR__ . './../bootstrap.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
-$userName = User::getUserName($id);
-if ($_POST['delete']){
-    User::removeUser($id);
-}
+$userData = User::getById($id);
 ?>
 <!doctype html>
 <html lang="en">
@@ -51,14 +48,31 @@ if ($_POST['delete']){
 </nav>
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap">
+        <div class=" col-12 col-lg-12 mb-3">
+            <div class="d-flex flex-col p-3">
+                <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
+                     id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
+                     aria-expanded="false" role="button" src="./.<?php echo $profileImg ?>">
+                <div class="ms-3">
+                    <p class="mb-0">
+                        <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i
+                                class="text-muted">/</i><strong> Socials</strong></p>
+                    <p><small>Update your username and manage your account</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-1 pt-1">
+    <div class="row flex-lg-nowrap">
         <div class=" col-12 col-lg-2 mb-3">
             <div class="card p-3">
                 <div class="e-navlist e-navlist--active-bg">
                     <ul class="nav d-flex flex-column">
-                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><span>General</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Edit profile</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Password</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Socials</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="settings.php"><span>General</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editProfile.php" target=""><span>Edit profile</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editPassword.php" target=""><span>Change password</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 active" href="editSocials.php" target=""><span><strong>Socials</strong></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -73,12 +87,41 @@ if ($_POST['delete']){
         <div class=" col-12 col-lg-10 mb-3">
             <div class="card p-3">
                 <div class="e-navlist e-navlist--active-bg">
-                    <div class="d-flex flex-row">
-                        <img class="avatar avatar-96 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="./.<?php echo $profileImg?>">
-                        <form id="profile" class="mb-0" action="" method="post">
-                            <input type="submit" class="btn btn-primary" name="profile" value="Change profile picture">
+                        <form action="" class="" method="post">
+                            <div class="mb-3">
+                                <label class="mb-1" for="twitter">Twitter</label>
+                                <div class="form">
+                                    <input type="text" name="twitter" class="form-control p-3" id="twitter" placeholder="Enter your twitter profile link" value="" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="mb-1" for="facebook">Facebook</label>
+                                <div class="form">
+                                    <input type="text" name="facebook" class="form-control p-3" id="facebook" placeholder="Enter your facebook profile link" value="" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="mb-1" for="dribbble">Dribbble</label>
+                                <div class="form">
+                                    <input type="text" name="dribbble" class="form-control p-3" id="dribbble" placeholder="Enter your dribbble profile link" value="" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="mb-1" for="behance">Behance</label>
+                                <div class="form">
+                                    <input type="text" name="behance" class="form-control p-3" id="behance" placeholder="Enter your behance profile link" value="" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="mb-1" for="github">Github</label>
+                                <div class="form">
+                                    <input type="text" name="github" class="form-control p-3" id="github" placeholder="Enter your github profile link" value="" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>
