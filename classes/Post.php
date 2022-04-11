@@ -52,7 +52,7 @@ class Post
     public static function findTag($tag)
     {
         $conn = DB::getConnection();
-        $statement = $conn ->prepare('SELECT * FROM Tags WHERE tag = :tag');
+        $statement = $conn->prepare('SELECT * FROM Tags WHERE tag = :tag');
         $statement->bindValue(':tag', $tag);
         $statement->execute();
         return $statement->fetch();
@@ -141,10 +141,15 @@ class Post
      */
     public function setImage($image): void
     {
-        if ($image !== null) {
 
-            $image= (new UploadApi())->upload( $image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp"]);
-            $this->image = $image['url'];
+
+        if ($image !== null) {
+            if (filesize($image['tmp_name']) < 5000000) {
+                $image = (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp"]);
+                $this->image = $image['url'];
+            } else {
+                throw new Exception("Maximum file size is 5MB");
+            }
         } else {
             throw new Exception("Image can't be empty");
         }
@@ -170,7 +175,7 @@ class Post
         $statement = $conn->prepare("insert into Tags(tag) values (:tag)");
         if ($this->tags != null) {
             foreach ($this->tags as $tag) {
-                if(!self::findTag($tag)){
+                if (!self::findTag($tag)) {
                     $statement->bindValue(':tag', $tag);
                     $statement->execute();
                 }
