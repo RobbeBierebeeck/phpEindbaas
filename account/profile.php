@@ -5,12 +5,7 @@ include_once(__DIR__ . '/../bootstrap.php');
 Security::onlyLoggedInUsers();
 
 $profileImg = User::getProfilePicture($_SESSION['user']);
-$id = User::getUserId($_SESSION['user']);
-$userName = User::getUserName($id);
-
-if ($_POST['delete']){
-    User::removeUser($id);
-}
+$userName = User::getUserName(User::getUserId($_SESSION['user']));
 
 ?>
 <!DOCTYPE html>
@@ -31,19 +26,16 @@ if ($_POST['delete']){
 
 <nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="feed.php">
             <img src="../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
-        <form>
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </form>
         <div class="d-flex align-items-center">
             <div class="dropdown">
-                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg?>">
+                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="./.<?php echo $profileImg?>">
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"><strong>Profiel</strong></a></li>
-                    <li><a class="dropdown-item" href="accountSettings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="profile.php"><strong>Profiel</strong></a></li>
+                    <li><a class="dropdown-item" href="settings.php">Instellingen</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -56,11 +48,8 @@ if ($_POST['delete']){
     </div>
 </nav>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
-    <img src="<?php echo $profileImg ?>">
+    <img src="./.<?php echo $profileImg ?>">
     <p><?php echo $userName['firstname'];?> <?php echo $userName['lastname'];?></p>
-    <form id="logout" action="" method="post">
-        <input type="submit" name="delete" value="Delete account">
-    </form>
 </div>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <div class="col mt-4">
