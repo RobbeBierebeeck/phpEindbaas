@@ -4,7 +4,7 @@ include_once(__DIR__ . './../bootstrap.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
-$userName = User::getUserName($id);
+$userData = User::getById($id);
 if ($_POST['delete']){
     User::removeUser($id);
 }
@@ -51,14 +51,31 @@ if ($_POST['delete']){
 </nav>
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap">
+        <div class=" col-12 col-lg-12 mb-3">
+            <div class="d-flex flex-col p-3">
+                <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
+                     id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
+                     aria-expanded="false" role="button" src="./.<?php echo $profileImg ?>">
+                <div class="ms-3">
+                    <p class="mb-0">
+                        <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i
+                                class="text-muted">/</i><strong> Edit profile</strong></p>
+                    <p><small>Update your username and manage your account</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-1 pt-1">
+    <div class="row flex-lg-nowrap">
         <div class=" col-12 col-lg-2 mb-3">
             <div class="card p-3">
                 <div class="e-navlist e-navlist--active-bg">
                     <ul class="nav d-flex flex-column">
-                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><span>General</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Edit profile</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Password</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="" target=""><span>Socials</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="settings.php"><span>General</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 active" href="editProfile.php" target=""><span><strong>Edit profile</strong></span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editPassword.php" target=""><span>Change password</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editSocials.php" target=""><span>Socials</span></a></li>
                     </ul>
                 </div>
             </div>
