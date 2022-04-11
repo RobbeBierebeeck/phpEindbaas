@@ -38,8 +38,8 @@ Deadline: **22 april 2022**
 
 - [ ] Backup email adress + extended account (bio, social links) 
 - [ ] Edit password 
-- [ ] Delete user profile according with GDPR ruling
-- [ ] Add projects (title, pictures, tags)
+- [x] Delete user profile according with GDPR ruling
+- [x] Add projects (title, pictures, tags)
 - [ ] Show projects in feed
 
 
