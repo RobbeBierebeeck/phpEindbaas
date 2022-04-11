@@ -5,7 +5,7 @@ include_once(__DIR__ . '/../bootstrap.php');
 Security::onlyLoggedInUsers();
 
 $profileImg = User::getProfilePicture($_SESSION['user']);
-$userName = User::getUserName(User::getUserId($_SESSION['user']));
+$userData = User::getById(User::getUserId($_SESSION['user']));
 
 ?>
 <!DOCTYPE html>
@@ -49,7 +49,7 @@ $userName = User::getUserName(User::getUserId($_SESSION['user']));
 </nav>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <img src="./.<?php echo $profileImg ?>">
-    <p><?php echo $userName['firstname'];?> <?php echo $userName['lastname'];?></p>
+    <p><?php echo $userData['firstname'];?> <?php echo $userData['lastname'];?></p>
 </div>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <div class="col mt-4">
