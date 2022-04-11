@@ -21,6 +21,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 
 <body>
@@ -35,10 +36,13 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
             <input class="form-control" type="search" placeholder="Search" aria-label="Search">
         </form>
         <div class="d-flex align-items-center">
+            <span class="rounded-circle nav__profilePicture" style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user'])?>');" ></span>
             <div class="dropdown">
-                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle"
-                     id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                     aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
+
+                    <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" >
+                        <?php echo htmlspecialchars(User::getById(User::getUserId($_SESSION['user']))['firstname'])?>
+                    </span>
+
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="account/profile.php">Profiel</a></li>
                     <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
@@ -53,6 +57,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
         </div>
     </div>
     </nav>
+
     <div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
             <div class="col mt-4">
