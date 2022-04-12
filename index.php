@@ -2,9 +2,20 @@
 session_start();
 //include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
-$posts = Post::getAll();
+
+$pageNumber = $pageNumber ?? 2;
+if (!empty($_GET['page'])) {
+   $page = $_GET['page'];
+   $start= 0;
+   $limit = $page * 8;
+   $pageNumber = $page+1;
+   $posts = Post::getAll($start, $limit);
+}else{
+    $posts = Post::getAll();
+}
+
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -87,9 +98,9 @@ $posts = Post::getAll();
             </div>
         </div>
         <?php endforeach; ?>
-        <div class="vw-100 d-flex justify-content-center align-items-center pb-4">
+        <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
+            <a href="?page=<?php echo $pageNumber;?>"  type="submit" class="btn btn-secondary btn-lg">Load more</a>
 
-                <a href="newPost.php" class="btn btn-primary">Load more</a>
 
         </div>
 </div>
