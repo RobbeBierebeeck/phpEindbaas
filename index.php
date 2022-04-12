@@ -32,39 +32,7 @@ if (!empty($_GET['page'])) {
 
 <body>
 <?php if (isset($_SESSION['user'])): ?>
-    <nav class="navbar navbar-light bg-light fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">
-                <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                Drop
-            </a>
-            <form>
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            </form>
-            <div class="d-flex align-items-center">
-                <span class="rounded-circle nav__profilePicture"
-                      style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
-                <div class="dropdown">
-
-                    <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
-                          data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <?php echo htmlspecialchars(User::getById(User::getUserId($_SESSION['user']))['firstname']) ?>
-                    </span>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="account/profile.php">Profiel</a></li>
-                        <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="logout.php">Afmelden</a></li>
-                    </ul>
-                </div>
-                <i class="bi bi-bell fs-5 me-2"></i>
-                <a href="newPost.php" button" class="btn btn-primary">Drop your shot</a>
-            </div>
-        </div>
-    </nav>
+<?php include_once (__DIR__.'/header.inc.php');?>
 <?php else: ?>
     <nav class="navbar navbar-light bg-light fixed-top">
         <div class="container-fluid">
@@ -72,8 +40,6 @@ if (!empty($_GET['page'])) {
                 <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
                 Drop
             </a>
-
-
             <div class="d-flex">
                 <a href="register.php" class="btn btn-primary me-3">Register</a>
                 <a href="login.php" class="btn btn-outline-primary">Login</a>
