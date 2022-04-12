@@ -5,12 +5,12 @@ include_once(__DIR__ . '/bootstrap.php');
 
 $pageNumber = $pageNumber ?? 2;
 if (!empty($_GET['page'])) {
-   $page = $_GET['page'];
-   $start= 0;
-   $limit = $page * 8;
-   $pageNumber = $page+1;
-   $posts = Post::getAll($start, $limit);
-}else{
+    $page = $_GET['page'];
+    $start = 0;
+    $limit = $page * 8;
+    $pageNumber = $page + 1;
+    $posts = Post::getAll($start, $limit);
+} else {
     $posts = Post::getAll();
 }
 
@@ -76,7 +76,7 @@ if (!empty($_GET['page'])) {
 
             <div class="d-flex">
                 <a href="register.php" class="btn btn-primary me-3">Register</a>
-                <a href="login.php"  class="btn btn-outline-primary">Login</a>
+                <a href="login.php" class="btn btn-outline-primary">Login</a>
             </div>
 
         </div>
@@ -87,23 +87,41 @@ if (!empty($_GET['page'])) {
 
 <div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
-        <?php foreach ($posts as $post):?>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="<?php echo $post['image']?>" class="card-img-top" alt="...">
-                <div class="card-body d-flex flex-row justify-content-between">
-                    <h5 class="card-title"><?php echo $post['title']?></h5>
+        <?php if (isset($_SESSION['user'])): ?>
+            <?php foreach ($posts as $post): ?>
+                <div class="col mt-4">
+                    <div href="index.php" class="card col mt-4 ">
+                        <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
+                        <div class="card-body d-flex flex-column">
+                            <a class="card-title h5 text-decoration-none link-dark "><?php echo $post['title'] ?></a>
+                            <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+                        </div>
+                        <ul class="list-group list-group-flush d-flex flex-row align-items-center">
+                           <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
+                            <span>by <span class="fw-bolder"><?php echo $post['firstname'] ." ".$post['lastname']?></span> </span>
 
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <?php foreach ($posts as $post): ?>
+                <div href="index.php" class="col mt-4">
+                    <div class="card">
+                        <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
+                        <div class="card-body d-flex flex-row justify-content-between">
+                            <h5 class="card-title"><?php echo $post['title'] ?></h5>
+
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
-            <a href="?page=<?php echo $pageNumber;?>"  type="submit" class="btn btn-secondary btn-lg">Load more</a>
-
-
+            <a href="?page=<?php echo $pageNumber; ?>" type="submit" class="btn btn-secondary btn-lg">Load more</a>
         </div>
-</div>
+    </div>
 
 </body>
 
