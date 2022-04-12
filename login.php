@@ -8,7 +8,7 @@
             if ($user->canLogin()) {
                 session_start();
                 $_SESSION['user'] = $user->getEmail();
-                header("Location:feed.php");
+                header("Location:index.php");
             }
         }catch (\Throwable $e){
             $error = $e->getMessage();

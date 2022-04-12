@@ -13,7 +13,7 @@ if (!empty($_POST)) {
             $user->save();
             session_start();
             $_SESSION['user'] = $user->getEmail();
-            header("Location:feed.php");
+            header("Location:index.php");
         } else throw new Exception("User already exists.");
     } catch (Throwable $e) {
         $error = $e->getMessage();

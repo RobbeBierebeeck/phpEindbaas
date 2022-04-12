@@ -26,7 +26,7 @@ $userData = User::getById(User::getUserId($_SESSION['user']));
 
 <nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../feed.php">
+        <a class="navbar-brand" href="../index.php">
             <img src="../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
