@@ -190,4 +190,13 @@ class Post
         }
 
     }
+
+    public static function getAll()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects INNER join Users on Projects.`user_id` = Users.`id`
+        order by Projects.`posted_at` desc limit 8");
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 }

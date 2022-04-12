@@ -2,8 +2,7 @@
 session_start();
 //include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
-// User::getProfilePicture();
-
+$posts = Post::getAll();
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -77,63 +76,22 @@ include_once(__DIR__ . '/bootstrap.php');
 
 <div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
+        <?php foreach ($posts as $post):?>
         <div class="col mt-4">
             <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
+                <img src="<?php echo $post['image']?>" class="card-img-top" alt="...">
                 <div class="card-body d-flex flex-row justify-content-between">
-                    <h5 class="card-title">Card title</h5>
-                    <div class="d-flex">
-                        <p class="me-2"> 400 <i class="bi bi-eye"></i></p>
-                        <a> 100 <i class="bi bi-star"></i></a>
-                    </div>
+                    <h5 class="card-title"><?php echo $post['title']?></h5>
 
                 </div>
             </div>
         </div>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
+        <?php endforeach; ?>
+        <div class="vw-100 d-flex justify-content-center align-items-center pb-4">
 
-                </div>
-            </div>
-        </div>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
+                <a href="newPost.php" class="btn btn-primary">Load more</a>
 
-                </div>
-            </div>
         </div>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-
-                </div>
-            </div>
-        </div>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col mt-4">
-            <div class="card">
-                <img src="images/post_template.webp" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>
