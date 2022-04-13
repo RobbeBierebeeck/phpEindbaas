@@ -143,8 +143,8 @@ class Post
     {
 
 
-        if ($image !== null) {
-            if (filesize($image['tmp_name']) < 5000000) {
+        if ($image['size'] !== 0) {
+            if (filesize($image['tmp_name']) < 1000000) {
                 $image = (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp", "quality" => "auto","aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
                 $this->image = $image['url'];
             } else {
