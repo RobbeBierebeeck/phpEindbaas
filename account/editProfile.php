@@ -5,6 +5,13 @@ Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
+
+    if(isset($_POST['userData'])){
+        $user = new User();
+        $user->setBio($_POST['biography']);
+        $user->linkBio($id);
+    }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -111,12 +118,13 @@ $userData = User::getById($id);
                         <div class="mb-5">
                             <label class="mb-1" for="secondEmail">Secondary email</label>
                             <div class="form">
-                                <input type="text" name="secondEmail" class="form-control p-3" id="secondEmail" placeholder="Fill in an email adress" value="" required>
+                                <input type="text" name="secondEmail" class="p-3" id="secondEmail" placeholder="Fill in an email adress" value="">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" name="userData" class="btn btn-primary">Save changes</button>
                         </div>
+                        <p><?php echo $works ?></p>
                     </form>
                 </div>
             </div>
