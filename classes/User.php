@@ -249,4 +249,13 @@ WHERE Users.id = :id");
 
         return $this;
     }
+
+    public function linkBio($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set bio = :bio where id = :id");
+        $statement->bindValue(':bio', $this->bio);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
 }
