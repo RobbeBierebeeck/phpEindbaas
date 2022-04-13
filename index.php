@@ -32,7 +32,7 @@ if (!empty($_GET['page'])) {
 
 <body>
 <?php if (isset($_SESSION['user'])): ?>
-<?php include_once (__DIR__.'/header.inc.php');?>
+    <?php include_once(__DIR__ . '/header.inc.php'); ?>
 <?php else: ?>
     <nav class="navbar navbar-light bg-light fixed-top">
         <div class="container-fluid">
@@ -59,14 +59,20 @@ if (!empty($_GET['page'])) {
                     <div href="index.php" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
-                            <a class="card-title h5 text-decoration-none link-dark "><?php echo $post['title'] ?></a>
+                            <a href="#"
+                               class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
                             <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+                            <div class=" d-flex flex-row align-items-center mt-2">
+                                <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
+                                <div><i class="bi bi-eye-fill ms-3"></i><span class="ms-2">100</span></div>
+                            </div>
                         </div>
-                        <ul class="list-group list-group-flush d-flex flex-row align-items-center">
-                           <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
-                            <span>by <span class="fw-bolder"><?php echo $post['firstname'] ." ".$post['lastname']?></span> </span>
-
-                        </ul>
+                        <div class="list-group list-group-flush d-flex flex-row align-items-center">
+                            <span class="rounded-circle nav__profilePicture ms-3 m-2"
+                                  style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
+                            <span>by <span
+                                        class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></span> </span>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -76,7 +82,7 @@ if (!empty($_GET['page'])) {
                     <div class="card">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-row justify-content-between">
-                            <h5 class="card-title"><?php echo $post['title'] ?></h5>
+                            <h5 class="card-title "><?php echo $post['title'] ?></h5>
 
                         </div>
                     </div>

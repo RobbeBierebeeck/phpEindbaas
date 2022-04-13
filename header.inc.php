@@ -11,7 +11,7 @@
         <div class="d-flex align-items-center">
                 <span class="rounded-circle nav__profilePicture"
                       style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
-            <div class="dropdown">
+            <div class="dropdown me-3">
 
                     <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
                           data-bs-toggle="dropdown" aria-expanded="false" role="button">
@@ -27,7 +27,6 @@
                     <li><a class="dropdown-item" href="logout.php">Afmelden</a></li>
                 </ul>
             </div>
-            <i class="bi bi-bell fs-5 me-2"></i>
             <a href="newPost.php" button" class="btn btn-primary">Drop your shot</a>
         </div>
     </div>
