@@ -50,6 +50,7 @@ $userData = User::getById(User::getUserId($_SESSION['user']));
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <img src="./.<?php echo $profileImg ?>">
     <p><?php echo $userData['firstname'];?> <?php echo $userData['lastname'];?></p>
+    <p><?php echo $userData['bio'];?></p>
 </div>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <div class="col mt-4">
