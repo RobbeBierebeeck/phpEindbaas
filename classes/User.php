@@ -8,6 +8,7 @@ class User
     private $firstName;
     private $lastName;
     private $profilePicture;
+    private $bio;
 
 
     public static function findByEmail($email)
@@ -227,5 +228,25 @@ WHERE Users.id = :id");
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         return $user;
+    }
+
+    /**
+     * Get the value of bio
+     */ 
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Set the value of bio
+     *
+     * @return  self
+     */ 
+    public function setBio($bio)
+    {
+        $this->bio = $bio;
+
+        return $this;
     }
 }
