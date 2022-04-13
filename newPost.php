@@ -48,34 +48,7 @@
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-<nav class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">
-            <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            Drop
-        </a>
-        <form>
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </form>
-        <div class="d-flex align-items-center">
-            <div class="dropdown">
-                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle"
-                     id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                     aria-expanded="false" role="button" src="./<?php echo User::getProfilePicture(User::getUserId($_SESSION['user'])) ?>">
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="account/profile.php">Profiel</a></li>
-                    <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="logout.php">Afmelden</a></li>
-                </ul>
-            </div>
-            <i class="bi bi-bell fs-5 me-2"></i>
-            <button type="button" class="btn btn-primary">Drop your shot</button>
-        </div>
-    </div>
-</nav>
+<?php include_once(__DIR__.'/header.inc.php');?>
 <div class="container vw-100 vh-100 d-flex justify-content-center align-items-center">
     <div class="row">
         <div class="col-md-12">
