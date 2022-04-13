@@ -223,7 +223,7 @@ WHERE Users.id = :id");
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
