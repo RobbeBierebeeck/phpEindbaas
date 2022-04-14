@@ -9,6 +9,7 @@ class User
     private $lastName;
     private $profilePicture;
     private $bio;
+    private $secondEmail;
 
 
     public static function findByEmail($email)
@@ -255,6 +256,35 @@ WHERE Users.id = :id");
         $conn = DB::getConnection();
         $statement = $conn->prepare("update Users set bio = :bio where id = :id");
         $statement->bindValue(':bio', $this->bio);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Get the value of secondEmail
+     */ 
+    public function getSecondEmail()
+    {
+        return $this->secondEmail;
+    }
+
+    /**
+     * Set the value of secondEmail
+     *
+     * @return  self
+     */ 
+    public function setSecondEmail($secondEmail)
+    {
+        $this->secondEmail = $secondEmail;
+
+        return $this;
+    }
+
+    public function linkSecondEmail($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set second_email = :secondemail where id = :id");
+        $statement->bindValue(':secondemail', $this->secondEmail);
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
