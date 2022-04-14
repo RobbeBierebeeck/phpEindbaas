@@ -7,9 +7,15 @@ $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
 
     if(isset($_POST['userData'])){
-        $user = new User();
-        $user->setBio($_POST['biography']);
-        $user->linkBio($id);
+        if(!empty($_POST['biography'])){
+            $user = new User();
+            $user->setBio($_POST['biography']);
+            $user->linkBio($id);
+        } if(!empty($_POST['secondEmail'])){
+            $user = new User();
+            $user->setSecondEmail($_POST['secondEmail']);
+            $user->linkSecondEmail($id);
+        }
     }
 
 ?>
