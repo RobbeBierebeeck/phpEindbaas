@@ -5,6 +5,10 @@ Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
+
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -89,37 +93,17 @@ $userData = User::getById($id);
                 <div class="e-navlist e-navlist--active-bg">
                         <form action="" class="" method="post">
                             <div class="mb-3">
-                                <label class="mb-1" for="twitter">Twitter</label>
+                                <label class="mb-1" for="socialLink">Social Link</label>
                                 <div class="form">
-                                    <input type="text" name="twitter" class="form-control p-3" id="twitter" placeholder="Enter your twitter profile link" value="" required>
+                                    <input type="text" name="socialLink" class="form-control p-3" id="socialLink" placeholder="Enter your social link" value="" required>
+                                </div>
+                                <label class="mb-1 mt-3" for="platform">Platform</label>
+                                <div class="form">
+                                    <input type="text" name="platform" class="form-control p-3" id="platform" placeholder="Enter your social platform" value="" required>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="mb-1" for="facebook">Facebook</label>
-                                <div class="form">
-                                    <input type="text" name="facebook" class="form-control p-3" id="facebook" placeholder="Enter your facebook profile link" value="" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="dribbble">Dribbble</label>
-                                <div class="form">
-                                    <input type="text" name="dribbble" class="form-control p-3" id="dribbble" placeholder="Enter your dribbble profile link" value="" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="behance">Behance</label>
-                                <div class="form">
-                                    <input type="text" name="behance" class="form-control p-3" id="behance" placeholder="Enter your behance profile link" value="" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="github">Github</label>
-                                <div class="form">
-                                    <input type="text" name="github" class="form-control p-3" id="github" placeholder="Enter your github profile link" value="" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" name="addSocials" class="btn btn-primary" >Save changes</button>
                             </div>
                         </form>
                 </div>
