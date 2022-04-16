@@ -139,6 +139,28 @@ class User
         $this->profilePicture = $targetFile;
     }
 
+    public static function updatePicture($profilePicture, $user)
+    {
+        try {
+            //get new image to upload
+            $targetDirectory = './upload/';
+            $targetFile = $targetDirectory . basename($profilePicture['name']);
+            $tempFile = $profilePicture['tmp_name'];
+
+            //move new image to server
+            move_uploaded_file($tempFile, '.' . $targetFile);
+
+            //update image path in database
+            $conn = DB::getConnection();
+            $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+            $statement->bindValue(':profilePic', $targetFile);
+            $statement->bindValue(':id', $user);
+            $statement->execute();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
     public
     function save()
     {
