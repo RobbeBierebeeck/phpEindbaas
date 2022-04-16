@@ -8,6 +8,9 @@ $userData = User::getById($id);
 if (isset($_POST["updatePicture"])) {
     User::updatePicture($_FILES['profilePic'], $id);
 }
+if (isset($_POST["deletePicture"])) {
+    User::deletePicture($id);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,7 +27,7 @@ if (isset($_POST["updatePicture"])) {
 </head>
 
 <body>
-    <!--<nav class="navbar navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-light bg-light fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.php">
                 <img src="./../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
@@ -46,7 +49,7 @@ if (isset($_POST["updatePicture"])) {
                 <button type="button" class="btn btn-primary">Drop your shot</button>
             </div>
         </div>
-    </nav>-->
+    </nav>
     <div class="container mt-5 pt-5">
         <div class="row flex-lg-nowrap">
             <div class=" col-12 col-lg-12 mb-3">
@@ -91,7 +94,7 @@ if (isset($_POST["updatePicture"])) {
                             <form id="profile" class="mb-0 d-flex justify-content-center align-items-center" method="post" enctype="multipart/form-data">
                                 <input type="file" name="profilePic" class="form-control" id="profilePic" accept=".png,.gif,.jpg,.webp">
                                 <input type="submit" class="btn btn-primary ms-5" name="updatePicture" value="Change profile picture">
-                                <input type="submit" class="btn btn-light ms-3" name="delete" value="Delete picture">
+                                <input type="submit" class="btn btn-light ms-3" name="deletePicture" value="Delete picture">
                             </form>
                         </div>
 
