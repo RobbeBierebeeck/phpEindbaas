@@ -200,6 +200,29 @@ class User
         }
     }
 
+    public static function editPassword($id, $oldpw, $newpw)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select password from users where id = :id");
+        $statement->bindValue("id", $id);
+        $statement->execute();
+        $checkpassword = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($checkpassword) {
+            $hash = $checkpassword['password'];
+            if (password_verify($oldpw, $hash)) {
+                $statement = $conn->prepare("update users set password = :password where id = :id");
+                $statement->bindValue("password", self::hashPassword($newpw));
+                $statement->bindValue("id", $id);
+                $statement->execute();
+                $message = true;
+            } else {
+                $message = false;
+            }
+        }
+        return $message;
+    }
+
     public static function removeUser($id)
     {
         $conn = DB::getConnection();
