@@ -139,6 +139,63 @@ class User
         $this->profilePicture = $targetFile;
     }
 
+    public static function updatePicture($profilePicture, $user)
+    {
+        try {
+            //find image to delete in upload folder
+            $oldImage = User::getProfilePicture($_SESSION['user']);
+
+            //get new image to upload
+            $targetDirectory = './upload/';
+            $targetFile = $targetDirectory . basename($profilePicture['name']);
+            $tempFile = $profilePicture['tmp_name'];
+
+
+            if ($oldImage != $targetFile) {
+                if ($oldImage != "./upload/avatar_template.png") {
+                    //remove image in filesystem if not equal to default avatar
+                    unlink('.' . $oldImage);
+                }
+
+                //move new image to server
+                move_uploaded_file($tempFile, '.' . $targetFile);
+
+                //update image path in database
+                $conn = DB::getConnection();
+                $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+                $statement->bindValue(':profilePic', $targetFile);
+                $statement->bindValue(':id', $user);
+                $statement->execute();
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public static function deletePicture($user)
+    {
+        try {
+            //find image to delete in upload folder
+            $oldImage = User::getProfilePicture($_SESSION['user']);
+
+            //targetFile is set to default avatar
+            $targetDirectory = './upload/';
+            $targetFile = $targetDirectory . "avatar_template.png";
+
+            //remove old picture in filesystem
+            unlink('.' . $oldImage);
+
+            //update image path in database
+            $conn = DB::getConnection();
+            $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+            $statement->bindValue(':profilePic', $targetFile);
+            $statement->bindValue(':id', $user);
+            $statement->execute();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
     public
     function save()
     {
@@ -198,6 +255,29 @@ class User
 
             throw new Exception("username or password is incorrect");
         }
+    }
+
+    public static function editPassword($id, $oldpw, $newpw)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select password from users where id = :id");
+        $statement->bindValue("id", $id);
+        $statement->execute();
+        $checkpassword = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($checkpassword) {
+            $hash = $checkpassword['password'];
+            if (password_verify($oldpw, $hash)) {
+                $statement = $conn->prepare("update users set password = :password where id = :id");
+                $statement->bindValue("password", self::hashPassword($newpw));
+                $statement->bindValue("id", $id);
+                $statement->execute();
+                $message = true;
+            } else {
+                $message = false;
+            }
+        }
+        return $message;
     }
 
     public static function removeUser($id)
