@@ -9,18 +9,16 @@
             <input class="form-control" type="search" placeholder="Search" aria-label="Search">
         </form>
         <div class="d-flex align-items-center">
-                <span class="rounded-circle nav__profilePicture"
-                      style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
+            <span class="rounded-circle nav__profilePicture" style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
             <div class="dropdown me-3">
 
-                    <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
-                          data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <?php echo htmlspecialchars(User::getById(User::getUserId($_SESSION['user']))['firstname']) ?>
-                    </span>
+                <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                    <?php echo htmlspecialchars(User::getById(User::getUserId($_SESSION['user']))['firstname']) ?>
+                </span>
 
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="account/profile.php">Profiel</a></li>
-                    <li><a class="dropdown-item" href="account/accountSettings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="account/settings.php">Instellingen</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
