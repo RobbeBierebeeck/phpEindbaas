@@ -1,26 +1,26 @@
 <?php
     include_once(__DIR__ . '/../bootstrap.php');
 
-    class socials
+    class Socials
     {
-        private $id;
+        private $userId;
         private $socialLink;
         private $platform;
 
         /**
      * @return mixed
      */
-    public function getId()
+    public function getUserId()
     {
-        return $this->id;
+        return $this->userId;
     }
 
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setUserId($userId)
     {
-        $this->id = $id;
+        $this->userId = $userId;
     }
 
         /**
@@ -62,4 +62,17 @@
 
                 return $this;
         }
+
+        public function save()
+        {
+            
+           $conn = DB::getConnection();
+            $statement = $conn->prepare("insert into Social_links (user_id, link, platform) values (:user_id, :link, :platform)");
+            $statement->bindValue(':user_id', $this->userId);
+            $statement->bindValue(':link', $this->socialLink);
+            $statement->bindValue(':platform', $this->platform);
+            $statement->execute();
+        }
+
+    
     }

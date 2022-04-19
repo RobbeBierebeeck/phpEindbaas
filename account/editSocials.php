@@ -6,8 +6,13 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
 
-
-
+    if(!empty($_POST)){
+           $socials = new Socials();
+            $socials->setUserId($id);
+            $socials->setSocialLink($_POST['socialLink']);
+            $socials->setPlatform($_POST['platform']);
+            $socials->save();
+    }
 
 ?>
 <!doctype html>
