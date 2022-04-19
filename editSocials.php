@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . './../helpers/Security.php');
-include_once(__DIR__ . './../bootstrap.php');
+include_once(__DIR__ . '/helpers/Security.php');
+include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
@@ -23,36 +23,14 @@ $userData = User::getById($id);
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../index.php">
-            <img src="./../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            Drop
-        </a>
-        <div class="d-flex align-items-center">
-            <div class="dropdown">
-                <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="./.<?php echo $profileImg?>">
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
-                    <li><a class="dropdown-item" href="settings.php"><strong>Instellingen</strong></a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="../logout.php">Afmelden</a></li>
-                </ul>
-            </div>
-            <i class="bi bi-bell fs-5 me-2"></i>
-            <button type="button" class="btn btn-primary">Drop your shot</button>
-        </div>
-    </div>
-</nav>
+<?php include_once(__DIR__ . '/header.inc.php') ?>
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap">
         <div class=" col-12 col-lg-12 mb-3">
             <div class="d-flex flex-col p-3">
                 <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                     aria-expanded="false" role="button" src="./.<?php echo $profileImg ?>">
+                     aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
                 <div class="ms-3">
                     <p class="mb-0">
                         <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i
