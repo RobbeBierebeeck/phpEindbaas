@@ -23,7 +23,7 @@ $userData = User::getById($id);
 </head>
 
 <body>
-<?php include_once(__DIR__ . '/header.inc.php') ?>
+<?php include_once(__DIR__ . '/partials/header.inc.php') ?>
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap">
         <div class=" col-12 col-lg-12 mb-3">
