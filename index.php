@@ -30,7 +30,7 @@ if (!empty($_GET['page'])) {
 
 <body>
 <?php if (isset($_SESSION['user'])): ?>
-    <?php include_once(__DIR__ . '/header.inc.php'); ?>
+    <?php include_once(__DIR__ . '/partials/header.inc.php'); ?>
 <?php else: ?>
     <nav class="navbar navbar-light bg-light fixed-top">
         <div class="container-fluid">

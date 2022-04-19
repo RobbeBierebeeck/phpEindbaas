@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . './../helpers/Security.php');
-include_once(__DIR__ . './../bootstrap.php');
+include_once(__DIR__ . '/helpers/Security.php');
+include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
@@ -18,16 +18,16 @@ if (isset($_POST['saveNewPw'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-avatar@latest/dist/avatar.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 
 <body>
-    <?php include_once(__DIR__ . '/../header.inc.php') ?>
+<?php include_once(__DIR__ . '/partials/header.inc.php') ?>
     <div class="container mt-5 pt-5">
         <div class="row flex-lg-nowrap">
             <div class=" col-12 col-lg-12 mb-3">
                 <div class="d-flex flex-col p-3">
-                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="./.<?php echo $profileImg ?>">
+                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
                     <div class="ms-3">
                         <p class="mb-0">
                             <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i class="text-muted">/</i><strong> Change password</strong>
