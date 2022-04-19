@@ -8,6 +8,8 @@ class User
     private $firstName;
     private $lastName;
     private $profilePicture;
+    private $bio;
+    private $secondEmail;
 
 
     public static function findByEmail($email)
@@ -302,10 +304,68 @@ WHERE Users.id = :id");
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         return $user;
+    }
+
+    /**
+     * Get the value of bio
+     */ 
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Set the value of bio
+     *
+     * @return  self
+     */ 
+    public function setBio($bio)
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function linkBio($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set bio = :bio where id = :id");
+        $statement->bindValue(':bio', $this->bio);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Get the value of secondEmail
+     */ 
+    public function getSecondEmail()
+    {
+        return $this->secondEmail;
+    }
+
+    /**
+     * Set the value of secondEmail
+     *
+     * @return  self
+     */ 
+    public function setSecondEmail($secondEmail)
+    {
+        $this->secondEmail = $secondEmail;
+
+        return $this;
+    }
+
+    public function linkSecondEmail($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set second_email = :secondemail where id = :id");
+        $statement->bindValue(':secondemail', $this->secondEmail);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
     }
 }
