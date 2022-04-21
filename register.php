@@ -49,7 +49,7 @@ if (!empty($_POST)) {
             <div class="mb-3">
                 <label>Leakable data</label>
                 <div class="form-floating">
-                    <input type="email" name="email" class="form-control" id="emailInput" placeholder="name@example.com" required>
+                    <input type="email" name="email" class="form-control email" id="emailInput" placeholder="name@example.com" required>
                     <label for="emailInput">Enter your email adress*</label>
                 </div>
             </div>
@@ -86,6 +86,7 @@ if (!empty($_POST)) {
             </div>
         </form>
     </div>
+    <script type="text/javascript" src="./scripts/emailCheck.js"></script>
 </body>
 
 </html>
