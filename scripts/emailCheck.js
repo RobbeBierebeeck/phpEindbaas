@@ -15,6 +15,11 @@ document.querySelector(".email").addEventListener("change", () => {
                 textFeedback.classList.add("valid-feedback");
                 textFeedback.style.display = "inline-block";
             }
+            if (xmlhttp.responseText == "") {
+                textFeedback.classList.remove("invalid-feedback");
+                textFeedback.classList.remove("valid-feedback");
+                textFeedback.style.display = "none";
+            }
         }
     }
 
