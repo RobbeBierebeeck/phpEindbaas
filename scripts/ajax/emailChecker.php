@@ -5,7 +5,7 @@ $email = $_REQUEST["q"];
 
 $conn = DB::getConnection();
 $statement = $conn->prepare("select email from Users where email = :email");
-$statement->bindValue("email", $email);
+$statement->bindValue("email", htmlspecialchars($email));
 $statement->execute();
 $results = $statement->fetchAll();;
 if (count($results) > 0) {
