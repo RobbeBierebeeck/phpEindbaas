@@ -9,7 +9,8 @@ $statement->bindValue("email", htmlspecialchars($email));
 $statement->execute();
 $results = $statement->fetchAll();;
 if (count($results) > 0) {
-    var_dump($results);
+    //var_dump($results);
+    echo "this email is already in use";
 } else {
-    echo "theres no email found";
+    echo "email available";
 }

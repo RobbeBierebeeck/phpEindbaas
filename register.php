@@ -46,11 +46,12 @@ if (!empty($_POST)) {
             <?php if (isset($error)) : ?>
                 <div class="alert alert-danger"><?php echo $error; ?></div>
             <?php endif; ?>
-            <div class="mb-3">
+            <div class="mb-3 needs-validation">
                 <label>Leakable data</label>
                 <div class="form-floating">
                     <input type="email" name="email" class="form-control email" id="emailInput" placeholder="name@example.com" required>
                     <label for="emailInput">Enter your email adress*</label>
+                    <div class="email-validator"></div>
                 </div>
             </div>
             <div class="mt-3 mb-3">
