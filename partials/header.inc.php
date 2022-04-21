@@ -1,13 +1,16 @@
 <?php
+
 ?><nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">
             <img src="./images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
-        <form>
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <?php if (basename($_SERVER['SCRIPT_NAME']) ==='index.php'):?>
+        <form method="get">
+            <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
         </form>
+        <?php endif;?>
         <div class="d-flex align-items-center">
             <span class="rounded-circle nav__profilePicture" style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
             <div class="dropdown me-3">

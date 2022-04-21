@@ -11,7 +11,9 @@ if (!empty($_GET['page'])) {
 } else {
     $posts = Post::getAll();
 }
-
+if (!empty($_GET['search'])) {
+    $posts = Post::search($_GET['search']);
+}
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
