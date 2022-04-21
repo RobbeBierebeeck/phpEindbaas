@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-<?php include_once(__DIR__ . '/header.inc.php');?>
+<?php include_once(__DIR__ . '/partials/header.inc.php'); ?>
 <div class="container vw-100 vh-100 d-flex justify-content-center align-items-center">
     <div class="row">
         <div class="col-md-12">
