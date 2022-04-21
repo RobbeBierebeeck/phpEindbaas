@@ -203,4 +203,11 @@ class Post
         return $statement->fetchAll();
 
     }
+
+    public static function setLimit($page)
+    {
+        $start = 0;
+        $limit = $page * 8;
+        return array($start, $limit);
+    }
 }

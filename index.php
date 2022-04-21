@@ -6,10 +6,8 @@ include_once(__DIR__ . '/bootstrap.php');
 $pageNumber = $pageNumber ?? 2;
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-    $start = 0;
-    $limit = $page * 8;
     $pageNumber = $page + 1;
-    $posts = Post::getAll($start, $limit);
+    $posts = Post::getAll(Post::setLimit($_GET['page']));
 } else {
     $posts = Post::getAll();
 }
