@@ -89,7 +89,11 @@ if (!empty($_GET['search'])) {
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-
+        <?php if (!$posts):?>
+            <div class="d-flex vw-100 vh-100 align-items-center justify-content-center">
+                <img src="images/noresult.svg" alt="">
+            </div>
+        <?php endif; ?>
         <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
             <a href="?page=<?php echo $pageNumber; ?>" type="submit" class="btn btn-secondary btn-lg">Load more</a>
         </div>
