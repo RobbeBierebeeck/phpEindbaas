@@ -156,11 +156,11 @@ class User
             if ($oldImage != $targetFile) {
                 if ($oldImage != "./upload/avatar_template.png") {
                     //remove image in filesystem if not equal to default avatar
-                    unlink('.' . $oldImage);
+                    unlink($oldImage);
                 }
 
                 //move new image to server
-                move_uploaded_file($tempFile, '.' . $targetFile);
+                move_uploaded_file($tempFile, $targetFile);
 
                 //update image path in database
                 $conn = DB::getConnection();
@@ -185,7 +185,7 @@ class User
             $targetFile = $targetDirectory . "avatar_template.png";
 
             //remove old picture in filesystem
-            unlink('.' . $oldImage);
+            unlink($oldImage);
 
             //update image path in database
             $conn = DB::getConnection();
