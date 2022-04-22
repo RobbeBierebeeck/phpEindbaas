@@ -3,11 +3,13 @@ session_start();
 //include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 
-$pageNumber = $pageNumber ?? 2;
+$pageNumber = 0;
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-    $pageNumber = $page + 1;
-    $posts = Post::getAll(Post::setLimit($_GET['page']));
+    $limit = $page *8;
+    $begin = $limit - 8;
+    $pageNumber = $page;
+    $posts = Post::getAll($begin, $limit);
 } else {
     $posts = Post::getAll();
 }
@@ -95,7 +97,23 @@ if (!empty($_GET['search'])) {
             </div>
         <?php endif; ?>
         <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
-            <a href="?page=<?php echo $pageNumber; ?>" type="submit" class="btn btn-secondary btn-lg">Load more</a>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $pageNumber -1; ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $pageNumber +1; ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
