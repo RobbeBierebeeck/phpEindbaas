@@ -34,8 +34,8 @@ $userData = User::getById($id);
 </head>
 
 <body>
-<<<<<<< HEAD:editSocials.php
-<?php include_once(__DIR__ . '/partials/header.inc.php') ?>
+<?php include_once (__DIR__.'/partials/header.inc.php');?>
+
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap">
         <div class=" col-12 col-lg-12 mb-3">
@@ -53,74 +53,16 @@ $userData = User::getById($id);
         </div>
     </div>
 </div>
-<div class="container mt-1 pt-1">
-    <div class="row flex-lg-nowrap">
-        <div class=" col-12 col-lg-2 mb-3">
-            <div class="card p-3">
-                <div class="e-navlist e-navlist--active-bg">
-                    <ul class="nav d-flex flex-column">
-                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="settings.php"><span>General</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editProfile.php" target=""><span>Edit profile</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-muted" href="editPassword.php" target=""><span>Change password</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2 active" href="editSocials.php" target=""><span><strong>Socials</strong></span></a></li>
-=======
-    <nav class="navbar navbar-light bg-light fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../index.php">
-                <img src="./../images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                Drop
-            </a>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <img class="avatar avatar-48 bg-light rounded-circle text-white p-2 dropdown-toggle"
-                        id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                        aria-expanded="false" role="button" src="./.<?php echo $profileImg?>">
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
-                        <li><a class="dropdown-item" href="settings.php"><strong>Instellingen</strong></a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="../logout.php">Afmelden</a></li>
->>>>>>> feat7:account/editSocials.php
-                    </ul>
-                </div>
-                <i class="bi bi-bell fs-5 me-2"></i>
-                <button type="button" class="btn btn-primary">Drop your shot</button>
-            </div>
-        </div>
-    </nav>
-    <div class="container mt-5 pt-5">
-        <div class="row flex-lg-nowrap">
-            <div class=" col-12 col-lg-12 mb-3">
-                <div class="d-flex flex-col p-3">
-                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
-                        id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                        aria-expanded="false" role="button" src="./.<?php echo $profileImg ?>">
-                    <div class="ms-3">
-                        <p class="mb-0">
-                            <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong>
-                            <i class="text-muted">/</i><strong> Socials</strong></p>
-                        <p><small>Update your username and manage your account</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container mt-1 pt-1">
         <div class="row flex-lg-nowrap">
             <div class=" col-12 col-lg-2 mb-3">
                 <div class="card p-3">
                     <div class="e-navlist e-navlist--active-bg">
                         <ul class="nav d-flex flex-column">
-                            <li class="nav-item"><a class="nav-link px-2 text-muted"
-                                    href="settings.php"><span>General</span></a></li>
-                            <li class="nav-item"><a class="nav-link px-2 text-muted" href="editProfile.php"
-                                    target=""><span>Edit profile</span></a></li>
-                            <li class="nav-item"><a class="nav-link px-2 text-muted" href="editPassword.php"
-                                    target=""><span>Change password</span></a></li>
-                            <li class="nav-item"><a class="nav-link px-2 active" href="editSocials.php"
-                                    target=""><span><strong>Socials</strong></span></a></li>
+                            <li class="nav-item"><a class="nav-link px-2 text-muted" href="settings.php"><span>General</span></a></li>
+                            <li class="nav-item"><a class="nav-link px-2 text-muted" href="editProfile.php" target=""><span>Edit profile</span></a></li>
+                            <li class="nav-item"><a class="nav-link px-2 text-muted" href="editPassword.php" target=""><span>Change password</span></a></li>
+                            <li class="nav-item"><a class="nav-link px-2 active" href="editSocials.php" target=""><span><strong>Socials</strong></span></a></li>
                         </ul>
                     </div>
                 </div>

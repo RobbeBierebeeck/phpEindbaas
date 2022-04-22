@@ -313,7 +313,7 @@ WHERE Users.id = :id");
 
     /**
      * Get the value of bio
-     */ 
+     */
     public function getBio()
     {
         return $this->bio;
@@ -323,7 +323,7 @@ WHERE Users.id = :id");
      * Set the value of bio
      *
      * @return  self
-     */ 
+     */
     public function setBio($bio)
     {
         $this->bio = $bio;
@@ -342,7 +342,7 @@ WHERE Users.id = :id");
 
     /**
      * Get the value of secondEmail
-     */ 
+     */
     public function getSecondEmail()
     {
         return $this->secondEmail;
@@ -352,7 +352,7 @@ WHERE Users.id = :id");
      * Set the value of secondEmail
      *
      * @return  self
-     */ 
+     */
     public function setSecondEmail($secondEmail)
     {
         $this->secondEmail = $secondEmail;
