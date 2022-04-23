@@ -178,6 +178,13 @@ class Post
             (new UploadApi())->destroy($publicId['publicId']);
         }
     }
+    public static function deleteProjects($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete Projects from Users INNER JOIN Projects on Users.id = Projects.user_id WHERE Users.id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+    }
 
 
 

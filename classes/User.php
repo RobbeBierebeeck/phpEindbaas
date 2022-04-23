@@ -283,49 +283,6 @@ class User
     }
 
     /** Delete user functions */
-
-    public static function deleteSocialLinks($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Social_links from Users INNER JOIN Social_links on Users.id = Social_links.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public static function deleteReportedUsers($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Reported_users from Users INNER JOIN Reported_users on Users.id = Reported_users.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public static function deleteProjects($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Projects from Users INNER JOIN Projects on Users.id = Projects.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public static function deletePasswordTemp($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Password_Reset_Temp from Users INNER JOIN Password_Reset_Temp on Users.id = Password_Reset_Temp.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public static function deleteLikes($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Likes from Users INNER JOIN Likes on Users.id = Likes.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public static function deleteComments($id)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Comments from Users INNER JOIN Comments on Users.id = Comments.user_id WHERE Users.id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
     public static function deleteFollowers($id)
     {
         $conn = DB::getConnection();

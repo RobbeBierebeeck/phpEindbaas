@@ -44,4 +44,12 @@ abstract class PasswordTemp
         $statement->execute();
     }
 
+    public static function deletePasswordTemp($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete Password_Reset_Temp from Users INNER JOIN Password_Reset_Temp on Users.id = Password_Reset_Temp.user_id WHERE Users.id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+    }
+
 }

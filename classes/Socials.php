@@ -74,5 +74,13 @@
             $statement->execute();
         }
 
+        public static function deleteSocialLinks($id)
+        {
+            $conn = DB::getConnection();
+            $statement = $conn->prepare("delete Social_links from Users INNER JOIN Social_links on Users.id = Social_links.user_id WHERE Users.id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+        }
+
     
     }
