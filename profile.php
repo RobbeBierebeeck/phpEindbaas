@@ -4,8 +4,16 @@ include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
 
-$profileImg = User::getProfilePicture($_SESSION['user']);
-$userData = User::getById(User::getUserId($_SESSION['user']));
+if (isset($_GET["id"])) {
+    $target_user = $_GET['id'];
+} else {
+    $target_user = User::getUserId($_SESSION["user"]);
+}
+
+var_dump($target_user);
+$userData = User::getById($target_user);
+$profileImg = $userData["profile_image"];
+var_dump($userData);
 
 ?>
 <!DOCTYPE html>
@@ -23,71 +31,14 @@ $userData = User::getById(User::getUserId($_SESSION['user']));
 </head>
 
 <body>
-<?php include_once(__DIR__ . '/partials/header.inc.php') ?>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
-    <img src="<?php echo $profileImg ?>">
-    <p><?php echo $userData['firstname'];?> <?php echo $userData['lastname'];?></p>
-    <p><?php echo $userData['bio'];?></p>
-</div>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body d-flex flex-row justify-content-between">
-                <h5 class="card-title">Card title</h5>
-                <div class="d-flex">
-                    <p class="me-2"> 400 <i class="bi bi-eye"></i></p>
-                    <a> 100 <i class="bi bi-star"></i></a>
-                </div>
-
-            </div>
-        </div>
+    <?php include_once(__DIR__ . '/partials/header.inc.php')
+    ?>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
+        <img src="<?php echo $profileImg ?>">
+        <p><?php echo $userData['firstname']; ?> <?php echo $userData['lastname']; ?></p>
+        <p><?php echo $userData['bio']; ?></p>
     </div>
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-            </div>
-        </div>
-    </div>
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-            </div>
-        </div>
-    </div>
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-            </div>
-        </div>
-    </div>
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col mt-4">
-        <div class="card">
-            <img src="images/post_template.webp" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="js/bootstrap.bundle.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
 </body>
 
 </html>
