@@ -3,26 +3,21 @@ session_start();
 //include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 
-$pageNumber = 0;
+$page = 1;
+$limitPerPage= 8;
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-    $limit = $page *8;
-    $begin = $limit - 8;
-    $pageNumber = $page;
-    $posts = Post::getAll($begin, $limit);
+    $posts = Post::getAll( $page *$limitPerPage, $limitPerPage);
+
 } else {
-    $posts = Post::getAll();
+    $posts = Post::getAll(0, 8);
 }
 if (!empty($_GET['search'])) {
     $posts = Post::search($_GET['search'], 0, 8);
 }
 if(!empty($_GET['search'])&&!empty($_GET['page'])){
-    echo 'whe in here';
-    $search = $_GET['search'];
-    $limit = $_GET['page'] * 8;
-    $begin= $limit - 8;
-    $pageNumber = $_GET['page'];
-    $posts = Post::search($_GET['search'], $begin, $limit);
+    $page = $_GET['page'];
+    $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
 }
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -109,15 +104,15 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $pageNumber -1; ?>" aria-label="Previous">
+                        <a class="page-link" href="?page=<?php echo $page -1; ?>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
-                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
-                    <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=0">1</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
                     <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $pageNumber +1; ?>" aria-label="Next">
+                        <a class="page-link" href="?page=<?php echo $page +1; ?>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -127,15 +122,15 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $pageNumber -1; ?>" aria-label="Previous">
+                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $page -1; ?>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=1">1</a></li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=2">2</a></li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=3">3</a></li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=0">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=1">2</a></li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=2">3</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?search= <?php echo $_GET['search']?>&page=<?php echo $pageNumber +1; ?>" aria-label="Next">
+                            <a class="page-link" href="?search= <?php echo $_GET['search']?>&page=<?php echo $page +1; ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
