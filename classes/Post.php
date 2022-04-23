@@ -56,8 +56,6 @@ class Post
         $statement->bindValue(':tag', $tag);
         $statement->execute();
         return $statement->fetch();
-
-
     }
 
     /**
@@ -82,7 +80,6 @@ class Post
     public function setUserId($userId): void
     {
         $this->userId = $userId;
-
     }
 
     public function getUserId()
@@ -108,7 +105,6 @@ class Post
         } else {
             throw new Exception("Title can't be empty");
         }
-
     }
 
     /**
@@ -125,7 +121,6 @@ class Post
     public function setDescription($description): void
     {
         $this->description = $description;
-
     }
 
     /**
@@ -145,7 +140,7 @@ class Post
 
         if ($image['size'] !== 0) {
             if (filesize($image['tmp_name']) < 1000000) {
-                $image = (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp", "quality" => "auto","aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
+                $image = (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
                 $this->image = $image['url'];
             } else {
                 throw new Exception("Maximum file size is 5MB");
@@ -153,8 +148,6 @@ class Post
         } else {
             throw new Exception("Image can't be empty");
         }
-
-
     }
 
 
@@ -188,20 +181,18 @@ class Post
             $statement->bindValue(':project_id', $this->id);
             $statement->execute();
         }
-
     }
 
-    public static function getAll($start = 0, $limit=8)
+    public static function getAll($start = 0, $limit = 8)
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects INNER join Users on Projects.`user_id` = Users.`id`
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` from Projects INNER join Users on Projects.`user_id` = Users.`id`
         order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchAll();
-
     }
 
     public static function setLimit($page)
@@ -209,5 +200,16 @@ class Post
         $start = 0;
         $limit = $page * 8;
         return array($start, $limit);
+    }
+
+    public static function getUserProjectsById($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` 
+        from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
+        order by Projects.`posted_at`");
+        $statement->bindValue(':userid', $id);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 }
