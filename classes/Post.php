@@ -15,6 +15,23 @@ class Post
     private $image;
     private $userId;
     private $enableViews;
+    private $publicId;
+
+    /**
+     * @return mixed
+     */
+    public function getPublicId()
+    {
+        return $this->publicId;
+    }
+
+    /**
+     * @param mixed $publicId
+     */
+    public function setPublicId($publicId): void
+    {
+        $this->publicId = $publicId;
+    }
 
     /**
      * @return mixed
@@ -149,6 +166,7 @@ class Post
             throw new Exception("Image can't be empty");
         }
     }
+
 
 
     public function save()
