@@ -157,13 +157,25 @@ class Post
 
         if ($image['size'] !== 0) {
             if (filesize($image['tmp_name']) < 1000000) {
-                $image = (new UploadApi())->upload($image['tmp_name'], ['public_id' => $image['name'], "folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
+                $image = (new UploadApi())->upload($image['tmp_name'], ["folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
                 $this->image = $image['url'];
+                $this->setPublicId($image['public_id']);
             } else {
                 throw new Exception("Maximum file size is 5MB");
             }
         } else {
             throw new Exception("Image can't be empty");
+        }
+    }
+    public static function deleteCloudinary($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare('SELECT publicId FROM Projects WHERE user_id = :userId');
+        $statement->bindValue(':userId', $userId);
+        $statement->execute();
+        $publicIds = $statement->fetchAll();
+        foreach ($publicIds as $publicId) {
+            (new UploadApi())->destroy($publicId['publicId']);
         }
     }
 
@@ -173,12 +185,13 @@ class Post
     {
         //saving the post
         $conn = DB::getConnection();
-        $statement = $conn->prepare("INSERT INTO Projects (title,image , description,posted_at , user_id,private_views) VALUES (:title,:image ,:description,NOW(), :user_id, :private_views)");
+        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, private_views, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :private_views, :publicId)");
         $statement->bindParam(':title', $this->title);
         $statement->bindParam(':image', $this->image);
         $statement->bindParam(':description', $this->description);
         $statement->bindParam(':user_id', $this->userId);
         $statement->bindParam(':private_views', $this->enableViews);
+        $statement->bindParam(':publicId', $this->publicId);
         $statement->execute();
         $this->id = $conn->lastInsertId();
 
