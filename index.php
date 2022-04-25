@@ -130,7 +130,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                         <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=1">2</a></li>
                         <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=2">3</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?search= <?php echo $_GET['search']?>&page=<?php echo $page +1; ?>" aria-label="Next">
+                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $page +1; ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
