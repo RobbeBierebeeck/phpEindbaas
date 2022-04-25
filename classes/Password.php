@@ -1,6 +1,6 @@
 <?php
 include_once (__DIR__.'/../bootstrap.php');
-abstract class PasswordTemp
+abstract class Password
 {
     public static function isExpired($code)
     {

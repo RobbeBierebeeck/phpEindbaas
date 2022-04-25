@@ -33,7 +33,7 @@ if (!empty($_POST)) {
             $mail->addAddress($_POST["email"]);
             $mail->send();
             $send = "Check your inbox";
-            PasswordTemp::setResetData(User::getUserId($_POST["email"]), $code);
+            Password::setResetData(User::getUserId($_POST["email"]), $code);
         }else $send = "Check your inbox";
 
 

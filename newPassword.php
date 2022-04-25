@@ -2,15 +2,15 @@
 include_once(__DIR__ .'/bootstrap.php');
 try {
     if (!empty($_GET)){
-       PasswordTemp::isExpired($_GET['code']);
+       Password::isExpired($_GET['code']);
     }
     if (!isset($_GET['code'])) {
        header('Location: 404.html');
     }
     if (!empty($_POST)) {
         if (User::checkPasswords($_POST["password"], $_POST['passwordConf'])) {
-            PasswordTemp::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
-           PasswordTemp::deletePasswordReset($_GET['code']);
+            Password::updatePassword($_GET['code'], User::hashPassword($_POST['password']));
+           Password::deletePasswordReset($_GET['code']);
            $reset = "Your password is successfully reset please <a href='login.php'>login</a> again";
         }
     }

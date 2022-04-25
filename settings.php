@@ -8,7 +8,7 @@ $userData = User::getById($id);
 if (isset($_POST['delete'])) {
     Comment::deleteComments($id);
     Like::deleteLikes($id);
-    PasswordTemp::deletePasswordTemp($id);
+    Password::deletePasswordTemp($id);
     Post::deleteCloudinary($id);
     Post::deleteProjects($id);
     Report::deleteReportedUsers($id);
