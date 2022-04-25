@@ -73,15 +73,18 @@ if (isset($_POST['delete'])) {
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Delete account</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+                            <div class="w-100">
+                                <img class="w-100" src="upload/deleteAccount.gif" alt="delete account gif">
+                            </div>
                             <div class="modal-body">
-                                Show a second modal and hide this one with the button below.
+                                You are about to delete your account. Are you sure?
                             </div>
                             <div class="modal-footer">
                                 <form id="logout" class="mb-0" action="" method="post">
-                                    <button type="submit" class="btn btn-danger w-100" name="delete">Delete account</button>
+                                    <button type="submit" class="btn btn-danger w-100" name="delete">Delete my account</button>
                                 </form>
                             </div>
                         </div>
