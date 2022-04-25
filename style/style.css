@@ -54,9 +54,7 @@
 }
 
 .input {
-    width: 100%;
-    max-width: 340px;
-    overflow-x: hidden;
+    overflow-x: scroll;
     display: flex;
     align-items: center;
     scrollbar-color:  #70b0cf;
