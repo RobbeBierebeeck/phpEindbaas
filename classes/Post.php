@@ -221,23 +221,33 @@ class Post
         }
     }
 
-    public static function getAll($start = 0, $limit = 8)
 
+    public static function getAll($start , $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` from Projects INNER join Users on Projects.`user_id` = Users.`id`
-        order by Projects.`posted_at` desc limit :start, :limit");
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects INNER join Users on Projects.`user_id` = Users.`id`
+        order by Projects.`posted_at` desc limit :start , :limit");
+       $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
-        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchAll();
     }
 
-    public static function setLimit($page)
+    public static function search($search, $start, $limit)
     {
-        $start = 0;
-        $limit = $page * 8;
-        return array($start, $limit);
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects INNER join Users on Projects.`user_id` = Users.`id` INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
+        INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
+        like :search or Projects.`title`like :search or Users.`firstname` like :search or Users.`lastname` like :search
+        order by Projects.`posted_at` desc limit :start , :limit");
+        $search = "%" . $search . "%";
+        $statement->bindValue(':search', $search);
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue(':start', $start, PDO::PARAM_INT);
+        $statement->execute();
+
+        //posts = $statement->fetchAll();
+        return $statement->fetchAll();
     }
 
     public static function getUserProjectsById($id)

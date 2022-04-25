@@ -3,16 +3,30 @@ session_start();
 //include_once(__DIR__ . '/helpers/Security.php');
 include_once(__DIR__ . '/bootstrap.php');
 
-$pageNumber = $pageNumber ?? 2;
+$page = 1;
+$limitPerPage= 8;
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
+
     $pageNumber = $page + 1;
     $posts = Post::getAll(Post::setLimit($_GET['page']));
 } else {
     $posts = Post::getAll();
 }
-?>
-<!DOCTYPE html>
+    $posts = Post::getAll( $page *$limitPerPage, $limitPerPage);
+
+} else {
+    $posts = Post::getAll(0, 8);
+}
+if (!empty($_GET['search'])) {
+    $posts = Post::search($_GET['search'], 0, 8);
+}
+if(!empty($_GET['search'])&&!empty($_GET['page'])){
+    $page = $_GET['page'];
+    $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
+}
+?><!DOCTYPE html>
+
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
@@ -83,9 +97,59 @@ if (!empty($_GET['page'])) {
                 <?php endforeach; ?>
             <?php endif; ?>
 
+
             <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
                 <a href="?page=<?php echo $pageNumber; ?>" type="submit" class="btn btn-secondary btn-lg">Load more</a>
             </div>
+
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <?php if (!$posts):?>
+            <div class="d-flex vw-100 vh-100 align-items-center justify-content-center">
+                <img src="images/noresult.svg" alt="">
+            </div>
+        <?php endif; ?>
+        <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
+            <?php if(!isset($_GET['search'])): ?>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page -1; ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page=0">1</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page +1; ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <?php else:?>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $page -1; ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=0">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=1">2</a></li>
+                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=2">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?search= <?php echo $_GET['search']?>&page=<?php echo $page +1; ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php endif;?>
         </div>
 
 </body>
