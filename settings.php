@@ -69,11 +69,27 @@ if (isset($_POST['delete'])) {
                     </ul>
                 </div>
             </div>
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Show a second modal and hide this one with the button below.
+                            </div>
+                            <div class="modal-footer">
+                                <form id="logout" class="mb-0" action="" method="post">
+                                    <button type="submit" class="btn btn-danger w-100" name="delete">Delete account</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <div class="card p-3 mt-3">
                 <div class="e-navlist e-navlist--active-bg">
-                    <form id="logout" class="mb-0" action="" method="post">
-                        <input type="submit" class="btn btn-danger w-100" name="delete" value="Delete account">
-                    </form>
+                    <a class="btn btn-danger w-100" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Delete account</a>
                 </div>
             </div>
         </div>
