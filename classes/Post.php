@@ -238,7 +238,9 @@ class Post
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects INNER join Users on Projects.`user_id` = Users.`id` INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
+        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
+        INNER join Users on Projects.`user_id` = Users.`id`
+        INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
         INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
         like :search or Projects.`title`like :search or Users.`firstname` like :search or Users.`lastname` like :search
         order by Projects.`posted_at` desc limit :start , :limit");
@@ -249,7 +251,8 @@ class Post
         $statement->execute();
 
         //posts = $statement->fetchAll();
-        return $statement->fetchAll();
+        return array_unique($statement->fetchAll(), SORT_REGULAR);
+
     }
 
     public static function getUserProjectsById($id)
