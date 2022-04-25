@@ -15,6 +15,8 @@ if (isset($_POST['delete'])) {
     Socials::deleteSocialLinks($id);
     User::deleteFollowers($id);
     User::deleteUser($id);
+    session_destroy();
+    header('Location: logout.php');
 }
 ?>
 <!doctype html>
