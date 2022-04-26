@@ -251,7 +251,8 @@ class Post
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
 
-        //posts = $statement->fetchAll();
+        //compares similar array values and removes duplicates
+        //Sort_regular flag prevents array from being converted to string and compares the array as it is
         return array_unique($statement->fetchAll(), SORT_REGULAR);
 
     }
