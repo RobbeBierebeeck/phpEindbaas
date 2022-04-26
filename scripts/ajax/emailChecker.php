@@ -1,4 +1,7 @@
 <?php
+
+use vendor\Drop\Core\DB;
+
 include_once(__DIR__ . '/../../bootstrap.php');
 
 $email = $_REQUEST["q"];

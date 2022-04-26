@@ -1,8 +1,10 @@
 <?php
-include_once (__DIR__.'/vendor/autoload.php');
-include_once(__DIR__ . '/bootstrap.php');
+
+include_once ('vendor/autoload.php');
 
 use Postmark\PostmarkClient;
+use vendor\Drop\Core\Password;
+use vendor\Drop\Core\User;
 
 // Example request
 $client = new PostmarkClient('d14bd278-587b-4064-9672-da538bb44bb4');

@@ -1,7 +1,18 @@
 <?php
+
+use vendor\Drop\Core\Comment;
+use vendor\Drop\Core\Like;
+use vendor\Drop\Core\Password;
+use vendor\Drop\Core\Report;
+use vendor\Drop\Core\Socials;
+use vendor\Drop\Core\User;
+use vendor\Drop\Core\Post;
+
+include_once ('vendor/autoload.php');
 include_once(__DIR__ . '/helpers/Security.php');
-include_once(__DIR__ . '/bootstrap.php');
 Security::onlyLoggedInUsers();
+
+
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);

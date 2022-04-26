@@ -1,7 +1,9 @@
 <?php
 session_start();
-//include_once(__DIR__ . '/helpers/Security.php');
-include_once(__DIR__ . '/bootstrap.php');
+use vendor\Drop\Core\Post;
+include_once (__DIR__ . '/vendor/autoload.php');
+
+
 
 $page = 1;
 $limitPerPage= 8;

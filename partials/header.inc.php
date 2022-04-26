@@ -6,7 +6,9 @@
             <img src="./images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
-        <?php if (basename($_SERVER['SCRIPT_NAME']) ==='index.php'):?>
+        <?php use vendor\Drop\Core\User;
+
+        if (basename($_SERVER['SCRIPT_NAME']) ==='index.php'):?>
         <form method="get">
             <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
         </form>

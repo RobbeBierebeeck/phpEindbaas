@@ -1,6 +1,9 @@
 <?php
+
+use vendor\Drop\Core\User;
+
 include_once(__DIR__ . '/helpers/Security.php');
-include_once(__DIR__ . '/bootstrap.php');
+include_once (__DIR__ . '/vendor/autoload.php');
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);

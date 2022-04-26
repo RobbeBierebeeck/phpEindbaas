@@ -1,5 +1,7 @@
 <?php
-include_once(__DIR__ . '/bootstrap.php');
+
+use vendor\Drop\Core\User;
+include_once ('vendor/autoload.php');
 if (!empty($_POST)) {
     try {
         // create a new user object

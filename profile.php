@@ -1,7 +1,10 @@
 <?php
 
+use vendor\Drop\Core\User;
+use vendor\Drop\Core\Post;
+
 include_once(__DIR__ . '/helpers/Security.php');
-include_once(__DIR__ . '/bootstrap.php');
+include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (isset($_GET["id"])) {
