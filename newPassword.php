@@ -2,6 +2,7 @@
 use vendor\Drop\Core\Password;
 use vendor\Drop\Core\User;
 include_once ('vendor/autoload.php');
+
 try {
     if (!empty($_GET)){
        Password::isExpired($_GET['code']);

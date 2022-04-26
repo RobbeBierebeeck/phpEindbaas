@@ -8,8 +8,8 @@ use PHPMailer\PHPMailer\SMTP;
 use vendor\Drop\Core\Password;
 use vendor\Drop\Core\User;
 
-
 include_once ('vendor/autoload.php');
+
 $mail = new PHPMailer(true);
 
 if (!empty($_POST)) {

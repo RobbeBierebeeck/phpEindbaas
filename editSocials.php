@@ -4,7 +4,8 @@ use vendor\Drop\Core\Socials;
 use vendor\Drop\Core\User;
 use vendor\Drop\Helpers\Security;
 
-include_once (__DIR__ . '/vendor/autoload.php');
+include_once ('vendor/autoload.php');
+
 Security::onlyLoggedInUsers();
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);

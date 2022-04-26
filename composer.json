@@ -8,7 +8,6 @@
         "psr-4": {
             "vendor\\Drop\\Core\\": "vendor/Drop/Core/",
             "vendor\\Drop\\Helpers\\": "vendor/Drop/Helpers/"
-
         }
     }
 

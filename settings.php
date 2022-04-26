@@ -8,8 +8,8 @@ use vendor\Drop\Core\Report;
 use vendor\Drop\Core\Socials;
 use vendor\Drop\Core\User;
 use vendor\Drop\Helpers\Security;
-include_once ('vendor/autoload.php');
 
+include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 
@@ -29,8 +29,7 @@ if (isset($_POST['delete'])) {
     session_destroy();
     header('Location: logout.php');
 }
-?>
-<!doctype html>
+?><!doctype html>
 <html lang="en">
 
 <head>

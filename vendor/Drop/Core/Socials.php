@@ -2,7 +2,7 @@
 
 namespace vendor\Drop\Core;
 
-include_once(__DIR__ . '/../bootstrap.php');
+include_once ('vendor/autoload.php');
 
 class Socials
 {

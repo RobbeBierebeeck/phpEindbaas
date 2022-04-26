@@ -1,10 +1,7 @@
 <?php
 session_start();
 use vendor\Drop\Core\Post;
-include_once (__DIR__ . '/vendor/autoload.php');
-
-
-
+include_once ('vendor/autoload.php');
 $page = 1;
 $limitPerPage= 8;
 if (!empty($_GET['page'])) {
