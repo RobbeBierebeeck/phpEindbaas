@@ -75,8 +75,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
                             <span class="rounded-circle nav__profilePicture ms-3 m-2"
                                   style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
-                            <span>by <span
-                                        class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></span> </span>
+                            <span>by <a href="profile.php?id=<?php echo $post['id']; ?>" class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></a> </span> </span>
                         </div>
                     </div>
                 </div>
