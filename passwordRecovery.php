@@ -1,38 +1,35 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 include_once (__DIR__.'/vendor/autoload.php');
 include_once(__DIR__ . '/bootstrap.php');
-$mail = new PHPMailer(true);
+
+use Postmark\PostmarkClient;
+
+// Example request
+$client = new PostmarkClient('d14bd278-587b-4064-9672-da538bb44bb4');
+
+$sendResult = $client->sendEmail(
+    "sender@example.com",
+    "receiver@example.com",
+    "Hello from Postmark!",
+    "This is just a friendly 'hello' from your friends at Postmark."
+);
+
 
 if (!empty($_POST)) {
 
     try {
         // Server settings
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->SMTPDebug = false;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-        $mail->Username = 'dddddddrop@gmail.com'; // YOUR gmail email
-        $mail->Password = 'TeamDrop'; // YOUR gmail password
+
         $code = uniqid(true); //generating random code
-        // Sender and recipient settings
-        $mail->setFrom('dddddddrop@gmail.com', 'drop');
-        $mail->addReplyTo('dddddddrop@gmail.com', 'drop'); // to set the reply to
-        // Setting the email content
-        $mail->IsHTML(true);
-        $mail->Subject = "Password reset";
+
+
+
         $url = "http://". $_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF'])."/newPassword.php?code=".$code;
         $mail->Body = "<h1>You requested a password reset</h1>
                         <p>Click <a href= '$url'>this link</a> to reset your password</p>";
         if(User::findByEmail($_POST["email"])){
             $mail->addAddress($_POST["email"]);
-            $mail->send();
-            $send = "Check your inbox";
+
             Password::setResetData(User::getUserId($_POST["email"]), $code);
         }else $send = "Check your inbox";
 

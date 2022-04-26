@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b6e291c67cc02cc5bba39a765952922",
+    "content-hash": "7428d1b05ecf9513aa8013f40f18d9ec",
     "packages": [
         {
             "name": "cloudinary/cloudinary_php",
@@ -994,6 +994,44 @@
                 "source": "https://github.com/teapot-php/status-code/tree/v1.1.2"
             },
             "time": "2020-11-03T17:14:32+00:00"
+        },
+        {
+            "name": "wildbit/postmark-php",
+            "version": "4.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wildbit/postmark-php.git",
+                "reference": "d27cd97a5efefa72d4ea16c2fa307c22c4e5312c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wildbit/postmark-php/zipball/d27cd97a5efefa72d4ea16c2fa307c22c4e5312c",
+                "reference": "d27cd97a5efefa72d4ea16c2fa307c22c4e5312c",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Postmark\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The officially supported client for Postmark (http://postmarkapp.com)",
+            "support": {
+                "issues": "https://github.com/wildbit/postmark-php/issues",
+                "source": "https://github.com/wildbit/postmark-php/tree/4.0.4"
+            },
+            "time": "2022-03-28T18:34:21+00:00"
         }
     ],
     "packages-dev": [],

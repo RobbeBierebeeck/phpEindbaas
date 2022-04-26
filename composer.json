@@ -1,6 +1,7 @@
 {
     "require": {
         "cloudinary/cloudinary_php": "^2.6",
-        "phpmailer/phpmailer": "^6.6"
+        "phpmailer/phpmailer": "^6.6",
+        "wildbit/postmark-php": "^4.0"
     }
 }

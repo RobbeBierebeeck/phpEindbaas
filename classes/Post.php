@@ -167,6 +167,7 @@ class Post
             throw new Exception("Image can't be empty");
         }
     }
+
     public static function deleteCloudinary($userId)
     {
         $conn = DB::getConnection();
@@ -178,6 +179,7 @@ class Post
             (new UploadApi())->destroy($publicId['publicId']);
         }
     }
+
     public static function deleteProjects($id)
     {
         $conn = DB::getConnection();
@@ -185,7 +187,6 @@ class Post
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
-
 
 
     public function save()
@@ -222,7 +223,7 @@ class Post
     }
 
 
-    public static function getAll($start , $limit)
+    public static function getAll($start, $limit)
 
     {
         $conn = DB::getConnection();
@@ -250,7 +251,8 @@ class Post
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
 
-        //posts = $statement->fetchAll();
+        //compares similar array values and removes duplicates
+        //Sort_regular flag prevents array from being converted to string and compares the array as it is
         return array_unique($statement->fetchAll(), SORT_REGULAR);
 
     }
