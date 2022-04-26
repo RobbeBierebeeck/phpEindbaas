@@ -1,4 +1,6 @@
 <?php
+    namespace vendor\Drop\Helpers;
+
     abstract class Security {
         public static function onlyLoggedInUsers() {
             session_start();

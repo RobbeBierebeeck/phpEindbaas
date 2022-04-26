@@ -2,5 +2,6 @@
 
 .idea
 .DS_Store
-/vendor
+/vendor/*
+!/vendor/Drop/
 /upload/*

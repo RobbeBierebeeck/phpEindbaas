@@ -3,13 +3,13 @@
 use vendor\Drop\Core\Comment;
 use vendor\Drop\Core\Like;
 use vendor\Drop\Core\Password;
+use vendor\Drop\Core\Post;
 use vendor\Drop\Core\Report;
 use vendor\Drop\Core\Socials;
 use vendor\Drop\Core\User;
-use vendor\Drop\Core\Post;
-
+use vendor\Drop\Helpers\Security;
 include_once ('vendor/autoload.php');
-include_once(__DIR__ . '/helpers/Security.php');
+
 Security::onlyLoggedInUsers();
 
 

@@ -1,37 +1,44 @@
 <?php
 
-include_once ('vendor/autoload.php');
 
-use Postmark\PostmarkClient;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 use vendor\Drop\Core\Password;
 use vendor\Drop\Core\User;
 
-// Example request
-$client = new PostmarkClient('d14bd278-587b-4064-9672-da538bb44bb4');
 
-$sendResult = $client->sendEmail(
-    "sender@example.com",
-    "receiver@example.com",
-    "Hello from Postmark!",
-    "This is just a friendly 'hello' from your friends at Postmark."
-);
-
+include_once ('vendor/autoload.php');
+$mail = new PHPMailer(true);
 
 if (!empty($_POST)) {
 
     try {
         // Server settings
-
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = false;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        $mail->Username = 'dddddddrop@gmail.com'; // YOUR gmail email
+        $mail->Password = 'TeamDrop'; // YOUR gmail password
         $code = uniqid(true); //generating random code
-
-
-
+        // Sender and recipient settings
+        $mail->setFrom('dddddddrop@gmail.com', 'drop');
+        $mail->addReplyTo('dddddddrop@gmail.com', 'drop'); // to set the reply to
+        // Setting the email content
+        $mail->IsHTML(true);
+        $mail->Subject = "Password reset";
         $url = "http://". $_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF'])."/newPassword.php?code=".$code;
         $mail->Body = "<h1>You requested a password reset</h1>
                         <p>Click <a href= '$url'>this link</a> to reset your password</p>";
         if(User::findByEmail($_POST["email"])){
             $mail->addAddress($_POST["email"]);
-
+            $mail->send();
+            $send = "Check your inbox";
             Password::setResetData(User::getUserId($_POST["email"]), $code);
         }else $send = "Check your inbox";
 
@@ -75,11 +82,11 @@ if (!empty($_POST)) {
         <div class="col-12 pt-3">
             <button type="submit" class="btn btn-primary">Send email</button>
         </div>
-    <span class="pt-1">or <a href="">login</a></span>
+        <span class="pt-1">or <a href="">login</a></span>
     </form>
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 </html>

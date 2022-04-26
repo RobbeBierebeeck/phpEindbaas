@@ -1,9 +1,9 @@
 <?php
 
-use vendor\Drop\Core\User;
 use vendor\Drop\Core\Post;
+use vendor\Drop\Core\User;
+use vendor\Drop\Helpers\Security;
 
-include_once(__DIR__ . '/helpers/Security.php');
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
