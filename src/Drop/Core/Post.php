@@ -1,12 +1,12 @@
 <?php
-namespace vendor\Drop\Core;
+namespace Drop\Core;
 
 
 include_once(__DIR__ . '/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
-use vendor\Drop\Core\DB;
+use Drop\Core\DB;
 use PDO;
-include_once ('vendor/autoload.php');
+include_once('vendor/autoload.php');
 class Post
 {
     private $id;

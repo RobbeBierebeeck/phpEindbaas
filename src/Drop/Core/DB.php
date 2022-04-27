@@ -1,6 +1,6 @@
 <?php
 
-namespace vendor\Drop\Core;
+namespace Drop\Core;
 use \PDO;
 
 abstract class DB

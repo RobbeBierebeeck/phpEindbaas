@@ -1,6 +1,6 @@
 <?php
 session_start();
-use vendor\Drop\Core\Post;
+use Drop\Core\Post;
 include_once ('vendor/autoload.php');
 $page = 1;
 $limitPerPage= 8;

@@ -1,5 +1,5 @@
 <?php
-    namespace vendor\Drop\Helpers;
+    namespace Drop\Helpers;
 
     abstract class Security {
         public static function onlyLoggedInUsers() {

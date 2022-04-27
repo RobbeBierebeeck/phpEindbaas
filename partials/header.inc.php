@@ -6,7 +6,7 @@
             <img src="./images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
-        <?php use vendor\Drop\Core\User;
+        <?php use Drop\Core\User;
 
         if (basename($_SERVER['SCRIPT_NAME']) ==='index.php'):?>
         <form method="get">

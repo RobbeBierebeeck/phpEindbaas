@@ -5,8 +5,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-use vendor\Drop\Core\Password;
-use vendor\Drop\Core\User;
+use Drop\Core\Password;
+use Drop\Core\User;
 
 include_once ('vendor/autoload.php');
 

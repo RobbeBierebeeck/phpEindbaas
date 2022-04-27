@@ -1,8 +1,8 @@
 <?php
 
-use vendor\Drop\Core\Socials;
-use vendor\Drop\Core\User;
-use vendor\Drop\Helpers\Security;
+use Drop\Core\Socials;
+use Drop\Core\User;
+use Drop\Helpers\Security;
 
 include_once ('vendor/autoload.php');
 

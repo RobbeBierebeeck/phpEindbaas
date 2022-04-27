@@ -1,13 +1,13 @@
 <?php
 
-use vendor\Drop\Core\Comment;
-use vendor\Drop\Core\Like;
-use vendor\Drop\Core\Password;
-use vendor\Drop\Core\Post;
-use vendor\Drop\Core\Report;
-use vendor\Drop\Core\Socials;
-use vendor\Drop\Core\User;
-use vendor\Drop\Helpers\Security;
+use Drop\Core\Comment;
+use Drop\Core\Like;
+use Drop\Core\Password;
+use Drop\Core\Post;
+use Drop\Core\Report;
+use Drop\Core\Socials;
+use Drop\Core\User;
+use Drop\Helpers\Security;
 
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();

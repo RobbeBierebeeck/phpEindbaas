@@ -6,8 +6,8 @@
     },
     "autoload": {
         "psr-4": {
-            "vendor\\Drop\\Core\\": "vendor/Drop/Core/",
-            "vendor\\Drop\\Helpers\\": "vendor/Drop/Helpers/"
+            "Drop\\Core\\": "src/Drop/Core/",
+            "Drop\\Helpers\\": "src/Drop/Helpers/"
         }
     }
 

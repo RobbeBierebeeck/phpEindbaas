@@ -1,6 +1,6 @@
 <?php
 
-use vendor\Drop\Core\User;
+use Drop\Core\User;
 include_once ('vendor/autoload.php');
 
 if (!empty($_POST)) {
