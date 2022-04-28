@@ -261,7 +261,7 @@ class Post
     public static function getUserProjectsById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
         from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
         order by Projects.`posted_at`");
         $statement->bindValue(':userid', $id);
@@ -285,9 +285,11 @@ class Post
         return $statement->fetch();
     }
     // Check if visitor is creator of post
-    public static function authPost(){
+    public static function authPost($id){
         $conn = DB::getConnection();
-        $conn->prepare("select title from post where id = :postId and where user_id = :id");
+        $statement = $conn->prepare("select title from post where id = :postId and where user_id = :id");
         $statement->bindValue(":postId", $id);
+        $statement->execute();
+        return $statement->fetch();
     }
 }
