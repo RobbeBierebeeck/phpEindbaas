@@ -18,12 +18,12 @@ $userData = User::getById($id);
 if (!empty($_GET)) {
     $post = Post::getPostById($_GET['post']);
     $creator = Post::getCreatorByPost($_GET['post']);
-    if ($creator['id'] == $id){
-    } else {
-    }
 } else (
 header("Location: 404.html")
-)
+);
+if (isset($_POST['deletePost'])){
+
+}
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -60,8 +60,8 @@ header("Location: 404.html")
 </nav>
 <?php endif; ?>
 <div class="container mt-5 pt-5">
-    <div class="row flex-lg-nowrap">
-        <div class=" col-12 col-lg-12 mb-3">
+    <div class="row flex-lg-nowrap d-flex justify-content-center">
+        <div class=" col-12 col-lg-8 mb-3">
             <div class="d-flex flex-col pt-3 pb-3 ms-5">
                 <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
@@ -71,10 +71,54 @@ header("Location: 404.html")
                     <a href="profile.php?user=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
                 </div>
             </div>
+            <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
+            <p class="mt-5 ms-5 me-5"><?php echo $post['description']?></p>
+
+            <div class="modal fade" id="deletePostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            You are about to delete your post. Are you sure?
+                        </div>
+                        <div class="modal-footer">
+                            <form id="logout" class="mb-0" action="" method="post">
+                                <button type="submit" class="btn btn-danger w-100" name="deletePost">Delete my post</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editPostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="logout" class="mb-0" action="" method="post">
+                                <div class="form-group mb-3">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo $post['title']?>">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php if ($creator['id'] == $id) : ?>
+                    <div class="d-flex justify-content-center bg-gray">
+                        <a class="btn btn-primary" data-bs-toggle="modal" href="#editPostModalToggle" role="button">Edit post</a>
+                        <a class="btn btn-danger" data-bs-toggle="modal" href="#deletePostModalToggle" role="button">Delete post</a>
+                    </div>
+                <?php endif; ?>
         </div>
     </div>
-    <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
-    <p class="mt-5 ms-5 me-5"><?php echo $post['description']?></p>
 </div>
 </body>
 </html>
