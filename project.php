@@ -118,9 +118,9 @@ if (isset($_POST['editPost'])){
                                     <input type="text" name="tags" id="tags-fake">
                                     <!-- Title input feeld -->
                                     <div class="mb-5">
-                                        <label class="mb-1">Username</label>
+                                        <label class="mb-1">Post title</label>
                                         <div class="form">
-                                            <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $post['title'];?>" required>
+                                            <input type="text" name="title" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $post['title'];?>" required>
                                         </div>
                                     </div>
                                 </div>
