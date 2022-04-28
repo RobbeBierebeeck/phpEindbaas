@@ -42,10 +42,10 @@ $posts = Post::getUserProjectsById($target_user);
         <?php if (isset($_SESSION['user'])) : ?>
             <?php foreach ($posts as $post) : ?>
                 <div class="col mt-4">
-                    <div href="index.php" class="card col mt-4 ">
+                    <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
-                            <a href="#" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
+                            <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
                             <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
                             <div class=" d-flex flex-row align-items-center mt-2">
                                 <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
@@ -61,7 +61,7 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endforeach; ?>
         <?php else : ?>
             <?php foreach ($posts as $post) : ?>
-                <div href="index.php" class="col mt-4">
+                <div href="project.php?post=<?php echo $post['id']?>" class="col mt-4">
                     <div class="card">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-row justify-content-between">
