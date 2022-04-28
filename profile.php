@@ -6,8 +6,8 @@ use Drop\Helpers\Security;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
-if (isset($_GET["id"])) {
-    $target_user = $_GET['id'];
+if (!empty($_GET["id"])) {
+    var_dump($_GET["id"]);
 } else {
     $target_user = User::getUserId($_SESSION["user"]);
 }
