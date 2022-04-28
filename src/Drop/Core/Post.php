@@ -240,7 +240,7 @@ class Post
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
         INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
@@ -300,6 +300,7 @@ class Post
         $statement->bindValue(":id", $id);
         $statement->execute();
 
+        //Deleting old many to many tags
         $statement = $conn->prepare("delete from Project_Tags WHERE Project_Tags.project_id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
