@@ -284,4 +284,10 @@ class Post
         $statement->execute();
         return $statement->fetch();
     }
+    // Check if visitor is creator of post
+    public static function authPost(){
+        $conn = DB::getConnection();
+        $conn->prepare("select title from post where id = :postId and where user_id = :id");
+        $statement->bindValue(":postId", $id);
+    }
 }
