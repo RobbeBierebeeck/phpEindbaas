@@ -7,7 +7,8 @@ include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
-    var_dump($_GET["id"]);
+    //var_dump($_GET["id"]);
+    $target_user = $_GET["id"];
 } else {
     $target_user = User::getUserId($_SESSION["user"]);
 }
