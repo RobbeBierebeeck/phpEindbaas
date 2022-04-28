@@ -268,10 +268,19 @@ class Post
         $statement->execute();
         return $statement->fetchAll();
     }
+    // Gets all data from post with project id
     public static function getPostById($id){
         $conn = DB::getConnection();
         $statement = $conn->prepare("select * from Projects where id = :id");
         $statement->bindValue("id", $id);
+        $statement->execute();
+        return $statement->fetch();
+    }
+    // Gets data from post creator with project id
+    public static function getCreatorByPost($id){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` from Projects INNER join Users on Projects.`user_id` = Users.`id` where Projects.`id` = :id");
+        $statement->bindValue(":id", $id);
         $statement->execute();
         return $statement->fetch();
     }
