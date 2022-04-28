@@ -261,11 +261,18 @@ class Post
     public static function getUserProjectsById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` 
         from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
         order by Projects.`posted_at`");
         $statement->bindValue(':userid', $id);
         $statement->execute();
         return $statement->fetchAll();
+    }
+    public static function getPostById($id){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from Projects where id = :id");
+        $statement->bindValue("id", $id);
+        $statement->execute();
+        return $statement->fetch();
     }
 }
