@@ -11,6 +11,12 @@ if (!empty($_GET["id"])) {
 } else {
     $target_user = User::getUserId($_SESSION["user"]);
 }
+if (isset($_POST['deletePost'])){
+
+}
+if (isset($_POST['editPost'])){
+
+}
 
 $userData = User::getById($target_user);
 $profileImg = $userData["profile_image"];
@@ -42,7 +48,16 @@ $posts = Post::getUserProjectsById($target_user);
         <?php if (isset($_SESSION['user'])) : ?>
             <?php foreach ($posts as $post) : ?>
                 <div class="col mt-4">
-                    <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 ">
+                    <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 d-flex ">
+                            <div class="d-flex position-absolute align-self-end">
+                                <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><button type="submit" class="dropdown-item" name="editPost" href="#">Edit Post</button></li>
+                                    <li><button type="submit" class="dropdown-item" name="deletePost" href="#">Delete Post</button></li>
+                                </ul>
+                            </div>
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
