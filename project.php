@@ -3,6 +3,8 @@ session_start();
 use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
+include_once ('vendor/autoload.php');
+Security::onlyLoggedInUsers();
 
 include_once ('vendor/autoload.php');
 
