@@ -1,13 +1,29 @@
 <?php
-session_start();
 use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
+$profileImg = User::getProfilePicture($_SESSION['user']);
+$id = User::getUserId($_SESSION['user']);
 
-include_once ('vendor/autoload.php');
+$post = Post::getPostById($_GET['post']);
 
+if (isset($_GET["post"])) {
+    $target_user = $_GET['post'];
+} else {
+    $target_user = User::getUserId($_SESSION["user"]);
+}
+$userData = User::getById($id);
+if (!empty($_GET)) {
+    $post = Post::getPostById($_GET['post']);
+    $creator = Post::getCreatorByPost($_GET['post']);
+    if ($creator['id'] == $id){
+    } else {
+    }
+} else (
+header("Location: 404.html")
+)
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -49,16 +65,16 @@ include_once ('vendor/autoload.php');
             <div class="d-flex flex-col pt-3 pb-3 ms-5">
                 <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                     aria-expanded="false" role="button" src="">
+                     aria-expanded="false" role="button" src="<?php echo $creator['profile_image'] ?>">
                 <div class="ms-3">
-                    <p class="mb-0"><strong>x</strong></p>
-                    <a href=""><small>x</small></a>
+                    <p class="mb-0"><strong><?php echo $post['title']?></strong></p>
+                    <a href="profile.php?user=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
                 </div>
             </div>
         </div>
     </div>
-    <img src="" class="img-fluid rounded-3" alt="Responsive image">
-    <p class="mt-5 ms-5 me-5">x</p>
+    <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
+    <p class="mt-5 ms-5 me-5"><?php echo $post['description']?></p>
 </div>
 </body>
 </html>
