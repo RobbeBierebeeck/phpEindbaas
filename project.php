@@ -108,18 +108,20 @@ if (isset($_POST['editPost'])){
                             <form id="editPost" class="mb-0" action="" method="post">
                                 <div class="form-group mb-3">
                                     <!-- Tag input feeld -->
-                                    <div class="mt-3">
+                                    <div class="mt-3 mb-3">
                                         <label class="form-label" for="floatingInput">Tags</label>
                                         <div class="input form-control" id="floatingInput">
                                             <div class="input__tags"></div>
-                                            <input type="text" id="tags">
+                                            <input type="text" class="p-2" id="tags">
                                         </div>
                                     </div>
                                     <input type="text" name="tags" id="tags-fake">
                                     <!-- Title input feeld -->
-                                    <div class="form-group mt-3">
-                                        <label for="title">Title</label>
-                                        <input type="text" class="form-control" id="title" name="title">
+                                    <div class="mb-5">
+                                        <label class="mb-1">Username</label>
+                                        <div class="form">
+                                            <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $post['title'];?>" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes</button>
