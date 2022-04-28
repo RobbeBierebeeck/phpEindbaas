@@ -292,4 +292,37 @@ class Post
         $statement->execute();
         return $statement->fetch();
     }
+    public static function updatePost($title, $tags, $id){
+        //saving the post
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Projects set title = :title where id = :id");
+        $statement->bindValue(":title", $title);
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+
+        $statement = $conn->prepare("delete from Project_Tags WHERE Project.project_id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+
+        //Seperate tags into array
+        $tags = explode(',', $tags);
+
+        //saving tags
+        $statement = $conn->prepare("insert into Tags(tag) values (:tag)");
+        if ($tags != null) {
+            foreach ($tags as $tag) {
+                if (!self::findTag($tag)) {
+                    $statement->bindValue(':tag', $tag);
+                    $statement->execute();
+                }
+            }
+        }
+        //saving the many to many relationship between tags and posts
+        foreach ($tags as $tag) {
+            $statement = $conn->prepare("insert into Project_Tags(tag_id, project_id) values ((select id from Tags where tag = :tag), :project_id)");
+            $statement->bindValue(':tag', $tag);
+            $statement->bindValue(':project_id', $id);
+            $statement->execute();
+        }
+    }
 }
