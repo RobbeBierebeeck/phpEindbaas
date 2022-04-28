@@ -2,6 +2,7 @@
 session_start();
 use Drop\Core\Post;
 include_once ('vendor/autoload.php');
+
 $page = 1;
 $limitPerPage= 8;
 if (!empty($_GET['page'])) {
@@ -63,8 +64,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                     <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
-                            <a href="project.php?post=<?php echo $post['id']?>"
-                               class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
+                            <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
                             <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
                             <div class=" d-flex flex-row align-items-center mt-2">
                                 <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
@@ -72,8 +72,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
-                            <span class="rounded-circle nav__profilePicture ms-3 m-2"
-                                  style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
+                            <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
                             <span>by <a href="profile.php?id=<?php echo $post['id']; ?>" class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></a> </span> </span>
                         </div>
                     </div>
