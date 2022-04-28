@@ -300,7 +300,7 @@ class Post
         $statement->bindValue(":id", $id);
         $statement->execute();
 
-        $statement = $conn->prepare("delete from Project_Tags WHERE Project.project_id = :id");
+        $statement = $conn->prepare("delete from Project_Tags WHERE Project_Tags.project_id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
 
