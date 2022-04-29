@@ -22,7 +22,9 @@ if (!empty($_GET)) {
 header("Location: 404.html")
 );
 if (isset($_POST['deletePost'])){
-
+    Post::deleteProjectTags($post['id']);
+    Post::deletePostById($post['id']);
+    header("Location: index.php");
 }
 if (isset($_POST['editPost'])){
     Post::updatePost($_POST['title'],$_POST['tags'] ,$post['id']);

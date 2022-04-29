@@ -335,4 +335,13 @@ class Post
             $statement->execute();
         }
     }
+
+    public static function deletePostById($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete from Projects where id = :postId");
+        $statement->bindValue(':postId', $id);
+        $statement->execute();
+    }
+
 }
