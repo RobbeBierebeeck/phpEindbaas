@@ -38,12 +38,13 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php include_once(__DIR__ . '/partials/header.inc.php')
+    <?php //include_once(__DIR__ . '/partials/header.inc.php')
     ?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <p><?php echo $userData['firstname']; ?> <?php echo $userData['lastname']; ?></p>
         <p><?php echo $userData['bio']; ?></p>
+        <form method="POST"><button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>">follow</button></form>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <?php if (isset($_SESSION['user'])) : ?>
@@ -90,6 +91,7 @@ $posts = Post::getUserProjectsById($target_user);
         <?php endif; ?>
     </div>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="./scripts/followUser.js"></script>
 </body>
 
 </html>
