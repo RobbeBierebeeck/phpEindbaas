@@ -1,5 +1,5 @@
 <?php
-include_once ('../../vendor/autoload.php');
+include_once ('./../vendor/autoload.php');
 use Drop\Core\DB;
 
 if (!empty($_POST["email"])){

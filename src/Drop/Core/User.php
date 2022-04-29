@@ -285,6 +285,24 @@ class User
         return $message;
     }
 
+    public static function getFollowerStatus($targetUser, $sessionUser){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from Followers where following_id = :following_id and follower_id = :follower_id");
+        $statement->bindValue(":following_id",$targetUser);
+        $statement->bindValue(":follower_id",$sessionUser);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        var_dump($result);
+        if (count($result) > 0) {
+            $followStatus = "following";
+            return $followStatus;
+        } 
+        else {
+            $followStatus = "follow";
+            return $followStatus;
+        }
+    }
+
     /** Delete user functions */
     public static function deleteFollowers($id)
     {
