@@ -1,6 +1,6 @@
 <?php
 
-use vendor\Drop\Core\DB;
+use Drop\Core\DB;
 
 include_once (__DIR__.'/../vendor/autoload.php');
 

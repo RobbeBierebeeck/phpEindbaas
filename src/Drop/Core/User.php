@@ -3,7 +3,7 @@
 namespace Drop\Core;
 
 use PDO;
-
+use Exception;
 class User
 {
     private $email;

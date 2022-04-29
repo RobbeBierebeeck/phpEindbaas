@@ -5,6 +5,7 @@ namespace Drop\Core;
 include_once(__DIR__ . '/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
+use Exception;
 use PDO;
 include_once('vendor/autoload.php');
 class Post
