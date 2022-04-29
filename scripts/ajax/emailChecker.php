@@ -1,19 +1,23 @@
 <?php
+include_once ('../../vendor/autoload.php');
+use Drop\Core\DB;
 
-use vendor\Drop\Core\DB;
-
-include_once(__DIR__ . '/../../bootstrap.php');
-
-$email = $_REQUEST["q"];
-
-$conn = DB::getConnection();
-$statement = $conn->prepare("select email from Users where email = :email");
-$statement->bindValue("email", htmlspecialchars($email));
-$statement->execute();
-$results = $statement->fetchAll();;
-if (count($results) > 0) {
-    //var_dump($results);
-    echo "this email is already in use";
-} else {
-    echo "email available";
+if (!empty($_POST["email"])){
+    $conn = DB::getConnection();
+    $statement = $conn->prepare("select email from Users where email = :email");
+    $statement->bindValue("email", htmlspecialchars($_POST["email"]));
+    $statement->execute();
+    $results = $statement->fetchAll();
+    
+    if (count($results) > 0) {
+        $response = [
+            "message" => "this email is already in use"
+        ];
+    } 
+    else {
+        $response = [
+            "message" => "email available"
+        ];
+    }
+    echo json_encode($response);
 }

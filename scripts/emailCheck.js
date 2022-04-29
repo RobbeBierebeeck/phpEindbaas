@@ -1,32 +1,47 @@
 document.querySelector(".email").addEventListener("change", () => {
     let mailBoxValue = document.querySelector(".email").value;
+    console.log(mailBoxValue);
 
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.status == 200) {
-            let textFeedback = document.querySelector(".email-validator");
-            let box = document.querySelector(".email");
-            textFeedback.innerHTML = xmlhttp.responseText;
+    let data = new FormData();
+    data.append("email", mailBoxValue);
 
-            if (xmlhttp.responseText == "this email is already in use") {
+    let textFeedback = document.querySelector(".email-validator");
+    let box = document.querySelector(".email");
+
+    fetch(`./scripts/ajax/emailChecker.php`, {
+        method: 'POST',
+        body: data,
+    })
+        .then(response => response.json())
+        .then((data) => {
+            console.log(data.message);
+
+            textFeedback.innerHTML = data.message;
+
+            if (data.message == "this email is already in use") {
                 textFeedback.classList.add("invalid-feedback");
                 textFeedback.style.display = "inline-block";
-                box.classList.add("is-invalid");
-            }
-            if (xmlhttp.responseText == "email available") {
-                textFeedback.classList.add("valid-feedback");
-                textFeedback.style.display = "inline-block";
-                box.classList.add("is-valid");
-            }
-            if (mailBoxValue == "") {
-                textFeedback.classList.remove("invalid-feedback");
                 textFeedback.classList.remove("valid-feedback");
                 box.classList.remove("is-valid");
-                box.classList.remove("is-invalid");
-                textFeedback.style.display = "none";
+                box.classList.add("is-invalid");
             }
-        }
+            if (data.message == "email available") {
+                textFeedback.classList.add("valid-feedback");
+                textFeedback.style.display = "inline-block";
+                textFeedback.classList.remove("invalid-feedback");
+                box.classList.add("is-valid");
+                box.classList.remove("is-invalid");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    if (mailBoxValue.length == 0) {
+        console.log("empty")
+        textFeedback.style.display = "none";
+        textFeedback.classList.remove("invalid-feedback");
+        textFeedback.classList.remove("valid-feedback");
+        box.classList.remove("is-valid");
+        box.classList.remove("is-invalid");
     }
-    xmlhttp.open("GET", "./scripts/ajax/emailChecker.php?q=" + mailBoxValue);
-    xmlhttp.send();
 })
