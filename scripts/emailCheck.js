@@ -9,7 +9,7 @@ document.querySelector(".email").addEventListener("change", () => {
     let box = document.querySelector(".email");
 
     if (mailBoxValue.indexOf('@') > -1 && mailBoxValue.indexOf('.thomasmore.be') > -1) {
-        fetch(`./scripts/ajax/emailChecker.php`, {
+        fetch(`./ajax/emailChecker.php`, {
             method: 'POST',
             body: data,
         })

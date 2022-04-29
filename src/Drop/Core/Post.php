@@ -5,6 +5,7 @@ namespace Drop\Core;
 include_once(__DIR__ . '/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
+use Exception;
 use PDO;
 include_once('vendor/autoload.php');
 class Post
@@ -181,6 +182,15 @@ class Post
         }
     }
 
+
+    public static function deleteProjectTags($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project_id WHERE Projects.id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+    }
+
     public static function deleteProjects($id)
     {
         $conn = DB::getConnection();
@@ -240,7 +250,7 @@ class Post
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
         INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
@@ -291,5 +301,39 @@ class Post
         $statement->bindValue(":postId", $id);
         $statement->execute();
         return $statement->fetch();
+    }
+    public static function updatePost($title, $tags, $id){
+        //saving the post
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Projects set title = :title where id = :id");
+        $statement->bindValue(":title", $title);
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+
+        //Deleting old many to many tags
+        $statement = $conn->prepare("delete from Project_Tags WHERE Project_Tags.project_id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+
+        //Seperate tags into array
+        $tags = explode(',', $tags);
+
+        //saving tags
+        $statement = $conn->prepare("insert into Tags(tag) values (:tag)");
+        if ($tags != null) {
+            foreach ($tags as $tag) {
+                if (!self::findTag($tag)) {
+                    $statement->bindValue(':tag', $tag);
+                    $statement->execute();
+                }
+            }
+        }
+        //saving the many to many relationship between tags and posts
+        foreach ($tags as $tag) {
+            $statement = $conn->prepare("insert into Project_Tags(tag_id, project_id) values ((select id from Tags where tag = :tag), :project_id)");
+            $statement->bindValue(':tag', $tag);
+            $statement->bindValue(':project_id', $id);
+            $statement->execute();
+        }
     }
 }

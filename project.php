@@ -24,6 +24,11 @@ header("Location: 404.html")
 if (isset($_POST['deletePost'])){
 
 }
+if (isset($_POST['editPost'])){
+    Post::updatePost($_POST['title'],$_POST['tags'] ,$post['id']);
+
+    header("refresh:0");
+}
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -85,7 +90,7 @@ if (isset($_POST['deletePost'])){
                             You are about to delete your post. Are you sure?
                         </div>
                         <div class="modal-footer">
-                            <form id="logout" class="mb-0" action="" method="post">
+                            <form id="deletePost" class="mb-0" action="" method="post">
                                 <button type="submit" class="btn btn-danger w-100" name="deletePost">Delete my post</button>
                             </form>
                         </div>
@@ -96,14 +101,28 @@ if (isset($_POST['deletePost'])){
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Edit post</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="logout" class="mb-0" action="" method="post">
+                            <form id="editPost" class="mb-0" action="" method="post">
                                 <div class="form-group mb-3">
-                                    <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo $post['title']?>">
+                                    <!-- Tag input feeld -->
+                                    <div class="mt-3 mb-3">
+                                        <label class="form-label" for="floatingInput">Tags</label>
+                                        <div class="input form-control" id="floatingInput">
+                                            <div class="input__tags"></div>
+                                            <input type="text" class="p-2" id="tags">
+                                        </div>
+                                    </div>
+                                    <input type="text" name="tags" id="tags-fake">
+                                    <!-- Title input feeld -->
+                                    <div class="mb-5">
+                                        <label class="mb-1">Post title</label>
+                                        <div class="form">
+                                            <input type="text" name="title" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $post['title'];?>" required>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes</button>
                             </form>
@@ -120,5 +139,6 @@ if (isset($_POST['deletePost'])){
         </div>
     </div>
 </div>
+<script src="scripts/tags.js"></script>
 </body>
 </html>

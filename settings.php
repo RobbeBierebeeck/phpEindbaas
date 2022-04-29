@@ -15,12 +15,16 @@ Security::onlyLoggedInUsers();
 
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
+$posts = Post::getUserProjectsById($id);
 $userData = User::getById($id);
 if (isset($_POST['delete'])) {
     Comment::deleteComments($id);
     Like::deleteLikes($id);
     Password::deletePasswordTemp($id);
     Post::deleteCloudinary($id);
+    foreach ($posts as $post) {
+        Post::deleteProjectTags($post['id']);
+    }
     Post::deleteProjects($id);
     Report::deleteReportedUsers($id);
     Socials::deleteSocialLinks($id);

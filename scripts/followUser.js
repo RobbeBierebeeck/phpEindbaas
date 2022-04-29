@@ -13,7 +13,7 @@ followerBtn.addEventListener("click", e => {
     data.append("targetUserId", followerBtn.dataset.targetUserId);
     data.append("sessionUserId", followerBtn.dataset.sessionUserId);
 
-    fetch(`./scripts/ajax/followCheck.php`, {
+    fetch(`./ajax/followCheck.php`, {
         method: 'POST',
         body: data,
     })
