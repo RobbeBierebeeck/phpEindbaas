@@ -27,6 +27,6 @@ document.querySelector(".email").addEventListener("change", () => {
             }
         }
     }
-    xmlhttp.open("GET", "./scripts/ajax/emailChecker.php?q=" + mailBoxValue);
+    xmlhttp.open("GET", "./ajax/emailChecker.php?q=" + mailBoxValue);
     xmlhttp.send();
 })

@@ -2,7 +2,7 @@
 
 use vendor\Drop\Core\DB;
 
-include_once(__DIR__ . '/../../bootstrap.php');
+include_once (__DIR__.'/../vendor/autoload.php');
 
 $email = $_REQUEST["q"];
 
