@@ -20,6 +20,7 @@ followerBtn.addEventListener("click", e => {
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
+            followerBtn.innerHTML = data.followStatus;
         })
         .catch((error) => {
             console.error('Error:', error);
