@@ -7,7 +7,6 @@ use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
-use Exception;
 include_once('vendor/autoload.php');
 class Post
 {
