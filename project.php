@@ -9,6 +9,7 @@ $id = User::getUserId($_SESSION['user']);
 
 $post = Post::getPostById($_GET['post']);
 
+
 if (isset($_GET["post"])) {
     $target_user = $_GET['post'];
 } else {
@@ -22,7 +23,10 @@ if (!empty($_GET)) {
 header("Location: 404.html")
 );
 if (isset($_POST['deletePost'])){
-
+    Post::deletePostImage($post['id']);
+    Post::deleteProjectTags($post['id']);
+    Post::deletePostById($post['id']);
+    header("Location: index.php");
 }
 if (isset($_POST['editPost'])){
     Post::updatePost($_POST['title'],$_POST['tags'] ,$post['id']);

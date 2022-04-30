@@ -7,6 +7,7 @@ use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
+use Exception;
 include_once('vendor/autoload.php');
 class Post
 {
@@ -336,4 +337,26 @@ class Post
             $statement->execute();
         }
     }
+
+    public static function deletePostById($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete from Projects where id = :postId");
+        $statement->bindValue(':postId', $id);
+        $statement->execute();
+    }
+
+
+    public static function deletePostImage($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare('SELECT publicId FROM Projects WHERE id = :id');
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $publicIds = $statement->fetchAll();
+        foreach ($publicIds as $publicId) {
+            (new UploadApi())->destroy($publicId['publicId']);
+        }
+    }
+
 }
