@@ -353,9 +353,7 @@ class Post
         $statement->bindValue(':id', $id);
         $statement->execute();
         $publicIds = $statement->fetchAll();
-        foreach ($publicIds as $publicId) {
-            (new UploadApi())->destroy($publicId['publicId']);
-        }
+            (new UploadApi())->destroy($publicIds['publicId']);
     }
 
 }
