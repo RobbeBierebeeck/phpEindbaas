@@ -40,14 +40,16 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php include_once(__DIR__ . '/partials/header.inc.php')
-    ?>
+    <?php include_once(__DIR__ . '/partials/header.inc.php')?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <p><?php echo $userData['firstname']; ?> <?php echo $userData['lastname']; ?></p>
         <p><?php echo $userData['bio']; ?></p>
-        <form method="POST"><button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button></form>
-    </div>
+        <form method="POST">
+            <?php if($target_user !== User::getUserId($_SESSION["user"])) : ?> 
+            <button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button></form>
+            <?php endif ?> 
+        </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <?php if (isset($_SESSION['user'])) : ?>
             <?php foreach ($posts as $post) : ?>
