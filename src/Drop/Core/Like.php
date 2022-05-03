@@ -77,4 +77,13 @@ class Like
         $statement->execute();
         return $statement->fetch();
     }
+
+    public static function getLikes($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT count(user_id) as likes FROM likes WHERE project_id = :project_id");
+        $statement->bindValue(":project_id", $postId);
+        $statement->execute();
+        return $statement->fetch();
+    }
 }

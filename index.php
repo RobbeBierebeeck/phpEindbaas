@@ -76,8 +76,8 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                             <?php endif;?>
 
                             <div class=" d-flex flex-row align-items-center mt-2">
-                                <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
-                                <div><i class="bi bi-eye-fill ms-3"></i><span class="ms-2">100</span></div>
+                                <div><i class="bi bi-heart-fill"></i><span id="likes" class="ms-2"><?php echo $post['likes']?></span></div>
+                                <div><i class="bi bi-eye-fill ms-3"></i><span id="views" class="ms-2"><?php echo $post['views']?></span></div>
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">

@@ -16,7 +16,7 @@ if( !empty($_POST) ) {
 
         // success
         $result = [
-            "status" => "success"
+            "status" => "success",
         ];
 
     } catch( Throwable $t ) {

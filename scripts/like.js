@@ -1,3 +1,4 @@
+let likes = document.querySelector("#likes");
 document.querySelector('#like').addEventListener("click", (e)=>{
     e.preventDefault()
 
@@ -13,8 +14,11 @@ document.querySelector('#like').addEventListener("click", (e)=>{
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    document.querySelector('#like').innerHTML = `<i class="bi bi-heart-fill"></i> Liked`
+                    document.querySelector('#like').innerHTML = `<i class="bi bi-heart-fill"></i>  Liked`
                     e.target.dataset.status = "liked"
+                    //console.log(likes.innerText.toString())
+                    likes.innerText = parseInt(likes.innerText) + 1
+
                 }
             })
             .catch((error) => {
@@ -31,6 +35,7 @@ document.querySelector('#like').addEventListener("click", (e)=>{
                 if (data.status === 'success') {
                     document.querySelector('#like').innerHTML = `<i class="bi bi-heart pe-2"></i> Like`
                     e.target.dataset.status="like"
+                    likes.innerText = parseInt(likes.innerText) - 1
                 }
             })
             .catch((error) => {
