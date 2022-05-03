@@ -1,6 +1,8 @@
 <?php
 session_start();
 use Drop\Core\Post;
+use Drop\Core\Like;
+use Drop\Core\User;
 include_once ('vendor/autoload.php');
 
 $page = 1;
@@ -65,10 +67,17 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
-                            <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+
+                            <?php if (Like::isLiked($post['id'], User::getUserId($_SESSION['user']))):?>
+                                <a href="#" id="like" data-status="liked" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart-fill"></i>Liked</a>
+                            <?php else:?>
+                                <a href="#" id="like" data-status="like" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+
+                            <?php endif;?>
+
                             <div class=" d-flex flex-row align-items-center mt-2">
-                                <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
-                                <div><i class="bi bi-eye-fill ms-3"></i><span class="ms-2">100</span></div>
+                                <div><i class="bi bi-heart-fill"></i><span id="likes" class="ms-2"><?php echo $post['likes']?></span></div>
+                                <div><i class="bi bi-eye-fill ms-3"></i><span id="views" class="ms-2"><?php echo $post['views']?></span></div>
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
@@ -136,7 +145,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
             <?php endif;?>
         </div>
     </div>
-
+<script src="./scripts/like.js"></script>
 </body>
 
 </html>
