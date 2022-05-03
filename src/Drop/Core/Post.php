@@ -336,4 +336,24 @@ class Post
             $statement->execute();
         }
     }
+
+    public static function deletePostById($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete from Projects where id = :postId");
+        $statement->bindValue(':postId', $id);
+        $statement->execute();
+    }
+
+
+    public static function deletePostImage($id)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare('SELECT publicId FROM Projects WHERE id = :id');
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $publicIds = $statement->fetchAll();
+            (new UploadApi())->destroy($publicIds['publicId']);
+    }
+
 }
