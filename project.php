@@ -77,7 +77,7 @@ if (isset($_POST['editPost'])){
                      aria-expanded="false" role="button" src="<?php echo $creator['profile_image'] ?>">
                 <div class="ms-3">
                     <p class="mb-0"><strong><?php echo $post['title']?></strong></p>
-                    <a href="profile.php?user=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
+                    <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
                 </div>
             </div>
             <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
