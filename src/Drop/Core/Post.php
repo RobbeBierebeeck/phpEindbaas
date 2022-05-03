@@ -352,7 +352,7 @@ class Post
         $statement = $conn->prepare('SELECT publicId FROM Projects WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
-        $publicIds = $statement->fetchAll();
+        $publicIds = $statement->fetch();
             (new UploadApi())->destroy($publicIds['publicId']);
     }
 
