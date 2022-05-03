@@ -57,4 +57,24 @@ class Like
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
+
+    public static function isLiked($postId, $userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT * FROM likes WHERE user_id = :user_id AND project_id = :project_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->bindValue(":project_id", $postId);
+        $statement->execute();
+        return $statement->fetch();
+    }
+
+    public static function delete($postId, $userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete from likes where user_id = :user_id AND project_id = :project_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->bindValue(":project_id", $postId);
+        $statement->execute();
+        return $statement->fetch();
+    }
 }
