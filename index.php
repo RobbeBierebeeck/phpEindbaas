@@ -65,7 +65,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
-                            <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+                            <a href="#" id="like" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
                             <div class=" d-flex flex-row align-items-center mt-2">
                                 <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
                                 <div><i class="bi bi-eye-fill ms-3"></i><span class="ms-2">100</span></div>
@@ -136,7 +136,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
             <?php endif;?>
         </div>
     </div>
-
+<script src="./scripts/like.js"></script>
 </body>
 
 </html>
