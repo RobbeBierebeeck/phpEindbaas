@@ -69,9 +69,9 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                             <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
 
                             <?php if (Like::isLiked($post['id'], User::getUserId($_SESSION['user']))):?>
-                                <a href="#" id="like" data-status="liked" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart-fill"></i>Liked</a>
+                                <a href="#" data-status="liked" data-post="<?php echo $post['id']?>" class="btn btn-primary like"><i class="bi bi-heart-fill"></i>Liked</a>
                             <?php else:?>
-                                <a href="#" id="like" data-status="like" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+                                <a href="#"  data-status="like" data-post="<?php echo $post['id']?>" class="btn btn-primary like"><i class="bi bi-heart pe-2"></i>Like</a>
 
                             <?php endif;?>
 
