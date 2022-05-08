@@ -376,5 +376,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetch()['showcase'];
     }
 
+    public static function getShowcase($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT * FROM Projects WHERE showcase = 1 AND user_id = :userId ");
+        $statement->bindValue(":userId", $userId,);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 
 }

@@ -16,7 +16,6 @@ document.querySelector('#showcase').addEventListener('click', (e) => {
                 } else {
                     document.querySelector('#showcase').innerHTML = 'add to showcase'
                 }
-                console.log(data)
             }
 
 

@@ -24,6 +24,8 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
                     <li><a class="dropdown-item" href="settings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="showCase.php?id=<?php echo User::getUserId($_SESSION['user'])?>">your showcase</a></li>
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>
