@@ -8,6 +8,23 @@ class Like
 {
     private $projectId;
     private $userId;
+    private $status;
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
 
     /**
      * @return mixed
@@ -44,9 +61,10 @@ class Like
     public function save()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("INSERT INTO likes (project_id, user_id) VALUES (:project_id, :user_id)");
+        $statement = $conn->prepare("INSERT INTO likes (project_id, user_id, status) VALUES (:project_id, :user_id, :status)");
         $statement->bindValue(':project_id', $this->projectId);
         $statement->bindValue(':user_id', $this->userId);
+        $statement->bindValue(':status', $this->status);
         $statement->execute();
 
     }
@@ -61,6 +79,26 @@ class Like
     public static function isLiked($postId, $userId)
     {
         $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT * FROM likes WHERE user_id = :user_id AND project_id = :project_id and status = 1");
+        $statement->bindValue(":user_id", $userId);
+        $statement->bindValue(":project_id", $postId);
+        $statement->execute();
+        return $statement->fetch();
+    }
+
+
+    public static function getLikes($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT count(user_id) as likes FROM likes WHERE project_id = :project_id and status = 1");
+        $statement->bindValue(":project_id", $postId);
+        $statement->execute();
+        return $statement->fetch();
+    }
+
+    public static function getLike($postId, $userId)
+    {
+        $conn = DB::getConnection();
         $statement = $conn->prepare("SELECT * FROM likes WHERE user_id = :user_id AND project_id = :project_id");
         $statement->bindValue(":user_id", $userId);
         $statement->bindValue(":project_id", $postId);
@@ -68,22 +106,15 @@ class Like
         return $statement->fetch();
     }
 
-    public static function delete($postId, $userId)
+    public static function updateStatus($postId, $userId, $status)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete from likes where user_id = :user_id AND project_id = :project_id");
+        $statement = $conn->prepare("UPDATE likes SET status = :status WHERE user_id = :user_id AND project_id = :project_id");
         $statement->bindValue(":user_id", $userId);
         $statement->bindValue(":project_id", $postId);
+        $statement->bindValue(":status", $status);
         $statement->execute();
-        return $statement->fetch();
+
     }
 
-    public static function getLikes($postId)
-    {
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("SELECT count(user_id) as likes FROM likes WHERE project_id = :project_id");
-        $statement->bindValue(":project_id", $postId);
-        $statement->execute();
-        return $statement->fetch();
-    }
 }

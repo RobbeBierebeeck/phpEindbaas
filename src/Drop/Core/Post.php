@@ -239,7 +239,7 @@ class Post
     {
         $conn = DB::getConnection();
         $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
