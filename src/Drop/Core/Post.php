@@ -65,7 +65,7 @@ class Post
     public function setTags($tags): void
     {
         $tags = explode(',', $tags);
-        $this->tags = $tags;
+        $this->tags = htmlspecialchars($tags);
     }
 
     public static function findTag($tag)
@@ -120,7 +120,7 @@ class Post
     public function setTitle($title): void
     {
         if (strlen($title) > 0) {
-            $this->title = $title;
+            $this->title = htmlspecialchars($title);
         } else {
             throw new Exception("Title can't be empty");
         }
@@ -139,7 +139,7 @@ class Post
      */
     public function setDescription($description): void
     {
-        $this->description = $description;
+        $this->description = htmlspecialchars($description);
     }
 
     /**
@@ -158,7 +158,7 @@ class Post
 
 
         if ($image['size'] !== 0) {
-            if (filesize($image['tmp_name']) < 1000000) {
+            if (filesize($image['tmp_name']) < 5000000) {
                 $image = (new UploadApi())->upload($image['tmp_name'], ["folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
                 $this->image = $image['url'];
                 $this->setPublicId($image['public_id']);
@@ -308,7 +308,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         //saving the post
         $conn = DB::getConnection();
         $statement = $conn->prepare("update Projects set title = :title where id = :id");
-        $statement->bindValue(":title", $title);
+        $statement->bindValue(":title", htmlspecialchars( $title));
         $statement->bindValue(":id", $id);
         $statement->execute();
 
@@ -325,7 +325,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         if ($tags != null) {
             foreach ($tags as $tag) {
                 if (!self::findTag($tag)) {
-                    $statement->bindValue(':tag', $tag);
+                    $statement->bindValue(':tag', htmlspecialchars($tag));
                     $statement->execute();
                 }
             }
