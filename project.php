@@ -4,6 +4,7 @@ use Drop\Core\User;
 use Drop\Helpers\Security;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
+
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 
@@ -89,7 +90,11 @@ if (isset($_POST['editPost'])){
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="editPost" href="#editPostModalToggle">Edit Post</button></li>
                         <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"  href="#deletePostModalToggle">Delete Post</button></li>
-                        <li><button  class="dropdown-item" >Add to portfolio</button></li>
+                        <?php if (Post::isShowcase($post['id']) == 0):?>
+                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Add to showcase</button></li>
+                        <?php else:?>
+                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Remove from showcase</button></li>
+                        <?php endif;?>
                     </ul>
                 </div>
                 <?php endif; ?>
@@ -153,5 +158,6 @@ if (isset($_POST['editPost'])){
     </div>
 </div>
 <script src="scripts/tags.js"></script>
+<script src="scripts/showcase.js"></script>
 </body>
 </html>

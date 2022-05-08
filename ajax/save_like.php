@@ -3,14 +3,15 @@
 use Drop\Core\Like;
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use Drop\Core\Post;
 
 require_once(__DIR__ . "/../vendor/autoload.php");
 Security::onlyLoggedInUsers();
+
 if (!empty($_POST)) {
     $postId = $_POST['postId'];
 
     try {
-
         if (!Like::getLike($postId, User::getUserId($_SESSION['user']))) {
             $l = new Like();
             $l->setProjectId($postId);

@@ -2,12 +2,12 @@
 namespace Drop\Core;
 
 
-include_once(__DIR__ . '/../../../config/configCloud.php');
+include_once(__DIR__ .'/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
-include_once('vendor/autoload.php');
+include_once (__DIR__.'/../../../vendor/autoload.php');
 class Post
 {
     private $id;
@@ -357,5 +357,24 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $publicIds = $statement->fetch();
             (new UploadApi())->destroy($publicIds['publicId']);
     }
+
+    public static function updateShowcase($postId, $showcase)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Projects set showcase = :showcase where id = :postId");
+        $statement->bindValue(":showcase", $showcase);
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+    }
+
+    public static function isShowcase($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT showcase FROM Projects WHERE id = :postId");
+        $statement->bindValue(":postId", $postId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch()['showcase'];
+    }
+
 
 }
