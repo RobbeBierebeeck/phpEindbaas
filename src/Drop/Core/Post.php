@@ -252,7 +252,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, users.`id` as user_id
+,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
         INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
