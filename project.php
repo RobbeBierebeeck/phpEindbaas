@@ -4,6 +4,7 @@ use Drop\Core\User;
 use Drop\Helpers\Security;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
+
 $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 
@@ -80,7 +81,26 @@ if (isset($_POST['editPost'])){
                     <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
                 </div>
             </div>
-            <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
+            <div>
+                <?php if ($creator['id'] == $id) : ?>
+                <div class="d-flex position-absolute align-self-end">
+                    <button class="btn bg-light mt-2 ms-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="editPost" href="#editPostModalToggle">Edit Post</button></li>
+                        <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"  href="#deletePostModalToggle">Delete Post</button></li>
+                        <?php if (Post::isShowcase($post['id']) == 0):?>
+                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Add to showcase</button></li>
+                        <?php else:?>
+                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Remove from showcase</button></li>
+                        <?php endif;?>
+                    </ul>
+                </div>
+                <?php endif; ?>
+                <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
+
+            </div>
             <p class="mt-5 ms-5 me-5"><?php echo $post['description']?></p>
 
             <div class="modal fade" id="deletePostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -134,15 +154,10 @@ if (isset($_POST['editPost'])){
                     </div>
                 </div>
             </div>
-            <?php if ($creator['id'] == $id) : ?>
-                    <div class="d-flex justify-content-center bg-gray">
-                        <a class="btn btn-primary" data-bs-toggle="modal" href="#editPostModalToggle" role="button">Edit post</a>
-                        <a class="btn btn-danger" data-bs-toggle="modal" href="#deletePostModalToggle" role="button">Delete post</a>
-                    </div>
-                <?php endif; ?>
         </div>
     </div>
 </div>
 <script src="scripts/tags.js"></script>
+<script src="scripts/showcase.js"></script>
 </body>
 </html>

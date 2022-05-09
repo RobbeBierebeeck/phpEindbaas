@@ -85,7 +85,7 @@ class User
     public
     function setFirstName($firstName)
     {
-        $this->firstName = $firstName;
+        $this->firstName = htmlspecialchars($firstName);
     }
 
     /**
@@ -103,7 +103,7 @@ class User
     public
     function setLastName($lastName)
     {
-        $this->lastName = $lastName;
+        $this->lastName = htmlspecialchars($lastName);
     }
 
     /**
@@ -346,7 +346,7 @@ class User
      */
     public function setBio($bio)
     {
-        $this->bio = $bio;
+        $this->bio = htmlspecialchars($bio);
 
         return $this;
     }
@@ -375,7 +375,7 @@ class User
      */
     public function setSecondEmail($secondEmail)
     {
-        $this->secondEmail = $secondEmail;
+        $this->secondEmail = htmlspecialchars($secondEmail);
 
         return $this;
     }

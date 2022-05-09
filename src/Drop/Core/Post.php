@@ -2,12 +2,12 @@
 namespace Drop\Core;
 
 
-include_once(__DIR__ . '/../../../config/configCloud.php');
+include_once(__DIR__ .'/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
-include_once('vendor/autoload.php');
+include_once (__DIR__.'/../../../vendor/autoload.php');
 class Post
 {
     private $id;
@@ -65,7 +65,7 @@ class Post
     public function setTags($tags): void
     {
         $tags = explode(',', $tags);
-        $this->tags = $tags;
+        $this->tags = htmlspecialchars($tags);
     }
 
     public static function findTag($tag)
@@ -120,7 +120,7 @@ class Post
     public function setTitle($title): void
     {
         if (strlen($title) > 0) {
-            $this->title = $title;
+            $this->title = htmlspecialchars($title);
         } else {
             throw new Exception("Title can't be empty");
         }
@@ -139,7 +139,7 @@ class Post
      */
     public function setDescription($description): void
     {
-        $this->description = $description;
+        $this->description = htmlspecialchars($description);
     }
 
     /**
@@ -158,7 +158,7 @@ class Post
 
 
         if ($image['size'] !== 0) {
-            if (filesize($image['tmp_name']) < 1000000) {
+            if (filesize($image['tmp_name']) < 5000000) {
                 $image = (new UploadApi())->upload($image['tmp_name'], ["folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
                 $this->image = $image['url'];
                 $this->setPublicId($image['public_id']);
@@ -238,8 +238,8 @@ class Post
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -252,7 +252,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from Projects 
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, users.`id` as user_id
+,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
         INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
@@ -308,7 +309,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         //saving the post
         $conn = DB::getConnection();
         $statement = $conn->prepare("update Projects set title = :title where id = :id");
-        $statement->bindValue(":title", $title);
+        $statement->bindValue(":title", htmlspecialchars( $title));
         $statement->bindValue(":id", $id);
         $statement->execute();
 
@@ -325,7 +326,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         if ($tags != null) {
             foreach ($tags as $tag) {
                 if (!self::findTag($tag)) {
-                    $statement->bindValue(':tag', $tag);
+                    $statement->bindValue(':tag', htmlspecialchars($tag));
                     $statement->execute();
                 }
             }
@@ -356,6 +357,33 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement->execute();
         $publicIds = $statement->fetch();
             (new UploadApi())->destroy($publicIds['publicId']);
+    }
+
+    public static function updateShowcase($postId, $showcase)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Projects set showcase = :showcase where id = :postId");
+        $statement->bindValue(":showcase", $showcase);
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+    }
+
+    public static function isShowcase($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT showcase FROM Projects WHERE id = :postId");
+        $statement->bindValue(":postId", $postId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch()['showcase'];
+    }
+
+    public static function getShowcase($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("SELECT * FROM Projects WHERE showcase = 1 AND user_id = :userId ");
+        $statement->bindValue(":userId", $userId,);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 
 }

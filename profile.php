@@ -7,7 +7,7 @@ include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
-    //var_dump($_GET["id"]);
+    var_dump($_GET["id"]);
     $target_user = $_GET["id"];
     $followStatus = User::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
 } else {

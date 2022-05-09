@@ -61,7 +61,7 @@ class Socials
      */
     public function setPlatform($platform)
     {
-        $this->platform = $platform;
+        $this->platform = htmlspecialchars($platform);
 
         return $this;
     }

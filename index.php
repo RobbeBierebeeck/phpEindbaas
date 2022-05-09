@@ -3,13 +3,13 @@ session_start();
 use Drop\Core\Post;
 use Drop\Core\Like;
 use Drop\Core\User;
-include_once ('vendor/autoload.php');
+include_once('vendor/autoload.php');
 
 $page = 1;
-$limitPerPage= 8;
+$limitPerPage = 8;
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-    $posts = Post::getAll( $page *$limitPerPage, $limitPerPage);
+    $posts = Post::getAll($page * $limitPerPage, $limitPerPage);
 
 } else {
     $posts = Post::getAll(0, 8);
@@ -17,7 +17,7 @@ if (!empty($_GET['page'])) {
 if (!empty($_GET['search'])) {
     $posts = Post::search($_GET['search'], 0, 8);
 }
-if(!empty($_GET['search'])&&!empty($_GET['page'])){
+if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
 }
@@ -63,21 +63,28 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="col mt-4">
-                    <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 ">
+                    <div href="project.php?post=<?php echo $post['id'] ?>" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
-                            <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
+                            <a href="project.php?post=<?php echo $post['id'] ?>"
+                               class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
 
-                            <?php if (Like::isLiked($post['id'], User::getUserId($_SESSION['user']))):?>
-                                <a href="#" id="like" data-status="liked" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart-fill"></i>Liked</a>
-                            <?php else:?>
-                                <a href="#" id="like" data-status="like" data-post="<?php echo $post['id']?>" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
+                            <?php if (Like::isLiked($post['id'], User::getUserId($_SESSION['user']))): ?>
+                                <a href="#" data-status="liked" data-post="<?php echo $post['id'] ?>"
+                                   class="btn btn-primary like"><i class="bi bi-heart-fill"></i> Liked</a>
+                            <?php else: ?>
+                                <a href="#" data-status="like" data-post="<?php echo $post['id'] ?>"
+                                   class="btn btn-primary like"><i class="bi bi-heart pe-2"></i>Like</a>
 
-                            <?php endif;?>
+                            <?php endif; ?>
 
                             <div class=" d-flex flex-row align-items-center mt-2">
-                                <div><i class="bi bi-heart-fill"></i><span id="likes" class="ms-2"><?php echo $post['likes']?></span></div>
-                                <div><i class="bi bi-eye-fill ms-3"></i><span id="views" class="ms-2"><?php echo $post['views']?></span></div>
+                                <div><i class="bi bi-heart-fill"></i><span id="likes"
+                                                                           class="ms-2"><?php echo $post['likes'] ?></span>
+                                </div>
+                                <div><i class="bi bi-eye-fill ms-3"></i><span id="views"
+                                                                              class="ms-2"><?php echo $post['views'] ?></span>
+                                </div>
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
@@ -89,7 +96,7 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
             <?php endforeach; ?>
         <?php else: ?>
             <?php foreach ($posts as $post): ?>
-                <div href="project.php?post=<?php echo $post['id']?>" class="col mt-4">
+                <div href="project.php?post=<?php echo $post['id'] ?>" class="col mt-4">
                     <div class="card">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-row justify-content-between">
@@ -100,17 +107,17 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-        <?php if (!$posts):?>
+        <?php if (!$posts): ?>
             <div class="d-flex vw-100 vh-100 align-items-center justify-content-center">
                 <img src="images/noresult.svg" alt="">
             </div>
         <?php endif; ?>
         <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
-            <?php if(!isset($_GET['search'])): ?>
+            <?php if (!isset($_GET['search'])): ?>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="?page=<?php echo $page -1; ?>" aria-label="Previous">
+                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -118,34 +125,41 @@ if(!empty($_GET['search'])&&!empty($_GET['page'])){
                         <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
                         <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?page=<?php echo $page +1; ?>" aria-label="Next">
+                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
-            <?php else:?>
+            <?php else: ?>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $page -1; ?>" aria-label="Previous">
+                            <a class="page-link"
+                               href="?search=<?php echo $_GET['search'] ?>&page=<?php echo $page - 1; ?>"
+                               aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=0">1</a></li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=1">2</a></li>
-                        <li class="page-item"><a class="page-link" href="?search=<?php echo$_GET['search']?>&page=2">3</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?search=<?php echo $_GET['search'] ?>&page=0">1</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?search=<?php echo $_GET['search'] ?>&page=1">2</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?search=<?php echo $_GET['search'] ?>&page=2">3</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?search=<?php echo $_GET['search']?>&page=<?php echo $page +1; ?>" aria-label="Next">
+                            <a class="page-link"
+                               href="?search=<?php echo $_GET['search'] ?>&page=<?php echo $page + 1; ?>"
+                               aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
-            <?php endif;?>
+            <?php endif; ?>
         </div>
     </div>
-<script src="./scripts/like.js"></script>
+    <script src="./scripts/like.js"></script>
 </body>
 
 </html>
