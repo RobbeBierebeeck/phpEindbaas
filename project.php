@@ -2,6 +2,7 @@
 use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use Drop\Core\XSS;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
@@ -77,8 +78,8 @@ if (isset($_POST['editPost'])){
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
                      aria-expanded="false" role="button" src="<?php echo $creator['profile_image'] ?>">
                 <div class="ms-3">
-                    <p class="mb-0"><strong><?php echo $post['title']?></strong></p>
-                    <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo $creator['firstname'];?> <?php echo $creator['lastname'];?></small></a>
+                    <p class="mb-0"><strong><?php echo XSS::specialChars($post['title'])?></strong></p>
+                    <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo XSS::specialChars($creator['firstname']);?> <?php echo XSS::specialChars($creator['lastname']);?></small></a>
                 </div>
             </div>
             <div>
@@ -101,7 +102,7 @@ if (isset($_POST['editPost'])){
                 <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
 
             </div>
-            <p class="mt-5 ms-5 me-5"><?php echo $post['description']?></p>
+            <p class="mt-5 ms-5 me-5"><?php echo XSS::specialChars($post['description'])?></p>
 
             <div class="modal fade" id="deletePostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">

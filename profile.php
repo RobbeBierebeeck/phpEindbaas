@@ -3,6 +3,7 @@
 use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use Drop\Core\XSS;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
@@ -43,8 +44,8 @@ $posts = Post::getUserProjectsById($target_user);
     <?php include_once(__DIR__ . '/partials/header.inc.php')?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
-        <p><?php echo $userData['firstname']; ?> <?php echo $userData['lastname']; ?></p>
-        <p><?php echo $userData['bio']; ?></p>
+        <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?></p>
+        <p><?php echo XSS::specialChars($userData['bio']); ?></p>
         <form method="POST">
             <?php if($target_user !== User::getUserId($_SESSION["user"])) : ?> 
             <button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button></form>
@@ -66,7 +67,7 @@ $posts = Post::getUserProjectsById($target_user);
                             </div>
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
-                            <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
+                            <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo XSS::specialChars($post['title']); ?></a>
                             <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
                             <div class=" d-flex flex-row align-items-center mt-2">
                                 <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
@@ -75,7 +76,7 @@ $posts = Post::getUserProjectsById($target_user);
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
                             <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
-                            <span>by <a href="profile.php?id=<?php echo $post['id']; ?>" class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></a> </span>
+                            <span>by <a href="profile.php?id=<?php echo $post['id']; ?>" class="fw-bolder"><?php echo XSS::specialChars($post['firstname']) . " " . XSS::specialChars($post['lastname']) ?></a> </span>
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,7 @@ $posts = Post::getUserProjectsById($target_user);
                     <div class="card">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-row justify-content-between">
-                            <h5 class="card-title "><?php echo $post['title'] ?></h5>
+                            <h5 class="card-title "><?php echo XSS::specialChars($post['title']) ?></h5>
 
                         </div>
                     </div>

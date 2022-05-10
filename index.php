@@ -3,6 +3,7 @@ session_start();
 use Drop\Core\Post;
 use Drop\Core\Like;
 use Drop\Core\User;
+use Drop\Core\XSS;
 include_once('vendor/autoload.php');
 
 $page = 1;
@@ -67,7 +68,7 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id'] ?>"
-                               class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo $post['title'] ?></a>
+                               class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo XSS::specialChars($post['title']) ?></a>
 
                             <?php if (Like::isLiked($post['id'], User::getUserId($_SESSION['user']))): ?>
                                 <a href="#" data-status="liked" data-post="<?php echo $post['id'] ?>"
@@ -89,7 +90,7 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
                             <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
-                            <span>by <a href="profile.php?id=<?php echo Post::getCreatorByPost($post['id'])["id"]?>" class="fw-bolder"><?php echo $post['firstname'] . " " . $post['lastname'] ?></a> </span> </span>
+                            <span>by <a href="profile.php?id=<?php echo Post::getCreatorByPost($post['id'])["id"]?>" class="fw-bolder"><?php echo XSS::specialChars($post['firstname']) . " " . XSS::specialChars($post['lastname']) ?></a> </span> </span>
                         </div>
                     </div>
                 </div>
@@ -100,7 +101,7 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                     <div class="card">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-row justify-content-between">
-                            <h5 class="card-title "><?php echo $post['title'] ?></h5>
+                            <h5 class="card-title "><?php echo XSS::specialChars($post['title']) ?></h5>
 
                         </div>
                     </div>

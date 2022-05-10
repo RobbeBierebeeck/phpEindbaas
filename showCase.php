@@ -1,6 +1,7 @@
 <?php
 
 use Drop\Core\Post;
+use Drop\Core\XSS;
 include_once(__DIR__ . '/vendor/autoload.php');
 
 if (!empty($_GET['id'])) {
@@ -35,7 +36,7 @@ if (!empty($_GET['id'])) {
         <div class="card">
             <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
             <div class="card-body d-flex flex-row justify-content-between">
-                <h5 class="card-title "><?php echo $post['title'] ?></h5>
+                <h5 class="card-title "><?php echo XSS::specialChars($post['title']) ?></h5>
 
             </div>
         </div>
