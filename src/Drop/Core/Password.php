@@ -18,7 +18,7 @@ abstract class Password
             $t = time();
             $diff = $t - strtotime($expDate['exp_date']);
             if ($diff > 86400) {
-                //throw new Exception("The link is outdated");
+                //throw new Exception("The link s outdated");
                 self::deletePasswordReset($code);
             }
         }
