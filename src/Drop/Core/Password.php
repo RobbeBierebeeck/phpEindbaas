@@ -1,6 +1,7 @@
 <?php
 
 namespace Drop\Core;
+use PDO;
 
 include_once('vendor/autoload.php');
 abstract class Password
