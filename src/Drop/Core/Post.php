@@ -65,7 +65,7 @@ class Post
     public function setTags($tags): void
     {
         $tags = explode(',', $tags);
-        $this->tags = htmlspecialchars($tags);
+        $this->tags = $tags;
     }
 
     public static function findTag($tag)
@@ -120,7 +120,7 @@ class Post
     public function setTitle($title): void
     {
         if (strlen($title) > 0) {
-            $this->title = htmlspecialchars($title);
+            $this->title = $title;
         } else {
             throw new Exception("Title can't be empty");
         }
@@ -139,7 +139,7 @@ class Post
      */
     public function setDescription($description): void
     {
-        $this->description = htmlspecialchars($description);
+        $this->description = $description;
     }
 
     /**
@@ -309,7 +309,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         //saving the post
         $conn = DB::getConnection();
         $statement = $conn->prepare("update Projects set title = :title where id = :id");
-        $statement->bindValue(":title", htmlspecialchars( $title));
+        $statement->bindValue(":title",  $title);
         $statement->bindValue(":id", $id);
         $statement->execute();
 
@@ -326,7 +326,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         if ($tags != null) {
             foreach ($tags as $tag) {
                 if (!self::findTag($tag)) {
-                    $statement->bindValue(':tag', htmlspecialchars($tag));
+                    $statement->bindValue(':tag', $tag);
                     $statement->execute();
                 }
             }
