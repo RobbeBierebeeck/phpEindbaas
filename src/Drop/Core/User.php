@@ -1,7 +1,10 @@
 <?php
-
 namespace Drop\Core;
 
+include_once (__DIR__.'/../../../vendor/autoload.php');
+include_once(__DIR__ .'/../../../config/configCloud.php');
+use Cloudinary\Api\Upload\UploadApi;
+use Drop\Core\DB;
 use PDO;
 use Exception;
 class User
@@ -13,7 +16,7 @@ class User
     private $profilePicture;
     private $bio;
     private $secondEmail;
-
+    private $publicId;
 
     public static function findByEmail($email)
     {
@@ -107,6 +110,24 @@ class User
     }
 
     /**
+     * Get the value of publicId
+     */ 
+    public function getPublicId()
+    {
+        return $this->publicId;
+    }
+
+    /**
+     * Set the value of publicId
+     *
+     * @return  self
+     */ 
+    public function setPublicId($publicId)
+    {
+        $this->publicId = $publicId;
+    }
+
+    /**
      * @return mixed
      */
     public static
@@ -127,21 +148,18 @@ class User
     public
     function setProfilePicture($profilePicture)
     {
-        try {
-            $targetDirectory = './upload/';
-            $targetFile = $targetDirectory . basename($profilePicture['name']);
-            $tempFile = $profilePicture['tmp_name'];
 
-            if (empty($profilePicture['name'])) {
-                //use placeholder as default if no local file is selected
-                $targetFile = $targetDirectory . "avatar_template.png";
+        if ($profilePicture['size'] !== 0) {
+            if (filesize($profilePicture['tmp_name']) < 5000000) {
+                $profilePicture = (new UploadApi())->upload($profilePicture['tmp_name'], ["folder" => "profile_pictures", "format" => "webp", "quality" => "auto", "aspect_ratio" => "1:1", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
+                $this->profilePicture = $profilePicture['url'];
+                $this->setPublicId($profilePicture['public_id']);
+            } else {
+                throw new Exception("Maximum file size is 5MB");
             }
-
-            move_uploaded_file($tempFile, $targetFile);
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
+        } else {
+            throw new Exception("Image can't be empty");
         }
-        $this->profilePicture = $targetFile;
     }
 
     public static function updatePicture($profilePicture, $user)
@@ -241,7 +259,6 @@ class User
         return password_hash($password, PASSWORD_DEFAULT, $options);
     }
 
-
     public function canLogin()
     {
         $conn = DB::getConnection();
@@ -257,7 +274,6 @@ class User
                 return false;
             }
         } else {
-
             throw new Exception("username or password is incorrect");
         }
     }
@@ -336,7 +352,6 @@ class User
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
-
 
     public static function getById($id)
     {
