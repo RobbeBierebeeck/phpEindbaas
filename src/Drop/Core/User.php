@@ -148,7 +148,6 @@ class User
     public
     function setProfilePicture($profilePicture)
     {
-
         if ($profilePicture['size'] !== 0) {
             if (filesize($profilePicture['tmp_name']) < 5000000) {
                 $profilePicture = (new UploadApi())->upload($profilePicture['tmp_name'], ["folder" => "profile_pictures", "format" => "webp", "quality" => "auto", "aspect_ratio" => "1:1", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
@@ -158,7 +157,7 @@ class User
                 throw new Exception("Maximum file size is 5MB");
             }
         } else {
-            throw new Exception("Image can't be empty");
+            $this->profilePicture = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652376899/profile_pictures/uqfiiuo3xjwxvlrun4tk.webp";
         }
     }
 
