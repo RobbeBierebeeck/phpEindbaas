@@ -44,7 +44,13 @@ $posts = Post::getUserProjectsById($target_user);
     <?php include_once(__DIR__ . '/partials/header.inc.php')?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
-        <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?></p>
+        <div>
+            <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?>
+            <?php if($userData['role'] == 'Moderator') : ?>
+                <span class="badge bg-dark">Mod</span>
+            <?php endif ?>
+        </p> 
+        </div>
         <p><?php echo XSS::specialChars($userData['bio']); ?></p>
         <div>
             <?php if($target_user !== User::getUserId($_SESSION["user"])) : ?> 
