@@ -41,7 +41,7 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php // include_once(__DIR__ . '/partials/header.inc.php')?>
+    <?php include_once(__DIR__ . '/partials/header.inc.php')?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?></p>
