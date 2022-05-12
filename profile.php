@@ -8,7 +8,7 @@ include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
-    var_dump($_GET["id"]);
+    //var_dump($_GET["id"]);
     $target_user = $_GET["id"];
     $followStatus = User::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
 } else {
@@ -41,16 +41,24 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php include_once(__DIR__ . '/partials/header.inc.php')?>
+    <?php // include_once(__DIR__ . '/partials/header.inc.php')?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?></p>
         <p><?php echo XSS::specialChars($userData['bio']); ?></p>
-        <form method="POST">
+        <div>
             <?php if($target_user !== User::getUserId($_SESSION["user"])) : ?> 
-            <button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button></form>
+                <form method="POST">
+                    <button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button>
+                </form>
+            <?php endif ?> 
+            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Admin") && (!empty($_GET["id"]))) : ?> 
+                <form method="POST">
+                    <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"?>add moderator</button>
+                </form>
             <?php endif ?> 
         </div>
+    </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <?php if (isset($_SESSION['user'])) : ?>
             <?php foreach ($posts as $post) : ?>
@@ -97,6 +105,7 @@ $posts = Post::getUserProjectsById($target_user);
     </div>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="./scripts/followUser.js"></script>
+    <script src="./scripts/saveModerator.js"></script>
 </body>
 
 </html>

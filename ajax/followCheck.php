@@ -2,6 +2,8 @@
 include_once ('./../vendor/autoload.php');
 use Drop\Core\DB;
 
+//var_dump($_POST);
+
 if (!empty($_POST)) {
     if($_POST['active'] == 0){
         $conn = DB::getConnection();
