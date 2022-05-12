@@ -303,6 +303,23 @@ class User
         }
     }
 
+    public static function getModStatus($user){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select role from users where id = :id");
+        $statement->bindValue(":id",$user);
+        $statement->execute();
+        $result = $statement->fetch();
+        //var_dump($result['role']);
+        if ($result['role'] == "Moderator") {
+            $modStatus = "remove from moderation";
+            return $modStatus;
+        } 
+        else {
+            $modStatus = "set moderator";
+            return $modStatus;
+        }
+    }
+
     /** Delete user functions */
     public static function deleteFollowers($id)
     {
@@ -324,7 +341,7 @@ class User
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);

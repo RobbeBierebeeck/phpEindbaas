@@ -54,7 +54,7 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endif ?> 
             <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Admin") && (!empty($_GET["id"]))) : ?> 
                 <form method="POST">
-                    <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"?>add moderator</button>
+                    <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
                 </form>
             <?php endif ?> 
         </div>

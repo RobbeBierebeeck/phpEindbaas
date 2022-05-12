@@ -2,11 +2,12 @@ let modBtn = document.querySelector('.moderatorBtn');
 
 modBtn.addEventListener("click", e => {
     e.preventDefault();
+
     let data = new FormData();
-    if (modBtn.innerHTML === "set moderator") {
+    if (modBtn.innerHTML == "set moderator") {
         data.append("role", "Moderator");
     }
-    else if (modBtn.innerHTML === "remove from moderation") {
+    else if (modBtn.innerHTML == "remove from moderation") {
         data.append("role", "User");
     }
     data.append("userId", modBtn.dataset.targetUserId);
