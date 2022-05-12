@@ -197,16 +197,15 @@ class User
             $oldImage = User::getProfilePicture($_SESSION['user']);
 
             //targetFile is set to default avatar
-            $targetDirectory = './upload/';
-            $targetFile = $targetDirectory . "avatar_template.png";
+            $newImage = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652376899/profile_pictures/uqfiiuo3xjwxvlrun4tk.webp";
 
             //remove old picture in filesystem
-            unlink($oldImage);
+            (new UploadApi())->destroy($oldImage);
 
             //update image path in database
             $conn = DB::getConnection();
             $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
-            $statement->bindValue(':profilePic', $targetFile);
+            $statement->bindValue(':profilePic', $newImage);
             $statement->bindValue(':id', $user);
             $statement->execute();
         } catch (Exception $ex) {
