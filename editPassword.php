@@ -31,7 +31,7 @@ if (isset($_POST['saveNewPw'])) {
         <div class="row flex-lg-nowrap">
             <div class=" col-12 col-lg-12 mb-3">
                 <div class="d-flex flex-col p-3">
-                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
+                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                     <div class="ms-3">
                         <p class="mb-0">
                             <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i class="text-muted">/</i><strong> Change password</strong>

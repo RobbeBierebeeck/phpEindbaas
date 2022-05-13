@@ -52,7 +52,7 @@ if (isset($_POST['userData'])) {
         <div class="row flex-lg-nowrap">
             <div class=" col-12 col-lg-12 mb-3">
                 <div class="d-flex flex-col p-3">
-                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
+                    <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                     <div class="ms-3">
                         <p class="mb-0">
                             <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i class="text-muted">/</i><strong> Edit profile</strong>
@@ -88,7 +88,7 @@ if (isset($_POST['userData'])) {
                 <div class="card p-3">
                     <div class="e-navlist e-navlist--active-bg">
                         <div class="d-flex flex-row justify-content-around flex-wrap">
-                            <img class="avatar avatar-96 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
+                            <img class="avatar avatar-96 bg-light rounded-circle text-white p-2 dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                             <form id="profile" class="mb-0 d-flex justify-content-center align-items-center" method="post" enctype="multipart/form-data">
                                 <div class="d-flex flex-row justify-content-around align-items-center">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">change profile picture</button>

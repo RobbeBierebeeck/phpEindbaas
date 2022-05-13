@@ -12,13 +12,12 @@ $id = User::getUserId($_SESSION['user']);
 $userData = User::getById($id);
 
     if(!empty($_POST)){
-    
-            $socials = new Socials();
-            $socials->setUserId($id);
-            $socials->setSocialLink($_POST['socialLink']);
-            $socials->setPlatform($_POST['platform']);
-            $socials->save();
-            $succes = "Link is saved";
+        $socials = new Socials();
+        $socials->setUserId($id);
+        $socials->setSocialLink($_POST['socialLink']);
+        $socials->setPlatform($_POST['platform']);
+        $socials->save();
+        $succes = "Link is saved";
     }
 
 ?>
@@ -47,7 +46,7 @@ $userData = User::getById($id);
             <div class="d-flex flex-col p-3">
                 <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle"
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
-                     aria-expanded="false" role="button" src="<?php echo $profileImg ?>">
+                     aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                 <div class="ms-3">
                     <p class="mb-0">
                         <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i

@@ -1,20 +1,19 @@
 <?php
-
+use Drop\Core\User;
 ?><nav class="navbar navbar-light bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">
             <img src="./images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Drop
         </a>
-        <?php use Drop\Core\User;
-
+        <?php 
         if (basename($_SERVER['SCRIPT_NAME']) ==='index.php'):?>
         <form method="get">
             <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
         </form>
         <?php endif;?>
         <div class="d-flex align-items-center">
-            <span class="rounded-circle nav__profilePicture" style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user']) ?>');"></span>
+            <span class="rounded-circle nav__profilePicture" style="background-image: url('<?php echo User::getProfilePicture($_SESSION['user'])['profile_image'] ?>');"></span>
             <div class="dropdown me-3">
 
                 <span class=" dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button">
@@ -25,7 +24,6 @@
                     <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
                     <li><a class="dropdown-item" href="settings.php">Instellingen</a></li>
                     <li><a class="dropdown-item" href="showCase.php?id=<?php echo User::getUserId($_SESSION['user'])?>">your showcase</a></li>
-
                     <li>
                         <hr class="dropdown-divider">
                     </li>
