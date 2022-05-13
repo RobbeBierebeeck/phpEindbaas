@@ -113,7 +113,7 @@ class User
     function getProfilePicture($email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select profile_image from users where email = :email");
+        $statement = $conn->prepare("select profile_image from Users where email = :email");
         $statement->bindValue(":email", $email);
         $statement->execute();
         $imageTable = $statement->fetch();
@@ -167,7 +167,7 @@ class User
 
                 //update image path in database
                 $conn = DB::getConnection();
-                $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+                $statement = $conn->prepare("update Users set profile_image = :profilePic where id = :id");
                 $statement->bindValue(':profilePic', $targetFile);
                 $statement->bindValue(':id', $user);
                 $statement->execute();
@@ -192,7 +192,7 @@ class User
 
             //update image path in database
             $conn = DB::getConnection();
-            $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+            $statement = $conn->prepare("update Users set profile_image = :profilePic where id = :id");
             $statement->bindValue(':profilePic', $targetFile);
             $statement->bindValue(':id', $user);
             $statement->execute();
@@ -245,7 +245,7 @@ class User
     public function canLogin()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select email, password from users where email = :email");
+        $statement = $conn->prepare("select email, password from Users where email = :email");
         $statement->bindValue("email", $this->email);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -265,7 +265,7 @@ class User
     public static function editPassword($id, $oldpw, $newpw)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select password from users where id = :id");
+        $statement = $conn->prepare("select password from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $checkpassword = $statement->fetch(PDO::FETCH_ASSOC);
@@ -273,7 +273,7 @@ class User
         if ($checkpassword) {
             $hash = $checkpassword['password'];
             if (password_verify($oldpw, $hash)) {
-                $statement = $conn->prepare("update users set password = :password where id = :id");
+                $statement = $conn->prepare("update Users set password = :password where id = :id");
                 $statement->bindValue("password", self::hashPassword($newpw));
                 $statement->bindValue("id", $id);
                 $statement->execute();
