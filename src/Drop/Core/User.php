@@ -200,16 +200,18 @@ class User
             $newImage = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp";
             $newPublicId = "profile_pictures/re80gpneludaiml3zxjp";
 
-            //remove old picture in filesystem
-            (new UploadApi())->destroy($oldImage['publicId']);
+            if($oldImage["profile_image"] != $newImage){
+                //remove old picture in filesystem
+                (new UploadApi())->destroy($oldImage['publicId']);
 
-            //update image path in database
-            $conn = DB::getConnection();
-            $statement = $conn->prepare("update users set profile_image = :profilePic, publicId = :publicId where id = :id");
-            $statement->bindValue(':profilePic', $newImage);
-            $statement->bindValue('publicId', $newPublicId);
-            $statement->bindValue(':id', $user);
-            $statement->execute();
+                //update image path in database
+                $conn = DB::getConnection();
+                $statement = $conn->prepare("update users set profile_image = :profilePic, publicId = :publicId where id = :id");
+                $statement->bindValue(':profilePic', $newImage);
+                $statement->bindValue('publicId', $newPublicId);
+                $statement->bindValue(':id', $user);
+                $statement->execute();
+            }
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }
