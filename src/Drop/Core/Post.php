@@ -186,7 +186,9 @@ class Post
     public static function deleteProjectTags($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project_id WHERE Projects.id = :id");
+        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project
+
+_id WHERE Projects.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -238,7 +240,7 @@ class Post
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
 , (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` desc limit :start, :limit");
@@ -252,7 +254,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, users.`id` as user_id
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
 ,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`

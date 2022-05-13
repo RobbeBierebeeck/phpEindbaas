@@ -82,7 +82,7 @@ if (!empty($_POST)) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="firstLastname">choose profile picture</label>
+                <label for="firstLastname">Choose profile picture</label>
                 <input type="file" name="profilePic" class="form-control" id="profilePic" accept=".png,.gif,.jpg,.webp">
             </div>
             <div class="col-12 pt-3">
