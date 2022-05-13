@@ -134,12 +134,11 @@ class User
     function getProfilePicture($email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select profile_image from users where email = :email");
+        $statement = $conn->prepare("select profile_image, publicId from users where email = :email");
         $statement->bindValue(":email", $email);
         $statement->execute();
         $imageTable = $statement->fetch();
-        $imagePath = $imageTable["profile_image"];
-        return $imagePath;
+        return $imageTable;
     }
 
     /**
@@ -157,7 +156,8 @@ class User
                 throw new Exception("Maximum file size is 5MB");
             }
         } else {
-            $this->profilePicture = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652376899/profile_pictures/uqfiiuo3xjwxvlrun4tk.webp";
+            $this->profilePicture = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp";
+            $this->setPublicId("profile_pictures/re80gpneludaiml3zxjp");
         }
     }
 
@@ -166,22 +166,22 @@ class User
         try {
             //find image to delete in upload folder
             $oldImage = User::getProfilePicture($_SESSION['user']);
+            var_dump($oldImage);
 
             //get new image to upload
             $profilePicture = (new UploadApi())->upload($profilePicture['tmp_name'], ["folder" => "profile_pictures", "format" => "webp", "quality" => "auto", "aspect_ratio" => "1:1", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
-            $targetFile = $profilePicture;
 
-
-            if ($oldImage != $targetFile['url']) {
-                if ($oldImage != "http://res.cloudinary.com/df5hbsklz/image/upload/v1652376899/profile_pictures/uqfiiuo3xjwxvlrun4tk.webp") {
+            if ($oldImage != $profilePicture['url']) {
+                if ($oldImage['profile_image'] != "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp") {
                     //remove image in filesystem if not equal to default avatar
-                    (new UploadApi())->destroy($oldImage);
+                    (new UploadApi())->destroy($oldImage['publicId']);
                 }
 
                 //update image path in database
                 $conn = DB::getConnection();
-                $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
-                $statement->bindValue(':profilePic', $targetFile['url']);
+                $statement = $conn->prepare("update users set profile_image = :profilePic, publicId = :publicId where id = :id");
+                $statement->bindValue(':profilePic', $profilePicture['url']);
+                $statement->bindValue(':publicId', $profilePicture['public_id']);
                 $statement->bindValue(':id', $user);
                 $statement->execute();
             }
@@ -197,15 +197,17 @@ class User
             $oldImage = User::getProfilePicture($_SESSION['user']);
 
             //targetFile is set to default avatar
-            $newImage = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652376899/profile_pictures/uqfiiuo3xjwxvlrun4tk.webp";
+            $newImage = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp";
+            $newPublicId = "profile_pictures/re80gpneludaiml3zxjp";
 
             //remove old picture in filesystem
-            (new UploadApi())->destroy($oldImage);
+            (new UploadApi())->destroy($oldImage['publicId']);
 
             //update image path in database
             $conn = DB::getConnection();
-            $statement = $conn->prepare("update users set profile_image = :profilePic where id = :id");
+            $statement = $conn->prepare("update users set profile_image = :profilePic, publicId = :publicId where id = :id");
             $statement->bindValue(':profilePic', $newImage);
+            $statement->bindValue('publicId', $newPublicId);
             $statement->bindValue(':id', $user);
             $statement->execute();
         } catch (Exception $ex) {
@@ -217,12 +219,13 @@ class User
     function save()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at, profile_image) values (:firstname, :lastname, :email, :password, NOW(), :profilePic)");
+        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at, profile_image, publicId) values (:firstname, :lastname, :email, :password, NOW(), :profilePic, :publicId)");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', SELF::hashPassword($this->password));
         $statement->bindValue(':profilePic', $this->profilePicture);
+        $statement->bindValue(':publicId', $this->publicId);
         $statement->execute();
     }
 
