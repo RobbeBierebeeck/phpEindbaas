@@ -1,7 +1,5 @@
 <?php
 namespace Drop\Core;
-
-
 include_once(__DIR__ .'/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;

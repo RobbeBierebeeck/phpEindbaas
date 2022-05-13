@@ -3,6 +3,7 @@ use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
+use Drop\Core\Comment;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
@@ -35,6 +36,18 @@ if (isset($_POST['editPost'])){
 
     header("refresh:0");
 }
+if (isset($_POST['commentPost'])){
+    try {
+        $comment = new Comment();
+        $comment->setComment($_POST['comment']);
+        $comment->setUserId($id);
+        $comment->setProjectId($post['id']);
+        $comment->save();
+    } catch (\Throwable $th) {
+        echo $th->getMessage();
+    }
+}
+$comments = Comment::getAll($post['id']);
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -156,7 +169,36 @@ if (isset($_POST['editPost'])){
                 </div>
             </div>
         </div>
+        <div class="row d-flex justify-content-center col-4 col-lg-4 col-md-8">
+            <div class="position-sticky" >
+                <div class="card shadow-0 border"  style="background-color: #f0f2f5;">
+                    <div class="card-body p-4 comments" >
+                        <form action="" method="post" class="form-outline mb-4 " >
+                            <h1>Feedback</h1>
+                            <div class="d-flex flex-row">
+                                <input type="text" id="comment" name="comment" class="form-control" placeholder="Enter a comment" required>
+                                <input id="submitComment" type="submit" data-post="<?php echo $_GET['post']?>" value="Post" name="commentPost" class="btn btn-outline-primary ms-2">
+                            </div>
+                        </form>
+                        <ul id="listupdates" class="overflow-auto card px-2 d-flex flex-column-reverse mh-10">
+                            <?php foreach($comments as $c):?>
+                                <div class='card-body border-bottom'>
+                                    <div class='d-flex justify-content-between'>
+                                        <div class='d-flex flex-row align-items-center'>
+                                            <img src='<?php echo $c['profile_image'] ?>' alt='avatar' width='25' height='25' />
+                                            <p class='small mb-0 ms-2'><?php echo $c['firstname']?> <?php echo $c['lastname'] ?></p>
+                                        </div>
+                                    </div>
+                                    <p class='test'><?php echo $c['comment']?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
 <script src="scripts/tags.js"></script>
 <script src="scripts/showcase.js"></script>
