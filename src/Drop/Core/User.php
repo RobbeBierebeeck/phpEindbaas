@@ -292,7 +292,6 @@ class User
         $statement->bindValue(":follower_id",$sessionUser);
         $statement->execute();
         $result = $statement->fetchAll();
-        var_dump($result);
         if (count($result) > 0) {
             $followStatus = "following";
             return $followStatus;
@@ -387,5 +386,20 @@ class User
         $statement->bindValue(':secondemail', $this->secondEmail);
         $statement->bindValue(':id', $id);
         $statement->execute();
+    }
+
+    /**
+     * Check if user has reported a user
+     */
+
+    public static function checkIfReported($userId, $reportedId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from Reported_users where user_id = :user_id and reported_id = :reported_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->bindValue(":reported_id", $reportedId);
+        $statement->execute();
+        return $statement->fetch();
+
     }
 }
