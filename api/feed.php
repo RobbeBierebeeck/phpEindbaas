@@ -13,10 +13,11 @@ try {
     );
     foreach ($posts as $post) {
         $result['data'][] = array(
-            'title' => $post['title'],
-            'url' => 'http://' . $_SERVER['HTTP_HOST'] ."/phpEindbaas/project.php?post=" . $post['id'],
-            'date' => $post['posted_at'],
-            'image' => $post['image']
+            'id'=>$post['id'],
+            'postTitle' => $post['title'],
+            'postLink' => 'http://' . $_SERVER['HTTP_HOST'] ."/phpEindbaas/project.php?post=" . $post['id'],
+            'postDateAdded' => $post['posted_at'],
+            'postImageThumbnail' => $post['image']
         );
     }
 
