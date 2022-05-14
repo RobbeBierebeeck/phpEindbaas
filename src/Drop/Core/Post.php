@@ -386,4 +386,12 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetchAll();
     }
 
+    public static function getApi()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select id, title, image, posted_at from Projects");
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
 }

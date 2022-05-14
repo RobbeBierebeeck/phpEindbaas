@@ -5,7 +5,6 @@ use Drop\Core\Like;
 use Drop\Core\User;
 use Drop\Core\XSS;
 include_once('vendor/autoload.php');
-
 $page = 1;
 $limitPerPage = 8;
 if (!empty($_GET['page'])) {
