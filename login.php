@@ -35,9 +35,7 @@ include_once ('vendor/autoload.php');
     <title>Login</title>
 </head>
 <body>
-    <?php if(isset($error)): ?>
-        <div class="alert alert-danger"><?php echo $error; ?></div>
-    <?php endif; ?>
+
     <div class="vh-100 vw-100 d-flex flex-column justify-content-center align-items-center">
         <img class="mb-4" src="images/logo.svg" alt="" width="72" height="57">
         <h1>Log in to your account!</h1>

@@ -91,3 +91,7 @@
     background-repeat: no-repeat;
     margin-right: 0.5em;
 }
+#listupdates{
+    max-height: 500px;
+
+}

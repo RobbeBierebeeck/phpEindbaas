@@ -1,7 +1,5 @@
 <?php
 namespace Drop\Core;
-
-
 include_once(__DIR__ .'/../../../config/configCloud.php');
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
@@ -384,6 +382,14 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $conn = DB::getConnection();
         $statement = $conn->prepare("SELECT * FROM Projects WHERE showcase = 1 AND user_id = :userId ");
         $statement->bindValue(":userId", $userId,);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public static function getApi()
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select id, title, image, posted_at from Projects");
         $statement->execute();
         return $statement->fetchAll();
     }

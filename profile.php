@@ -8,7 +8,6 @@ include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
-    //var_dump($_GET["id"]);
     $target_user = $_GET["id"];
     $followStatus = User::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
 } else {
@@ -42,7 +41,10 @@ $posts = Post::getUserProjectsById($target_user);
 
 <body>
     <?php include_once(__DIR__ . '/partials/header.inc.php')?>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
+    <div id="container" class=" mt-5">
+
+    </div>
+    <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <div>
             <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?>
@@ -63,6 +65,13 @@ $posts = Post::getUserProjectsById($target_user);
                     <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
                 </form>
             <?php endif ?> 
+            <?php if (!User::checkIfReported(User::getUserId($_SESSION['user']), $_GET['id'])):?>
+                <form method="POST">
+                    <button id="reportButton" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Report
+                    </button>
+                </form>
+            <?php endif;?>
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
@@ -109,9 +118,28 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
+    <!--- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report this user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to report this user?
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button data-bs-dismiss="modal" type="button" id="report" data-userId = "<?php echo $_GET['id']?>" class="btn btn-primary">Report user</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="./scripts/followUser.js"></script>
     <script src="./scripts/saveModerator.js"></script>
+    <script src="./scripts/reportUser.js"></script>
 </body>
 
 </html>
