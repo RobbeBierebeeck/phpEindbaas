@@ -59,8 +59,22 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
 <?php endif; ?>
 
 
-<div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
+<div class="mt-5">
+    <div class="btn-group mt-5 ms-5">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter
+        </button>
+        <ul class="dropdown-menu">
+            <li><h6 class="dropdown-header">Sort by date</h6></li>
+            <li><a class="dropdown-item" href="#">Newest</a></li>
+            <li><a class="dropdown-item" href="#">Oldest</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><h6 class="dropdown-header">Filter</h6></li>
+            <li><a class="dropdown-item" href="#">Following</a></li>
+        </ul>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto  container-lg">
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="col mt-4">
