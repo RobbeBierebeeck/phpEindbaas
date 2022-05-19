@@ -64,7 +64,12 @@ $posts = Post::getUserProjectsById($target_user);
                 <form method="POST">
                     <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
                 </form>
-            <?php endif ?> 
+            <?php endif ?>
+            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Moderator" || "Admin") && (!empty($_GET["id"]))): ?>
+                <form method="POST">
+                    <button name="warn" class="btn btn-outline-danger align-self-center warnBtn" data-target-user-id="<?php echo $target_user?>">warn</button>
+                </form>
+            <?php endif ?>
             <?php if (!User::checkIfReported(User::getUserId($_SESSION['user']), $_GET['id'])):?>
                 <form method="POST">
                     <button id="reportButton" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -140,6 +145,7 @@ $posts = Post::getUserProjectsById($target_user);
     <script src="./scripts/followUser.js"></script>
     <script src="./scripts/saveModerator.js"></script>
     <script src="./scripts/reportUser.js"></script>
+    <script src="./scripts/warnUser.js"></script>
 </body>
 
 </html>
