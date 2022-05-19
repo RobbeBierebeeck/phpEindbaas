@@ -52,7 +52,6 @@ class Warning
         $statement = $conn->prepare("insert into warned_users (user_id, reported_id, warned_at) values (:userId, :warnedId, NOW())");
         $statement->bindValue(':userId', $this->userId);
         $statement->bindValue(':warnedId', $this->warnedId);
-        var_dump($statement);
         $statement->execute();
     }
 }

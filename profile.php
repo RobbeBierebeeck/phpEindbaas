@@ -52,7 +52,7 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php //include_once(__DIR__ . '/partials/header.inc.php')?>
+    <?php include_once(__DIR__ . '/partials/header.inc.php')?>
     <div id="container" class=" mt-5">
 
     </div>

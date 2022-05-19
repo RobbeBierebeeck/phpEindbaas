@@ -334,6 +334,17 @@ class User
         }
     }
 
+    public static function getUserWarnings($reportedUser){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from warned_users where reported_id = :id");
+        $statement->bindValue(":id", $reportedUser);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return count($result);
+    }
+
+    
+
     /** Delete user functions */
     public static function deleteFollowers($id)
     {

@@ -7,10 +7,14 @@ use Drop\Core\XSS;
 include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
+
+if(isset($_SESSION["user"])){
+    $warnings = User::getUserWarnings(User::getUserId($_SESSION["user"]));
+}
+
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-    $posts = Post::getAll($page * $limitPerPage, $limitPerPage);
-
+    $posts = Post::getAll($page * $limitPerPage, $limitPerPage);    
 } else {
     $posts = Post::getAll(0, 8);
 }
@@ -52,12 +56,16 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                 <a href="register.php" class="btn btn-primary me-3">Register</a>
                 <a href="login.php" class="btn btn-outline-primary">Login</a>
             </div>
-
         </div>
-
     </nav>
 <?php endif; ?>
 
+<?php if (isset($warnings)): ?>
+    <div class="alert alert-danger mt-5" role="alert">
+    This is your warning #<?php echo $warnings ?> because you didn't meet our terms of use.
+    By closing this warning you accept this warning and implications of a warning #3 (account ban)
+    </div>
+<?php endif; ?>
 
 <div class="mt-5">
     <div class="btn-group mt-5 ms-5">
