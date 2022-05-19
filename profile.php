@@ -4,6 +4,7 @@ use Drop\Core\Post;
 use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
+use Drop\Core\Warning;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
@@ -18,6 +19,17 @@ if (isset($_POST['deletePost'])){
 }
 if (isset($_POST['editPost'])){
 
+}
+if (isset($_POST['warning'])){
+    try {
+        $warning = new Warning();
+        $warning->setWarnedId($target_user);
+        $warning->setUserId(User::getUserId($_SESSION["user"]));
+        var_dump($warning);
+        $warning->saveWarning();
+    } catch (\Throwable $e) {
+        $error = $e->getMessage();
+    }
 }
 
 $userData = User::getById($target_user);
@@ -40,7 +52,7 @@ $posts = Post::getUserProjectsById($target_user);
 </head>
 
 <body>
-    <?php include_once(__DIR__ . '/partials/header.inc.php')?>
+    <?php //include_once(__DIR__ . '/partials/header.inc.php')?>
     <div id="container" class=" mt-5">
 
     </div>
@@ -67,7 +79,7 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endif ?>
             <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Moderator" || "Admin") && (!empty($_GET["id"]))): ?>
                 <form method="POST">
-                    <button name="warn" class="btn btn-outline-danger align-self-center warnBtn" data-target-user-id="<?php echo $target_user?>">warn</button>
+                    <button name="warning" class="btn btn-outline-danger align-self-center">warn</button>
                 </form>
             <?php endif ?>
             <?php if (!User::checkIfReported(User::getUserId($_SESSION['user']), $_GET['id'])):?>
@@ -145,7 +157,6 @@ $posts = Post::getUserProjectsById($target_user);
     <script src="./scripts/followUser.js"></script>
     <script src="./scripts/saveModerator.js"></script>
     <script src="./scripts/reportUser.js"></script>
-    <script src="./scripts/warnUser.js"></script>
 </body>
 
 </html>

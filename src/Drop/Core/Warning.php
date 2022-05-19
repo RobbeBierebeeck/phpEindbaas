@@ -1,31 +1,13 @@
 <?php
 namespace Drop\Core;
 
+include_once (__DIR__.'/../../../vendor/autoload.php');
 use Drop\Core\DB;
 
-class User
+class Warning
 {
     private $userId;
-    private $reportedId;
-
-    /**
-     * Get the value of reportedId
-     */ 
-    public function getReportedId()
-    {
-        return $this->reportedId;
-    }
-
-    /**
-     * Set the value of reportedId
-     *
-     * @return  self
-     */ 
-    public function setReportedId($reportedId)
-    {
-        $this->reportedId = $reportedId;
-        return $this;
-    }
+    private $warnedId;
 
     /**
      * Get the value of userId
@@ -46,11 +28,31 @@ class User
         return $this;
     }
 
-    public function save(){
+    /**
+     * Get the value of warnedId
+     */ 
+    public function getWarnedId()
+    {
+        return $this->warnedId;
+    }
+
+    /**
+     * Set the value of warnedId
+     *
+     * @return  self
+     */ 
+    public function setWarnedId($warnedId)
+    {
+        $this->warnedId = $warnedId;
+        return $this;
+    }
+
+    public function saveWarning(){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into warned_users (userId, reportedId, created_at) values (:userId, :warnedId, NOW())");
+        $statement = $conn->prepare("insert into warned_users (user_id, reported_id, warned_at) values (:userId, :warnedId, NOW())");
         $statement->bindValue(':userId', $this->userId);
-        $statement->bindValue(':reportedId', $this->reportedId);
+        $statement->bindValue(':warnedId', $this->warnedId);
+        var_dump($statement);
         $statement->execute();
     }
 }
