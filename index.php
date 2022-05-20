@@ -18,12 +18,51 @@ if (!empty($_GET['page'])) {
 } else {
     $posts = Post::getAll(0, 8);
 }
+
 if (!empty($_GET['search'])) {
     $posts = Post::search($_GET['search'], 0, 8);
 }
+
 if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
+}
+
+
+if(!empty ($_GET['filter'])){
+
+    switch ($_GET['filter']){
+
+        case 'newest':
+                $posts = Post::getAll(0, 8);
+            break;
+        case 'oldest':
+
+        $posts = Post::getAllOldest(0, 8);
+            break;
+        case 'following':
+            $posts = Post::getAllFollowing(0, 8, User::getUserId($_SESSION['user']));
+            break;
+    }
+
+}
+
+if(!empty($_GET['filter']) && !empty($_GET['page'])){
+
+    switch ($_GET['filter']){
+
+        case 'newest':
+                $posts = Post::getAll($_GET['page'] * $limitPerPage, $limitPerPage);
+            break;
+        case 'oldest':
+
+        $posts = Post::getAllOldest($_GET['page'] * $limitPerPage, $limitPerPage);
+            break;
+        case 'following':
+            $posts = Post::getAllFollowing($_GET['page'] * $limitPerPage, $limitPerPage, User::getUserId($_SESSION['user']));
+            break;
+    }
+
 }
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -31,7 +70,7 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap</title>
+    <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/style.css">
@@ -67,6 +106,7 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
     </div>
 <?php endif; ?>
 
+<?php if (!isset($_GET['search'])):?>
 <div class="mt-5">
     <div class="btn-group mt-5 ms-5">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -74,14 +114,14 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
         </button>
         <ul class="dropdown-menu">
             <li><h6 class="dropdown-header">Sort by date</h6></li>
-            <li><a class="dropdown-item" href="#">Newest</a></li>
-            <li><a class="dropdown-item" href="#">Oldest</a></li>
+            <li><a class="dropdown-item" href="index.php?filter=newest">Newest</a></li>
+            <li><a class="dropdown-item" href="index.php?filter=oldest">Oldest</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><h6 class="dropdown-header">Filter</h6></li>
-            <li><a class="dropdown-item" href="#">Following</a></li>
+            <li><a class="dropdown-item" href="index.php?filter=following">Following</a></li>
         </ul>
     </div>
-
+<?php endif;?>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto  container-lg">
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
@@ -130,31 +170,18 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
+
+        <!-- empty state -->
         <?php if (!$posts): ?>
             <div class="d-flex vw-100 vh-100 align-items-center justify-content-center">
                 <img src="images/noresult.svg" alt="">
             </div>
         <?php endif; ?>
+
+
+        <!-- pagination -->
         <div class="vw-100 d-flex justify-content-center align-items-center pt-4 pb-4">
-            <?php if (!isset($_GET['search'])): ?>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="?page=0">1</a></li>
-                        <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
-                        <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            <?php else: ?>
+            <?php if (isset($_GET['search'])): ?>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item">
@@ -174,6 +201,52 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
                             <a class="page-link"
                                href="?search=<?php echo $_GET['search'] ?>&page=<?php echo $page + 1; ?>"
                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+            <?php elseif(isset($_GET['filter'])):?>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?filter=<?php echo $_GET['filter'] ?>&page=<?php echo $page - 1; ?>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=0">1</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=1">2</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=2">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?filter=<?php echo $_GET['filter'] ?>&page=<?php echo $page + 1; ?>"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            <?php else: ?>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="?page=0">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>

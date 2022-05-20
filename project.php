@@ -180,7 +180,7 @@ $comments = Comment::getAll($post['id']);
                                 <input id="submitComment" type="submit" data-post="<?php echo $_GET['post']?>" value="Post" name="commentPost" class="btn btn-outline-primary ms-2">
                             </div>
                         </form>
-                        <ul id="listupdates" class="overflow-auto card px-2 d-flex flex-column-reverse mh-10">
+                        <ul id="comments" class="overflow-auto card px-2 d-flex flex-column-reverse mh-10">
                             <?php foreach($comments as $c):?>
                                 <div class='card-body border-bottom'>
                                     <div class='d-flex justify-content-between'>
@@ -202,5 +202,6 @@ $comments = Comment::getAll($post['id']);
 </div>
 <script src="scripts/tags.js"></script>
 <script src="scripts/showcase.js"></script>
+<script src='scripts/comment.js'></script>
 </body>
 </html>

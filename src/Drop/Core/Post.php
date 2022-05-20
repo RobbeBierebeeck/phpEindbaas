@@ -249,6 +249,36 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
     }
 
+    public static function getAllOldest($start, $limit)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+INNER join Users on Projects.`user_id` = Users.`id`
+order by Projects.`posted_at` asc limit :start, :limit");
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue(':start', $start, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public static function getAllFollowing($start, $limit, $userId)
+    {
+      $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+
+INNER join Users on Projects.`user_id` = Users.`id`
+Inner join Followers on Projects.`user_id` = Followers.`following_id`
+where Followers.`follower_id` = :user_id
+order by Projects.`posted_at` desc limit :start, :limit");
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue(':start', $start, PDO::PARAM_INT);
+        $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
