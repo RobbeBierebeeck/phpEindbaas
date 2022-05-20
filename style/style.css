@@ -91,7 +91,9 @@
     background-repeat: no-repeat;
     margin-right: 0.5em;
 }
-#listupdates{
-    max-height: 500px;
 
+
+#comments{
+    max-height: 500px;
+    overflow-y: scroll;
 }

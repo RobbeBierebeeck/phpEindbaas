@@ -1,12 +1,15 @@
 <?php
+
 namespace Drop\Core;
 
-include_once (__DIR__.'/../../../vendor/autoload.php');
-include_once(__DIR__ .'/../../../config/configCloud.php');
+include_once(__DIR__ . '/../../../vendor/autoload.php');
+include_once(__DIR__ . '/../../../config/configCloud.php');
+
 use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use PDO;
 use Exception;
+
 class User
 {
     private $email;
@@ -111,7 +114,7 @@ class User
 
     /**
      * Get the value of publicId
-     */ 
+     */
     public function getPublicId()
     {
         return $this->publicId;
@@ -121,7 +124,7 @@ class User
      * Set the value of publicId
      *
      * @return  self
-     */ 
+     */
     public function setPublicId($publicId)
     {
         $this->publicId = $publicId;
@@ -200,7 +203,7 @@ class User
             $newImage = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp";
             $newPublicId = "profile_pictures/re80gpneludaiml3zxjp";
 
-            if($oldImage["profile_image"] != $newImage){
+            if ($oldImage["profile_image"] != $newImage) {
                 //remove old picture in filesystem
                 (new UploadApi())->destroy($oldImage['publicId']);
 
@@ -300,35 +303,35 @@ class User
         return $message;
     }
 
-    public static function getFollowerStatus($targetUser, $sessionUser){
+    public static function getFollowerStatus($targetUser, $sessionUser)
+    {
         $conn = DB::getConnection();
         $statement = $conn->prepare("select * from Followers where following_id = :following_id and follower_id = :follower_id");
-        $statement->bindValue(":following_id",$targetUser);
-        $statement->bindValue(":follower_id",$sessionUser);
+        $statement->bindValue(":following_id", $targetUser);
+        $statement->bindValue(":follower_id", $sessionUser);
         $statement->execute();
         $result = $statement->fetchAll();
         if (count($result) > 0) {
             $followStatus = "following";
             return $followStatus;
-        } 
-        else {
+        } else {
             $followStatus = "follow";
             return $followStatus;
         }
     }
 
-    public static function getModStatus($user){
+    public static function getModStatus($user)
+    {
         $conn = DB::getConnection();
         $statement = $conn->prepare("select role from users where id = :id");
-        $statement->bindValue(":id",$user);
+        $statement->bindValue(":id", $user);
         $statement->execute();
         $result = $statement->fetch();
         //var_dump($result['role']);
         if ($result['role'] == "Moderator") {
             $modStatus = "remove from moderation";
             return $modStatus;
-        } 
-        else {
+        } else {
             $modStatus = "set moderator";
             return $modStatus;
         }
@@ -358,6 +361,20 @@ class User
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
+    public static function getByComment($commentId, $userId)
+    {
+
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Comments.`id` as commentId, Users.`id`, Users.`profile_image`, Users.`firstname`, Users.`lastname` from Users
+
+Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :commentId and Users.`id` =:userId");
+        $statement->bindValue("commentId", $commentId);
+        $statement->bindValue("userId", $userId);
+        $statement->execute();
+        $user = $statement->fetch();
         return $user;
     }
 
@@ -433,4 +450,6 @@ class User
         return $statement->fetch();
 
     }
+
+
 }

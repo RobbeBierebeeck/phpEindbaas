@@ -10,16 +10,17 @@ if (!empty($_POST)) {
     $comment = $_POST['comment'];
     $postId = $_POST['postId'];
     try {
-        $c = new Comment();
+       $c = new Comment();
         $c->setComment($comment);
         $c->setUserId(User::getUserId($_SESSION['user']));
         $c->setProjectId($postId);
-        $c->save();
-        $id = $c->getId();
+       $c->save();
+       $id = $c->getId();
         $userId = User::getUserId($_SESSION['user']);
-        $data = User::getByComment($id, $userId);
+       $data = User::getByComment($id, $userId);
 
-        $result = [
+
+      $result = [
             "status" => "success",
             "message" => htmlspecialchars($comment),
             "data" => [
@@ -29,6 +30,8 @@ if (!empty($_POST)) {
                 "userData" => $data
             ]
         ];
+
+
     } catch (Throwable $t) {
         $result = [
             "status" => "error",
