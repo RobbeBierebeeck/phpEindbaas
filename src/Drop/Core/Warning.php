@@ -49,9 +49,27 @@ class Warning
 
     public function saveWarning(){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into warned_users (user_id, reported_id, warned_at) values (:userId, :warnedId, NOW())");
+        $statement = $conn->prepare("insert into warned_users (user_id, warned_id, warned_at, status) values (:userId, :warnedId, NOW(), :status)");
         $statement->bindValue(':userId', $this->userId);
         $statement->bindValue(':warnedId', $this->warnedId);
+        $statement->bindValue(':status', "pending");
+        $statement->execute();
+    }
+
+    public static function getUserWarnings($reportedUser){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from warned_users where warned_id = :id");
+        $statement->bindValue(":id", $reportedUser);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return count($result);
+    }
+
+    public static function updateWarning($userId){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update warned_users set status = :status where warned_id = :warnedId");
+        $statement->bindValue(':status', "agreed");
+        $statement->bindValue(':warnedId',$userId);
         $statement->execute();
     }
 }

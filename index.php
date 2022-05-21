@@ -3,13 +3,14 @@ session_start();
 use Drop\Core\Post;
 use Drop\Core\Like;
 use Drop\Core\User;
+use Drop\Core\Warning;
 use Drop\Core\XSS;
 include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
 
 if(isset($_SESSION["user"])){
-    $warnings = User::getUserWarnings(User::getUserId($_SESSION["user"]));
+    $warnings = Warning::getUserWarnings(User::getUserId($_SESSION["user"]));
 }
 
 if (!empty($_GET['page'])) {
@@ -98,12 +99,12 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
     </nav>
 <?php endif; ?>
 
-<?php if (isset($warnings)): ?>
+<?php if (isset($warnings) && $warnings['status'] == 'pending'): ?>
     <div class="warningAlert">
     <div class="alert alert-danger mt-5 pt-4 d-flex flex-row align-center justify-content-between" role="alert">
         <p class="mb-0">This is your warning <strong>#<?php echo $warnings ?></strong> because you didn't meet our terms of use.
         By closing this warning you accept this warning and implications of a warning #3 (account ban)</p>
-        <a type="button" class="close alert-link text-decoration-none warningLink" data-dismiss="alert">close</a>
+        <a type="button" href="#" class="close alert-link text-decoration-none warningLink" data-user-id="<?php echo User::getUserId($_SESSION["user"])?>" data-dismiss="alert">close</a>
     </div>
     </div>
 <?php endif; ?>
