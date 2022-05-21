@@ -25,11 +25,13 @@
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
 }
-.btn-primary{
+
+.btn-primary {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
 }
-.btn-primary:hover{
+
+.btn-primary:hover {
     background-color: var(--bs-hover);
     border-color: var(--bs-hover);
 }
@@ -44,11 +46,13 @@
     border-radius: 3px;
     cursor: pointer;
 }
-.tag:hover{
+
+.tag:hover {
     background-color: var(--bs-red);
 }
 
-.tag, input {
+.tag,
+input {
     font-size: 1em;
     text-transform: lowercase;
 }
@@ -57,7 +61,7 @@
     overflow-x: scroll;
     display: flex;
     align-items: center;
-    scrollbar-color:  #70b0cf;
+    scrollbar-color: #70b0cf;
     scrollbar-width: thin;
 
 }
@@ -75,7 +79,7 @@
 }
 
 /* navigation profile picture*/
-.nav__profilePicture{
+.nav__profilePicture {
     width: 30px;
     height: 30px;
     background-size: cover;
@@ -84,7 +88,7 @@
 }
 
 /* profile picture*/
-.profilePicture{
+.profilePicture {
     width: 30px;
     height: 30px;
     background-size: cover;
@@ -93,7 +97,11 @@
 }
 
 
-#comments{
+#comments {
     max-height: 500px;
     overflow-y: scroll;
+}
+
+.hidden {
+    display: none;
 }

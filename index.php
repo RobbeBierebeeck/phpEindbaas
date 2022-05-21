@@ -73,7 +73,6 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
     <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-avatar@latest/dist/avatar.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -100,9 +99,12 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
 <?php endif; ?>
 
 <?php if (isset($warnings)): ?>
-    <div class="alert alert-danger mt-5" role="alert">
-    This is your warning #<?php echo $warnings ?> because you didn't meet our terms of use.
-    By closing this warning you accept this warning and implications of a warning #3 (account ban)
+    <div class="warningAlert">
+    <div class="alert alert-danger mt-5 pt-4 d-flex flex-row align-center justify-content-between" role="alert">
+        <p class="mb-0">This is your warning <strong>#<?php echo $warnings ?></strong> because you didn't meet our terms of use.
+        By closing this warning you accept this warning and implications of a warning #3 (account ban)</p>
+        <a type="button" class="close alert-link text-decoration-none warningLink" data-dismiss="alert">close</a>
+    </div>
     </div>
 <?php endif; ?>
 
@@ -256,6 +258,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
         </div>
     </div>
     <script src="./scripts/like.js"></script>
+    <script src="./scripts/warningAlert.js"></script>
 </body>
 
 </html>
