@@ -9,7 +9,8 @@ include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
 
-if(isset($_SESSION["user"])){
+if(!empty($_SESSION["user"])){
+    $pendingWarning = Warning::getPendingWarnings(User::getUserId($_SESSION["user"]));
     $warnings = Warning::getUserWarnings(User::getUserId($_SESSION["user"]));
 }
 
@@ -99,7 +100,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
     </nav>
 <?php endif; ?>
 
-<?php if (isset($warnings) && $warnings['status'] == 'pending'): ?>
+<?php if (!empty($pendingWarning)): ?>
     <div class="warningAlert">
     <div class="alert alert-danger mt-5 pt-4 d-flex flex-row align-center justify-content-between" role="alert">
         <p class="mb-0">This is your warning <strong>#<?php echo $warnings ?></strong> because you didn't meet our terms of use.
@@ -173,6 +174,9 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
+
+        
+<div><?php echo $warnings ?></div>
 
         <!-- empty state -->
         <?php if (!$posts): ?>

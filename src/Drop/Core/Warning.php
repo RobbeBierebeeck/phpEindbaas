@@ -56,6 +56,16 @@ class Warning
         $statement->execute();
     }
 
+    public static function getPendingWarnings($reportedUser){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from warned_users where warned_id = :id and status = :status");
+        $statement->bindValue(":id", $reportedUser);
+        $statement->bindValue(":status", "pending");
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;
+    }
+
     public static function getUserWarnings($reportedUser){
         $conn = DB::getConnection();
         $statement = $conn->prepare("select * from warned_users where warned_id = :id");
