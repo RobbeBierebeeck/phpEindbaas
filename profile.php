@@ -77,7 +77,7 @@ $posts = Post::getUserProjectsById($target_user);
                     <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
                 </form>
             <?php endif ?>
-            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Moderator" || "Admin") && (!empty($_GET["id"]))): ?>
+            <?php if( (User::getById(User::getUserId($_SESSION["user"]))["role"] !== "User")  && (!empty($_GET["id"]))): ?>
                 <form method="POST">
                     <button name="warning" class="btn btn-outline-danger align-self-center">warn</button>
                 </form>
