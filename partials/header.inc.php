@@ -1,6 +1,6 @@
 <?php
 use Drop\Core\User;
-?><nav class="navbar navbar-light bg-light fixed-top">
+?><nav class="navbar navbar-light bg-light sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">
             <img src="./images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
