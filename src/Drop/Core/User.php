@@ -452,5 +452,38 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
 
     }
 
+    /**
+     * Check if user is banned
+     */
+    public static function isBanned($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select banned from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        if($statement->fetch()['banned'] == 1) {
+            return true;
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public static function isAdmin($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select admin from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        if($statement->fetch()['admin'] == 1) {
+            return true;
+        } else {
+            return false;
+
+        }
+    }
 
 }

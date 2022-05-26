@@ -23,7 +23,10 @@ use Drop\Core\User;
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
                     <li><a class="dropdown-item" href="settings.php">Instellingen</a></li>
-                    <li><a class="dropdown-item" href="showCase.php?id=<?php echo User::getUserId($_SESSION['user'])?>">your showcase</a></li>
+                    <li><a class="dropdown-item" href="showCase.php?id=<?php echo User::getUserId($_SESSION['user'])?>">Your showcase</a></li>
+                    <?php if (User::isAdmin(User::getUserId($_SESSION['user']))):?>
+                    <li><a class="dropdown-item" href="dashboard.php">Admin dashboard</a></li>
+                    <?php endif;?>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
