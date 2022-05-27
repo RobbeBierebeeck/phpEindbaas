@@ -86,13 +86,7 @@ include_once ('vendor/autoload.php');
                     <label for="content">Content</label>
                     <textarea class="form-control" id="content" name="description" rows="3" ></textarea>
                 </div>
-                <!--- Checkbox -->
-                <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="views">
-                    <label class="form-check-label" for="flexCheckDefault" >
-                        Make views public
-                    </label>
-                </div>
+
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary mt-3">Drop it</button>
             </form>

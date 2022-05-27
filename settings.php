@@ -17,6 +17,7 @@ $profileImg = User::getProfilePicture($_SESSION['user']);
 $id = User::getUserId($_SESSION['user']);
 $posts = Post::getUserProjectsById($id);
 $userData = User::getById($id);
+
 if (isset($_POST['delete'])) {
     Comment::deleteComments($id);
     Like::deleteLikes($id);
@@ -32,6 +33,14 @@ if (isset($_POST['delete'])) {
     User::deleteUser($id);
     session_destroy();
     header('Location: logout.php');
+}
+
+if(!empty($_POST['username'])){
+    User::updateUsername($_POST['username'],User::getUserId($_SESSION['user']));
+    User::updateEmail($_POST['email'], User::getUserId($_SESSION['user']));
+}
+if (isset($_POST['views'])) {
+        User::updateViews($_POST['views'], User::getUserId($_SESSION['user']));
 }
 ?><!doctype html>
 <html lang="en">
@@ -119,15 +128,32 @@ if (isset($_POST['delete'])) {
                         <div class="mb-3">
                             <label class="mb-1">Username</label>
                             <div class="form">
-                                <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['firstname']; echo $userData['lastname'];?>" required>
+                                <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['firstname']?>" >
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">Email</label>
                             <div class="form">
-                                <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['email']; ?>" required>
+                                <input type="text" name="email" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['email']; ?>" >
                             </div>
                         </div>
+                        <?php if ($userData['publicViews']==1):?>
+                        <!--- Checkbox -->
+                        <div class="form-check mt-3 mb-3">
+                            <input class="form-check-input" type="checkbox" value="0" id="flexCheckDefault" name="views" checked>
+                            <label class="form-check-label" for="flexCheckDefault" >
+                                Make views public
+                            </label>
+                        </div>
+                        <?php else:?>
+                        <!--- Checkbox -->
+                            <div class="form-check mt-3 mb-3">
+                                <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="views">
+                                <label class="form-check-label" for="flexCheckDefault" >
+                                    Views public
+                                </label>
+                            </div>
+                        <?php endif?>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>

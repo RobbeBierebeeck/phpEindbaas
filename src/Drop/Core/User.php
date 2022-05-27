@@ -358,7 +358,7 @@ class User
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role, publicViews from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -485,5 +485,53 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
 
         }
     }
+
+    /**
+     * Updating Username
+     */
+
+    public static function updateUsername($id, $username)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set firstname = :username where id = :id");
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Updating Email
+     */
+
+    public static function updateEmail($id, $email)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set email = :email where id = :id");
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Updating Views Settings
+     */
+    public static function updateViews($state, $userId )
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set publicViews = :state where id = :id");
+        $statement->bindValue(':id', $userId);
+        $statement->bindValue(':state', $state);
+        $statement->execute();
+    }
+
+
+    /**
+     * Checking user public view state
+     */
+
+
+
+
+
 
 }
