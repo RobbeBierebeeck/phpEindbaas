@@ -130,71 +130,120 @@ $comments = Comment::getAll($post['id']);
                             <?php endif; ?>
                         </ul>
                     </div>
+                <?php elseif (User::isModerator(User::getUserId($_SESSION['user']))): ?>
+
+                    <div class="d-flex position-absolute align-self-end">
+                        <button class="btn bg-light mt-2 ms-2" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"
+                                        href="#deletePostModalToggle">Delete Post
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 <?php endif; ?>
+
+
                 <img src="<?php echo $post['image'] ?>" class="img-fluid rounded-3" alt="Responsive image">
 
             </div>
             <p class="mt-5 ms-5 me-5"><?php echo XSS::specialChars($post['description']) ?></p>
 
-            <div class="modal fade" id="deletePostModalToggle" aria-hidden="true"
-                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            You are about to delete your post. Are you sure?
-                        </div>
-                        <div class="modal-footer">
-                            <form id="deletePost" class="mb-0" action="" method="post">
-                                <input name="deletePost" value="<?php echo $_GET['post']?>" type="text" hidden>
-                                <button type="submit" class="btn btn-danger w-100" >Delete my post
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="editPostModalToggle" aria-hidden="true"
-                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Edit post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editPost" class="mb-0" action="" method="post">
-                                <div class="form-group mb-3">
-                                    <!-- Tag input feeld -->
-                                    <div class="mt-3 mb-3">
-                                        <label class="form-label" for="floatingInput">Tags</label>
-                                        <div class="input form-control" id="floatingInput">
-                                            <div class="input__tags"></div>
-                                            <input type="text" class="p-2" id="tags">
-                                        </div>
-                                    </div>
-                                    <input type="text" name="tags" id="tags-fake">
-                                    <!-- Title input feeld -->
-                                    <div class="mb-5">
-                                        <label class="mb-1">Post title</label>
-                                        <div class="form">
-                                            <input type="text" name="title" class="form-control p-3" id="usernameInput"
-                                                   placeholder="Username" value="<?php echo $post['title']; ?>"
-                                                   required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes
-                                </button>
-                            </form>
+
+            <?php if ($creator['id'] == $id): ?>
+                <div class="modal fade" id="deletePostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                You are about to delete your post. Are you sure?
+                            </div>
+                            <div class="modal-footer">
+                                <form id="deletePost" class="mb-0" action="" method="post">
+                                    <input name="deletePost" value="<?php echo $_GET['post'] ?>" type="text" hidden>
+                                    <button type="submit" class="btn btn-danger w-100">Delete my post
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="modal fade" id="editPostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Edit post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editPost" class="mb-0" action="" method="post">
+                                    <div class="form-group mb-3">
+                                        <!-- Tag input feeld -->
+                                        <div class="mt-3 mb-3">
+                                            <label class="form-label" for="floatingInput">Tags</label>
+                                            <div class="input form-control" id="floatingInput">
+                                                <div class="input__tags"></div>
+                                                <input type="text" class="p-2" id="tags">
+                                            </div>
+                                        </div>
+                                        <input type="text" name="tags" id="tags-fake">
+                                        <!-- Title input feeld -->
+                                        <div class="mb-5">
+                                            <label class="mb-1">Post title</label>
+                                            <div class="form">
+                                                <input type="text" name="title" class="form-control p-3"
+                                                       id="usernameInput"
+                                                       placeholder="Username" value="<?php echo $post['title']; ?>"
+                                                       required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php elseif (User::isModerator(User::getUserId($_SESSION['user']))): ?>
+                <div class="modal fade" id="deletePostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                You are about to delete your post. Are you sure?
+                            </div>
+                            <div class="modal-footer">
+                                <form id="deletePost" class="mb-0" action="" method="post">
+                                    <input name="deletePost" value="<?php echo $_GET['post'] ?>" type="text" hidden>
+                                    <button type="submit" class="btn btn-danger w-100">Delete my post
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
         </div>
+
+
         <div class="row d-flex justify-content-center col-4 col-lg-4 col-md-8">
             <div class="position-sticky">
                 <div class="card shadow-0 border" style="background-color: #f0f2f5;">
