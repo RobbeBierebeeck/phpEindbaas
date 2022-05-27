@@ -21,8 +21,8 @@ use Drop\Core\User;
                 </span>
 
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="profile.php">Profiel</a></li>
-                    <li><a class="dropdown-item" href="settings.php">Instellingen</a></li>
+                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                    <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                     <li><a class="dropdown-item" href="showCase.php?id=<?php echo User::getUserId($_SESSION['user'])?>">Your showcase</a></li>
                     <?php if (User::isModerator(User::getUserId($_SESSION['user']))):?>
                     <li><a class="dropdown-item" href="dashboard.php">Admin dashboard</a></li>
