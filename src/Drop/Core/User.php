@@ -28,7 +28,16 @@ class User
         $statement->bindValue("email", $email);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC); //connectie default instellen
+    }
 
+    public static function checkEmailAvailability($email)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select email from Users where email = :email");
+        $statement->bindValue("email", $email);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        return $results;
     }
 
     /**
