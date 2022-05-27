@@ -312,21 +312,22 @@ class User
         return $message;
     }
 
-    public static function getModStatus($user)
+    public static function getModStatus($userId)
     {
         $conn = DB::getConnection();
         $statement = $conn->prepare("select role from users where id = :id");
-        $statement->bindValue(":id", $user);
+        $statement->bindValue(":id", $userId);
         $statement->execute();
         $result = $statement->fetch();
-        //var_dump($result['role']);
-        if ($result['role'] == "Moderator") {
-            $modStatus = "remove from moderation";
-            return $modStatus;
-        } else {
-            $modStatus = "set moderator";
-            return $modStatus;
-        }
+        return $result;
+    }
+
+    public static function updateUserStatus($userId, $status){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update users set role = :role where id = :id ");
+        $statement->bindValue(":id", $userId);
+        $statement->bindValue(":role", $status);
+        $statement->execute();
     }
 
     /** Delete user functions */

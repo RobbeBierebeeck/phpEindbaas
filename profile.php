@@ -81,7 +81,11 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endif ?> 
             <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Admin") && (!empty($_GET["id"])) && ($userData['role'] !== "Admin")): ?>
                 <form method="POST">
-                    <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
+                    <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>">
+                    <?php if(User::getModStatus($target_user)['role'] == "Moderator"){
+                        echo "remove from moderation";
+                    }else{echo "set moderator";}
+                     ?></button>
                 </form>
             <?php endif ?>
             <?php if( (User::getById(User::getUserId($_SESSION["user"]))["role"] !== "User")  && (!empty($_GET["id"]))): ?>
