@@ -175,9 +175,6 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
             <?php endforeach; ?>
         <?php endif; ?>
 
-        
-<div><?php echo $warnings ?></div>
-
         <!-- empty state -->
         <?php if (!$posts): ?>
             <div class="d-flex vw-100 vh-100 align-items-center justify-content-center">

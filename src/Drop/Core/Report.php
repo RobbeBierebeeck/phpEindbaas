@@ -6,6 +6,7 @@ class Report
 {
     private $user_id;
     private $report_id;
+    private $project_id;
 
     /**
      * @return mixed
@@ -39,6 +40,26 @@ class Report
         $this->report_id = $report_id;
     }
 
+    /**
+     * Get the value of project_id
+     */ 
+    public function getProject_id()
+    {
+        return $this->project_id;
+    }
+
+    /**
+     * Set the value of project_id
+     *
+     * @return  self
+     */ 
+    public function setProject_id($project_id)
+    {
+        $this->project_id = $project_id;
+
+        return $this;
+    }
+
     public static function deleteReportedUsers($id)
     {
         $conn = DB::getConnection();
@@ -55,4 +76,10 @@ class Report
         $statement->execute();
     }
 
+    public function saveProjectReport(){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("insert into reported_projects (reported_at, project_id) values (NOW(), :reported_id)");
+        $statement->bindValue(":reported_id", $this->project_id);
+        $statement->execute();
+    }
 }

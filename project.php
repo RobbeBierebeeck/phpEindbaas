@@ -94,6 +94,14 @@ $comments = Comment::getAll($post['id']);
                     <p class="mb-0"><strong><?php echo XSS::specialChars($post['title'])?></strong></p>
                     <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo XSS::specialChars($creator['firstname']);?> <?php echo XSS::specialChars($creator['lastname']);?></small></a>
                 </div>
+                <div class="btn-group ms-auto p-2">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle optionsToggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        options
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a data-project-id="<?php echo $post['id']?>" class="dropdown-item reportProject" href="#">report project</a></li>
+                    </ul>
+                </div>
             </div>
             <div>
                 <?php if ($creator['id'] == $id) : ?>
@@ -203,5 +211,6 @@ $comments = Comment::getAll($post['id']);
 <script src="scripts/tags.js"></script>
 <script src="scripts/showcase.js"></script>
 <script src='scripts/comment.js'></script>
+<script src='scripts/reportProject.js'></script>
 </body>
 </html>
