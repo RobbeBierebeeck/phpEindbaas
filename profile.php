@@ -1,6 +1,7 @@
 <?php
 
 use Drop\Core\Post;
+use Drop\Core\Followers;
 use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
@@ -10,7 +11,7 @@ Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
     $target_user = $_GET["id"];
-    $followStatus = User::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
+    $followStatus = Followers::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
 } else {
     $target_user = User::getUserId($_SESSION["user"]);
 }
