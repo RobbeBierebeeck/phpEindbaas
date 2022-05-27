@@ -14,7 +14,7 @@
 
         public static function onlyAdminUsers($userId)
         {
-            if (!User::isAdmin(User::getUserId($userId))) {
+            if (!User::isModerator(User::getUserId($userId))) {
                 header("Location: index.php");
             }
             

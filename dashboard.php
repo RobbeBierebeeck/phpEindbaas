@@ -1,20 +1,20 @@
 <?php
     use Drop\Helpers\Security;
-    use Drop\Core\Admin;
+    use Drop\Core\Moderator;
     include_once (__DIR__ .'/vendor/autoload.php');
 
     Security::onlyLoggedInUsers();
     Security::onlyAdminUsers($_SESSION['user']);
-    $reportedUsers = Admin::getAllReportedUsers();
+    $reportedUsers = Moderator::getAllReportedUsers();
 
     if (!empty($_GET['block'])){
-        Admin::blockUser($_GET['block']);
+        Moderator::blockUser($_GET['block']);
     }
     if (!empty($_GET['unblock'])){
-        Admin::unblockUser($_GET['unblock']);
+        Moderator::unblockUser($_GET['unblock']);
     }
     if (isset($_GET['blockedUsers'])){
-        $blockedUsers = Admin::getAllBlockedUsers();
+        $blockedUsers = Moderator::getAllBlockedUsers();
     }
 
 ?><!doctype html>
@@ -74,7 +74,7 @@
 
             <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Admin dashboard</h1>
+                <h1 class="h2">Moderator dashboard</h1>
             </div>
             <?php if (isset($_GET['blockedUsers'])):?>
             <h2>Blocked Users</h2>

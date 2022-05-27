@@ -6,7 +6,7 @@ use Drop\Core\DB;
 
 include_once(__DIR__ . '/../../../vendor/autoload.php');
 
-abstract class Admin
+abstract class Moderator
 {
     public static function getAllReportedUsers()
     {

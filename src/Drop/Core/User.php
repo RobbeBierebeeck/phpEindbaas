@@ -470,15 +470,15 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     }
 
     /**
-     * Check if user is admin
+     * Check if user is moderator
      */
-    public static function isAdmin($userId)
+    public static function isModerator($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select admin from Users where id = :user_id");
+        $statement = $conn->prepare("select role from Users where id = :user_id");
         $statement->bindValue(":user_id", $userId);
         $statement->execute();
-        if($statement->fetch()['admin'] == 1) {
+        if($statement->fetch()['role'] === "Moderator") {
             return true;
         } else {
             return false;

@@ -72,7 +72,7 @@ $posts = Post::getUserProjectsById($target_user);
                     <button name="follow" class="btn btn-primary align-self-center follow followBtn" data-target-user-id="<?php echo $target_user?>" data-session-user-id="<?php echo User::getUserId($_SESSION["user"])?>"><?php echo $followStatus?></button>
                 </form>
             <?php endif ?> 
-            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Admin") && (!empty($_GET["id"])) && ($userData['role'] !== "Admin")): ?>
+            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] == "Moderator") && (!empty($_GET["id"])) && ($userData['role'] !== "Moderator")): ?>
                 <form method="POST">
                     <button name="mod" class="btn btn-outline-primary align-self-center moderatorBtn" data-target-user-id="<?php echo $target_user?>"><?php echo User::getModStatus($target_user) ?></button>
                 </form>
