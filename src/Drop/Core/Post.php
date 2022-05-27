@@ -184,9 +184,7 @@ class Post
     public static function deleteProjectTags($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project
-
-_id WHERE Projects.id = :id");
+        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project_id WHERE Projects.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
