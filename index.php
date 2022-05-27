@@ -30,7 +30,6 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
 }
 
-
 if(!empty ($_GET['filter'])){
 
     switch ($_GET['filter']){
@@ -149,9 +148,11 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <div><i class="bi bi-heart-fill"></i><span id="likes"
                                                                            class="ms-2"><?php echo $post['likes'] ?></span>
                                 </div>
+                                <?php if(isset($post['views'])):?>
                                 <div><i class="bi bi-eye-fill ms-3"></i><span id="views"
                                                                               class="ms-2"><?php echo $post['views'] ?></span>
                                 </div>
+                                <?php endif;?>
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">

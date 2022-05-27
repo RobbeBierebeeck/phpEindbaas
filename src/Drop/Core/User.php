@@ -526,10 +526,17 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
 
 
     /**
-     * Checking user public view state
+     * Can views be public or private
      */
 
-
+    public static function canViewsBePublic($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select publicViews from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        return $statement->fetch()['publicViews'];
+    }
 
 
 

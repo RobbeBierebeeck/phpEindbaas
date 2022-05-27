@@ -231,39 +231,58 @@ class Post
         }
     }
 
+    /**
+     * function to find views that are private
+     */
+
+    public static function findPrivateViews($data){
+
+        $posts = array();
+        foreach ($data as $key => $post){
+            if ($post['publicViews'] == 0) {
+                unset($post['views']);
+            }
+            $posts[] = $post;
+        }
+
+        return $posts;
+
+    }
 
     public static function getAll($start, $limit)
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
+Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+
+        return Self::findPrivateViews($statement->fetchAll());
 
     }
 
     public static function getAllOldest($start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
 , (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` asc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
+
     }
 
     public static function getAllFollowing($start, $limit, $userId)
     {
       $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
 , (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 
 INNER join Users on Projects.`user_id` = Users.`id`
@@ -274,13 +293,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
     }
 
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
+        $statement = $conn->prepare("select Users.`publicViews`,  Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
 ,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
@@ -295,19 +314,19 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
         //compares similar array values and removes duplicates
         //Sort_regular flag prevents array from being converted to string and compares the array as it is
-        return array_unique($statement->fetchAll(), SORT_REGULAR);
+        return array_unique(Self::findPrivateViews($statement->fetchAll()), SORT_REGULAR);
 
     }
 
     public static function getUserProjectsById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
         from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
         order by Projects.`posted_at`");
         $statement->bindValue(':userid', $id);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
     }
     // Gets all data from post with project id
     public static function getPostById($id){
