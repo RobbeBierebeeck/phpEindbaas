@@ -4,6 +4,7 @@ use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
 use Drop\Core\Comment;
+use Drop\Core\View;
 include_once('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
@@ -19,12 +20,16 @@ if (isset($_GET["post"])) {
     $target_user = User::getUserId($_SESSION["user"]);
 }
 $userData = User::getById($id);
+
+//rerouting if get is empty
 if (!empty($_GET)) {
     $post = Post::getPostById($_GET['post']);
     $creator = Post::getCreatorByPost($_GET['post']);
 } else (
 header("Location: 404.html")
 );
+
+//delete post
 
 if (!empty($_POST['deletePost'])) {
     Post::deletePostImage($_POST['deletePost']);
@@ -33,11 +38,15 @@ if (!empty($_POST['deletePost'])) {
     header("Location: index.php");
 }
 
+//editing post
+
 if (isset($_POST['editPost'])) {
     Post::updatePost($_POST['title'], $_POST['tags'], $post['id']);
 
     header("refresh:0");
 }
+
+// comments
 if (isset($_POST['commentPost'])) {
     try {
         $comment = new Comment();
@@ -50,6 +59,15 @@ if (isset($_POST['commentPost'])) {
     }
 }
 $comments = Comment::getAll($post['id']);
+
+//views
+    if(!View::alreadyViewed($_SERVER['REMOTE_ADDR'], $_GET['post'], User::getUserId($_SESSION['user']))){
+        $view = new View();
+        $view->setUserId( User::getUserId($_SESSION['user']));
+        $view->setPostId($_GET['post']);
+        $view->setIp($_SERVER['REMOTE_ADDR']);
+        $view->save();
+    }
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
