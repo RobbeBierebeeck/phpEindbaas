@@ -4,14 +4,7 @@ followerBtn.addEventListener("click", e => {
     e.preventDefault();
 
     let data = new FormData();
-    if (followerBtn.innerHTML === "follow") {
-        data.append("active", 1);
-    }
-    else if (followerBtn.innerHTML === "following") {
-        data.append("active", 0);
-    }
     data.append("targetUserId", followerBtn.dataset.targetUserId);
-    data.append("sessionUserId", followerBtn.dataset.sessionUserId);
 
     fetch(`./ajax/followCheck.php`, {
         method: 'POST',

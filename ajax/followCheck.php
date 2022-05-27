@@ -1,39 +1,40 @@
 <?php
-include_once ('./../vendor/autoload.php');
-use Drop\Core\DB;
+include_once(__DIR__.'/../vendor/autoload.php');
+use Drop\Core\Followers;
+use Drop\Core\User;
+use Drop\Helpers\Security;
+
+Security::onlyLoggedInUsers();
 
 //var_dump($_POST);
 
 if (!empty($_POST)) {
-    if($_POST['active'] == 0){
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("delete from followers where following_id = :following_id and follower_id = :follower_id");
-        $statement->bindValue("following_id", $_POST['targetUserId']);
-        $statement->bindValue("follower_id", $_POST['sessionUserId']);
-        $statement->execute();
 
+    $userId = $_POST['targetUserId'];
+
+    try {
+        if (Followers::getFollowerStatus($userId, User::getUserId($_SESSION["user"])) == "following") {
+            Followers::deleteFollowers($userId, User::getUserId($_SESSION["user"]));
+            $response = [
+                "followStatus" => "follow",
+                "message" => "unfollow successfully"
+            ];
+        } else {
+            $follower = new Followers();
+            $follower->setUser_id($userId);
+            $follower->setFollower_id(User::getUserId($_SESSION["user"]));
+            $follower->saveFollow();
+    
+            $response = [
+                "followStatus" => "following",
+                "message" => "followed successfully",
+            ];
+        }
+    } catch (Exception $e) {
         $response = [
-            "followStatus" => "follow",
-            "message" => "unfollow successfully",
-            "data" => $_POST
+            'status' => 'error',
+            'message' => $e->getMessage()
         ];
     }
-    
-    if($_POST['active'] == 1){
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into followers (active, following_id, follower_id) values (:active, :following_id, :follower_id)");
-        $statement->bindValue("active", $_POST['active']);
-        $statement->bindValue("following_id", $_POST['targetUserId']);
-        $statement->bindValue("follower_id", $_POST['sessionUserId']);
-        $statement->execute();
-
-        $response = [
-            "followStatus" => "following",
-            "message" => "followed successfully",
-            "data" => $_POST,
-        ];
-    }
-    
     echo json_encode($response);
 }
-
