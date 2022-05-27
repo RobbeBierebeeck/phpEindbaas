@@ -111,8 +111,8 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
 <?php endif; ?>
 
 <?php if (!isset($_GET['search'])):?>
-<div class="mt-5">
-    <div class="btn-group mt-5 ms-5">
+<div class="mt-5 d-flex flex-column align-self-start m-auto container-lg">
+    <div class="btn-group align-self-start">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Filter
         </button>
@@ -126,7 +126,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
         </ul>
     </div>
 <?php endif;?>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto  container-lg">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 ">
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="col mt-4">
