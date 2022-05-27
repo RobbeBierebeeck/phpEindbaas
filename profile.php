@@ -64,7 +64,13 @@ $posts = Post::getUserProjectsById($target_user);
             <?php if($userData['role'] == 'Moderator') : ?>
                 <span class="badge bg-dark">Mod</span>
             <?php endif ?>
-        </p> 
+        </p>
+
+        <?php if(empty($_GET["id"])) : ?>
+            <p><?php echo Followers::getAllFollowers(User::getUserId($_SESSION["user"]))?> followers</p>
+        <?php endif ?>
+        
+
         </div>
         <p><?php echo XSS::specialChars($userData['bio']); ?></p>
         <div>
