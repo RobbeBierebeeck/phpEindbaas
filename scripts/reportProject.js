@@ -1,9 +1,10 @@
 document.querySelector(".reportProject").addEventListener("click", (e) => {
     e.preventDefault();
     let projectId = e.target.dataset.projectId;
-    let data = new FormData()
-    console.log(projectId)
-    data.append("projectId", projectId)
+    let userId = e.target.dataset.userId;
+    let data = new FormData();
+    data.append("projectId", projectId);
+    data.append("userId", userId);
     fetch('ajax/reportProject.php', {
         method: 'POST', // or 'PUT'
         body: data,

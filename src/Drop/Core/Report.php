@@ -78,8 +78,19 @@ class Report
 
     public function saveProjectReport(){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into reported_projects (reported_at, project_id) values (NOW(), :reported_id)");
+        $statement = $conn->prepare("insert into reported_projects (reported_at, project_id, user_id) values (NOW(), :reported_id, :userId)");
         $statement->bindValue(":reported_id", $this->project_id);
+        $statement->bindValue(":userId", $this->user_id);
         $statement->execute();
+    }
+
+    public static function canReportProject($project_id, $user_id){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select id from reported_projects where project_id = :project_id and user_id = :user_id");
+        $statement->bindValue(":project_id", $project_id);
+        $statement->bindValue(":user_id", $user_id);
+        $statement->execute();
+        $response = $statement->fetchAll();
+        return count($response);
     }
 }

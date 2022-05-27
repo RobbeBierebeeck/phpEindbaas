@@ -99,7 +99,7 @@ $comments = Comment::getAll($post['id']);
                         options
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a data-project-id="<?php echo $post['id']?>" class="dropdown-item reportProject" href="#">report project</a></li>
+                        <li><a data-project-id="<?php echo $post['id']?>" data-user-id="<?php echo User::getUserId($_SESSION['user'])?>" class="dropdown-item reportProject" href="#">report project</a></li>
                     </ul>
                 </div>
             </div>
