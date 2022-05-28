@@ -49,4 +49,11 @@ Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banne
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
+
+    public static function removeReport($id){
+        $conn = DB::getConnection();
+        $stmt = $conn->prepare("delete from reported_users WHERE reported_id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+    }
 }

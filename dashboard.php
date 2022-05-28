@@ -16,6 +16,9 @@
     if (!empty($_GET['banUser'])){
         Moderator::banUser($_GET['banUser']);
     }
+    if (!empty($_GET['removeReport'])){
+        Moderator::removeReport($_GET['removeReport']);
+    }
     if (isset($_GET['blockedUsers'])){
         $blockedUsers = Moderator::getAllBlockedUsers();
     }
@@ -139,6 +142,7 @@
                                 <td><?php echo $reportedUser['email']?></td>
                                 <td><?php echo $reportedUser['timesReported']?></td>
                                 <td><a type="button" href="dashboard.php?block=<?php echo $reportedUser['id']?>" class="btn btn-secondary">Block</a></td>
+                                <td><a type="button" href="dashboard.php?removeReport=<?php echo $reportedUser['id']?>" class="btn btn-secondary">Remove reports</a></td>
                             </tr>
                         <?php endforeach;?>
                             </tbody>
