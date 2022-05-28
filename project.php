@@ -25,6 +25,8 @@ $userData = User::getById($id);
 if (!empty($_GET)) {
     $post = Post::getPostById($_GET['post']);
     $creator = Post::getCreatorByPost($_GET['post']);
+    $tags = Post::getTagsById($_GET['post']);
+
 } else (
 header("Location: 404.html")
 );
@@ -176,6 +178,19 @@ $comments = Comment::getAll($post['id']);
 
                 <img src="<?php echo $post['image'] ?>" class="img-fluid rounded-3" alt="Responsive image">
 
+            </div>
+
+            <div class="mt-3">
+                <h3>Tags used</h3>
+                <?php if(!empty($tags)):?>
+                <div class="d-flex flex-row">
+                    <?php foreach ($tags as $tag): ?>
+                        <p class="badge bg-primary me-3 "><?php echo $tag['tag'] ?></p>
+                    <?php endforeach; ?>
+                </div>
+                <?php elseif (empty($tags) || $tags ===""): ?>
+                    <p>No tags used</p>
+                <?php endif; ?>
             </div>
             <p class="mt-5 ms-5 me-5"><?php echo XSS::specialChars($post['description']) ?></p>
 

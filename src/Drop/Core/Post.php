@@ -345,6 +345,16 @@ order by projects.`posted_at` desc limit :start, :limit");
         $statement->execute();
         return $statement->fetch();
     }
+    //getting the tags for a post
+    public static function getTagsById($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select tags.`tag` from tags inner join project_tags on tags.`id` = project_tags.`tag_id` where project_tags.`project_id` = :postId");
+        $statement->bindValue(':postId', $postId);
+        $statement->execute();
+        return $statement->fetchAll();
+
+    }
     // Gets data from post creator with project id
     public static function getCreatorByPost($id){
         $conn = DB::getConnection();
