@@ -99,7 +99,7 @@ if (!empty($_POST)) {
     <?php endif; ?>
 
     <?php if (empty($_GET['code']) || !$codeOk) : ?>
-        <div class="alert alert-danger">invalid link</div>
+        <div class="alert alert-danger">invalid link: unfortunately this link is unavailable or has already been used, try another one</div>
     <?php endif; ?>
 
 </body>
