@@ -45,6 +45,13 @@ class Invite
         $statement->execute();
     }
 
+    public static function deleteCode($code){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("delete from invite_links where code = :code");
+        $statement->bindValue(':code', $code);
+        $statement->execute();
+    }
+
     public static function checkIfCodeAvailable($code){
         $hashCode = Invite::hashCode($code); 
         $conn = DB::getConnection();

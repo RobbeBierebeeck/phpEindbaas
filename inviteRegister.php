@@ -18,6 +18,7 @@ if (!empty($_POST)) {
         $user->setProfilePicture($_FILES['profilePic']);
         if (!User::findByEmail($_POST['email'])) {
             $user->save();
+            Invite::deleteCode($_GET['code']);
             session_start();
             $_SESSION['user'] = $user->getEmail();
             header("Location:index.php");
