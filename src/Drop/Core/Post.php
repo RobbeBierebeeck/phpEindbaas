@@ -5,7 +5,11 @@ use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
+
+use PHPColorExtractor\PHPColorExtractor;
 include_once (__DIR__.'/../../../vendor/autoload.php');
+
+
 class Post
 {
     private $id;
@@ -14,7 +18,6 @@ class Post
     private $description;
     private $image;
     private $userId;
-    private $enableViews;
     private $publicId;
 
     /**
@@ -154,10 +157,13 @@ class Post
     public function setImage($image): void
     {
 
-
         if ($image['size'] !== 0) {
             if (filesize($image['tmp_name']) < 5000000) {
                 $image = (new UploadApi())->upload($image['tmp_name'], ["folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
+                //extracting the colors from the image
+
+
+
                 $this->image = $image['url'];
                 $this->setPublicId($image['public_id']);
             } else {
@@ -202,12 +208,11 @@ class Post
     {
         //saving the post
         $conn = DB::getConnection();
-        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, private_views, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :private_views, :publicId)");
+        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :publicId)");
         $statement->bindParam(':title', $this->title);
         $statement->bindParam(':image', $this->image);
         $statement->bindParam(':description', $this->description);
         $statement->bindParam(':user_id', $this->userId);
-        $statement->bindParam(':private_views', $this->enableViews);
         $statement->bindParam(':publicId', $this->publicId);
         $statement->execute();
         $this->id = $conn->lastInsertId();
@@ -229,6 +234,11 @@ class Post
             $statement->bindValue(':project_id', $this->id);
             $statement->execute();
         }
+
+        //colors
+        /*var_dump(self::extractColors($this->image));
+        die();/**/
+
     }
 
     /**
@@ -440,5 +450,53 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement->execute();
         return $statement->fetchAll();
     }
+
+    /**
+     * Colors
+     */
+
+    public static function extractColors($image){
+
+        $extractor = new PHPColorExtractor();
+        $extractor->setImage($image)->setTotalColors(5)->setGranularity(10);
+        $colors = $extractor->extractPalette();
+
+       return $colors;
+
+    }
+
+    public static function convertIntToHex($colors)
+    {
+        $hexColors = [];
+        foreach ($colors as $color) {
+            $hexColors[] = "#".$color;
+        }
+       return $hexColors;
+    }
+
+    public static function saveColors($colors, $postId)
+    {
+       $conn = DB::getConnection();
+        $statement = $conn->prepare("insert into colors (hex) values (:hex) on duplicate key update hex = :hex");
+        foreach ($colors as $color) {
+           $statement->bindValue(":hex", $color);
+           $statement->execute();
+           $conn->lastInsertId();
+
+           self::saveManyToMany($conn->lastInsertId(), $postId);
+
+       }
+
+    }
+    private static function saveManyToMany($colors, $postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values (:colorId, :postId) on duplicate key update project_id = project_id");
+        $statement->bindValue(":colorId",$colors);
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+
+    }
+
 
 }

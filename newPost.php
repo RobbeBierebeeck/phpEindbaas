@@ -18,6 +18,14 @@ include_once ('vendor/autoload.php');
             $post->setDescription($_POST['description']);
             $post->setUserId(User::getUserId($_SESSION['user']));
             $post->setImage($_FILES['file']);
+            //var_dump(Post::extractColors($_FILES['file']['tmp_name']));
+            //Post::extractColors($_FILES['file']['tmp_name']);
+            //Post::saveColors(Post::extractColors(Post::extractColors($_FILES['file']['tmp_name'])));
+
+
+
+
+
             if (isset($_POST['views'])){
                 $post->setEnableViews(1);
             }
@@ -26,6 +34,10 @@ include_once ('vendor/autoload.php');
             }
             $post->setTags($_POST['tags']);
             $post->save();
+
+            $colors = Post::extractColors($_FILES['file']['tmp_name']);
+            $hex = Post::convertIntToHex($colors);
+            Post::saveColors($hex, $post->getId());
             header('Location: index.php');
         } catch (Throwable $e) {
             $error= $e->getMessage();

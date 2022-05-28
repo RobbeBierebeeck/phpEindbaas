@@ -9,6 +9,9 @@ include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
 
+/*$colors =  Post::extractColors("./images/jow.png");
+var_dump($colors);*/
+
 if(!empty($_SESSION["user"])){
     $pendingWarning = Warning::getPendingWarnings(User::getUserId($_SESSION["user"]));
     $warnings = Warning::getUserWarnings(User::getUserId($_SESSION["user"]));
