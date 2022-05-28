@@ -451,6 +451,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetchAll();
     }
 
+
+
     /**
      * Colors
      */
@@ -465,6 +467,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
     }
 
+    //converting colors to hex
+
     public static function convertIntToHex($colors)
     {
         $hexColors = [];
@@ -474,29 +478,85 @@ order by Projects.`posted_at` desc limit :start, :limit");
        return $hexColors;
     }
 
+    //saving the colors to the database
+
     public static function saveColors($colors, $postId)
     {
        $conn = DB::getConnection();
         $statement = $conn->prepare("insert into colors (hex) values (:hex) on duplicate key update hex = :hex");
         foreach ($colors as $color) {
-           $statement->bindValue(":hex", $color);
-           $statement->execute();
-           $conn->lastInsertId();
 
-           self::saveManyToMany($conn->lastInsertId(), $postId);
+            if (!self::colorAlreadyExists($color)) {
+                $statement->bindValue(":hex", $color);
+                $statement->execute();
 
+
+            }
+            self::saveManyToMany($color, $postId);
        }
 
     }
-    private static function saveManyToMany($colors, $postId)
+
+    //saving many to many relationship
+    private static function saveManyToMany($color, $postId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values (:colorId, :postId) on duplicate key update project_id = project_id");
-        $statement->bindValue(":colorId",$colors);
+        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values ((select colors.`id` from colors where colors.`hex` = :hex), :postId) ");
+        $statement->bindValue(":hex",$color);
         $statement->bindValue(":postId", $postId);
         $statement->execute();
 
     }
 
+    //checking if color already exists in the database to avoid duplicates
+
+    private static function colorAlreadyExists($color)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select hex from colors where hex = :hex");
+        $statement->bindValue(":hex", $color);
+        $statement->execute();
+        return $statement->fetch()['hex'];
+    }
+
+    public static function getColorsForPost($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select colors.`hex` from colors inner join project_colors on colors.`id` = project_colors.`color_id`where project_colors.`project_id` = :postId");
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public static function getPostsByColor($color,$start, $limit)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
+Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+INNER join Users on Projects.`user_id` = Users.`id`
+Inner join project_colors on projects.`id`= project_colors.`project_id`
+inner join colors on project_colors.`color_id` = colors.`id`
+where colors.`hex` = :hex
+order by Projects.`posted_at` desc limit :start, :limit");
+
+        $statement->bindValue(":hex", $color);
+        $statement->bindValue(":start", $start, PDO::PARAM_INT);
+        $statement->bindValue(":limit", $limit, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+
+    }
+
+    public static function removeHashtag($color)
+    {
+        $color = str_replace("#", "", $color);
+        return $color;
+    }
+
+    public static function addHashtag($color)
+    {
+        $color = "#".$color;
+        return $color;
+    }
 
 }
