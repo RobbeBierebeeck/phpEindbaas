@@ -136,8 +136,19 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="col mt-4">
+
                     <div href="project.php?post=<?php echo $post['id'] ?>" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
+
+
+                        <!--- color picker -->
+                        <div class="colorPicker">
+                            <div class="colorPicker-inner">
+                                <div class="colorPicker-color" style="background-color: #0d6efd "></div>
+                            </div>
+                        </div>
+
+
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id'] ?>"
                                class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo XSS::specialChars($post['title']) ?></a>

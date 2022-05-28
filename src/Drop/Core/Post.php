@@ -479,23 +479,35 @@ order by Projects.`posted_at` desc limit :start, :limit");
        $conn = DB::getConnection();
         $statement = $conn->prepare("insert into colors (hex) values (:hex) on duplicate key update hex = :hex");
         foreach ($colors as $color) {
-           $statement->bindValue(":hex", $color);
-           $statement->execute();
-           $conn->lastInsertId();
 
-           self::saveManyToMany($conn->lastInsertId(), $postId);
+            if (!self::colorAlreadyExists($color)) {
+                $statement->bindValue(":hex", $color);
+                $statement->execute();
+                $conn->lastInsertId();
+
+                self::saveManyToMany($color, $postId);
+            }
 
        }
 
     }
-    private static function saveManyToMany($colors, $postId)
+    private static function saveManyToMany($color, $postId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values (:colorId, :postId) on duplicate key update project_id = project_id");
-        $statement->bindValue(":colorId",$colors);
+        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values ((select colors.`id` from colors where colors.`hex` = :hex), :postId) ");
+        $statement->bindValue(":hex",$color);
         $statement->bindValue(":postId", $postId);
         $statement->execute();
 
+    }
+
+    private static function colorAlreadyExists($color)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select hex from colors where hex = :hex");
+        $statement->bindValue(":hex", $color);
+        $statement->execute();
+        return $statement->fetch()['hex'];
     }
 
 
