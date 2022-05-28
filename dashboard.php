@@ -1,6 +1,7 @@
 <?php
     use Drop\Helpers\Security;
     use Drop\Core\Moderator;
+    use Drop\Core\Post;
     include_once (__DIR__ .'/vendor/autoload.php');
 
     Security::onlyLoggedInUsers();
@@ -21,6 +22,13 @@
     }
     if (isset($_GET['blockedUsers'])){
         $blockedUsers = Moderator::getAllBlockedUsers();
+    }
+    if (isset($_GET['reportedPosts'])){
+        $reportedPosts = Moderator::getAllReportedPosts();
+    }
+
+    if (!empty($_GET['removePost'])){
+        Post::deletePostById($_GET['removePost']);
     }
 
 ?><!doctype html>
@@ -82,7 +90,21 @@
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                             </svg>
-                            invite links
+                            Invite links
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.php?reportedPosts">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-users" aria-hidden="true">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Reported Posts
                         </a>
                     </li>
                 </ul>
@@ -150,6 +172,35 @@
                 </table>
             </div>
             <?php endif;?>
+
+            <?php if(isset($_GET['reportedPosts'])):?>
+                <h2>Reported Users</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">PostId</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Reports</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($reportedPosts as $reportedPost):?>
+                            <tr>
+                                <td><?php echo $reportedPost['id']?></td>
+                                <td><?php echo $reportedPost['title']?></td>
+                                <td><?php echo $reportedPost['firstname']?></td>
+                                <td><?php echo $reportedPost['count']?></td>
+                                <td><a type="button" href="dashboard.php?removePost=<?php echo $reportedPost['id']?>" class="btn btn-secondary">Remove post</a></td>
+                            </tr>
+                        <?php endforeach;?>
+                        </tbody>
+
+                    </table>
+                </div>
+            <?php endif;?>
+
 
             <?php if (isset($_GET['inviteLinks'])):?>
             <h2>generate invite links</h2>

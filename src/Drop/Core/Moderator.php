@@ -56,4 +56,14 @@ Inner join users on reported_users.`reported_id` = users.`id` where users.`banne
         $stmt->bindValue(':id', $id);
         $stmt->execute();
     }
+
+    public static function getAllReportedPosts()
+    {
+        $conn = DB::getConnection();
+        $stmt = $conn->prepare("select projects.`id`, projects.`title`, users.`firstname`, (select count(id) from reported_projects where project_id = projects.`id`) as count from projects inner join reported_projects on projects.`id` = reported_projects.`project_id`
+inner join users on projects.`user_id` = users.`id`");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }
