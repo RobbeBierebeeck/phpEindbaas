@@ -62,11 +62,11 @@ $posts = Post::getUserProjectsById($target_user);
     <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
         <img src="<?php echo $profileImg ?>">
         <div>
-            <p><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?>
+            <h3><?php echo XSS::specialChars($userData['firstname']); ?> <?php echo XSS::specialChars($userData['lastname']); ?>
             <?php if($userData['role'] == 'Moderator') : ?>
                 <span class="badge bg-dark">Mod</span>
             <?php endif ?>
-        </p>
+        </h3>
 
         <?php if(!empty($_GET["id"])) : ?>
             <p><?php echo Followers::getAllFollowers(User::getUserId($_SESSION["user"]))?> followers</p>
