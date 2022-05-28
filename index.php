@@ -121,10 +121,10 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
     </div>
     </div>
 <?php endif; ?>
-
+<div class="mt-5 d-flex flex-column align-self-start m-auto container-lg">
 <!-- dropdown menu -->
 <?php if (!isset($_GET['search'])):?>
-<div class="mt-5 d-flex flex-column align-self-start m-auto container-lg">
+
     <div class="btn-group align-self-start">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Filter
@@ -137,8 +137,10 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
             <li><h6 class="dropdown-header">Filter</h6></li>
             <li><a class="dropdown-item" href="index.php?filter=following">Following</a></li>
         </ul>
-    </div>
+        </div>
+    
 <?php endif;?>
+
 
 
     <!--posts -->
