@@ -73,7 +73,7 @@ $comments = Comment::getAll($post['id']);
 
 <head>
     <meta charset="UTF-8">
-    <title>Bootstrap</title>
+    <title>Post</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/style.css">
@@ -270,7 +270,7 @@ $comments = Comment::getAll($post['id']);
         </div>
 
 
-        <div class="row d-flex justify-content-center col-4 col-lg-4 col-md-8">
+        <div class="row d-flex justify-content-center col-lg-4 col-lg-4 col-lg-4 col-lg-4  ">
             <div class="position-sticky">
                 <div class="card shadow-0 border" style="background-color: #f0f2f5;">
                     <div class="card-body p-4 comments">
