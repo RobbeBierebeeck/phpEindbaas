@@ -13,6 +13,9 @@
     if (!empty($_GET['unblock'])){
         Moderator::unblockUser($_GET['unblock']);
     }
+    if (!empty($_GET['banUser'])){
+        Moderator::banUser($_GET['banUser']);
+    }
     if (isset($_GET['blockedUsers'])){
         $blockedUsers = Moderator::getAllBlockedUsers();
     }
@@ -85,7 +88,8 @@
                         <th scope="col">#</th>
                         <th scope="col">name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Block</th>
+                        <th scope="col">Unblock</th>
+                        <th scope="col">Ban</th>
                     </tr>
                     </thead>
                     <?php foreach ($blockedUsers as $blockedUser):?>
@@ -94,10 +98,10 @@
                         <td><?php echo $blockedUser['firstName'] ." ". $blockedUser['lastName']?></td>
                         <td><?php echo $blockedUser['email']?></td>
                         <td><a type="button" href="dashboard.php?blockedUsers&unblock=<?php echo $blockedUser['id']?>" class="btn btn-secondary">Unblock</a></td>
+                        <td><a type="button" href="dashboard.php?banUser=<?php echo $blockedUser['id']?>" class="btn btn-danger">Ban User</a></td>
                     </tr>
                     <?php endforeach;?>
                     </tbody>
-
                 </table>
             </div>
             <?php else:?>
@@ -109,7 +113,7 @@
                             <th scope="col">#</th>
                             <th scope="col">name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Block</th>
+                            <th scope="col">Reports</th>
                         </tr>
                         </thead>
                         <tbody>

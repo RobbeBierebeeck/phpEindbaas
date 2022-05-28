@@ -60,14 +60,6 @@ class Report
         return $this;
     }
 
-    public static function getAllUserReports(){
-        $conn = DB::getConnection();
-        $statement = $conn->prepare("SELECT reported_id, COUNT(reported_id) FROM reported_users GROUP BY reported_id");
-        $statement->execute();
-        $response = $statement->fetchAll();
-        return $response;
-    }
-
     public static function deleteReportedUsers($id)
     {
         $conn = DB::getConnection();

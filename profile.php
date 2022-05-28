@@ -2,7 +2,6 @@
 
 use Drop\Core\Post;
 use Drop\Core\Followers;
-use Drop\Core\Report;
 use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
@@ -37,7 +36,6 @@ if (isset($_POST['warning'])){
 $userData = User::getById($target_user);
 $profileImg = $userData["profile_image"];
 $posts = Post::getUserProjectsById($target_user);
-$reports = Report::getAllUserReports();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,40 +98,6 @@ $reports = Report::getAllUserReports();
                     </button>
                 </form>
             <?php endif;?>
-
-            <?php if((User::getById(User::getUserId($_SESSION["user"]))["role"] !== "User")): ?>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                See Platform Reports
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Platform Reports</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body modal-dialog-scrollable">
-                    <?php foreach ($reports as $report): ?>
-                        <div class="modal-header d-flex flex-column align-items-start alert-danger">
-                            <h5><strong><?php echo User::getById($report["reported_id"])['email']?>: </strong> reported <strong><?php echo $report['COUNT(reported_id)']?>x</strong></h5>
-                            <div class="d-flex justify-content-between">
-                                <a class="mx-3 alert-link" href="#">Ban <strong><?php echo User::getById($report["reported_id"])['firstname']?></strong></a>
-                                <a class="mx-3 alert-danger-link" href="#">Unban <strong><?php echo User::getById($report["reported_id"])['firstname']?></strong></a>
-                            </div>
-                        </div>
-                        <hr>
-                    <?php endforeach; ?>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-                </div>
-            </div>
-            </div>
-            <?php endif ?>
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
