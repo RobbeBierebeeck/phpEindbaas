@@ -70,7 +70,7 @@ class Socials
     {
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Social_links (user_id, link, platform) values (:user_id, :link, :platform)");
+        $statement = $conn->prepare("insert into Social_links (user_id, link, linkName) values (:user_id, :link, :platform)");
         $statement->bindValue(':user_id', $this->userId);
         $statement->bindValue(':link', $this->socialLink);
         $statement->bindValue(':platform', $this->platform);
@@ -85,5 +85,13 @@ class Socials
         $statement->execute();
     }
 
+    public static function getById($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from social_links where user_id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 
 }

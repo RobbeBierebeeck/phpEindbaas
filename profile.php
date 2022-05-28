@@ -6,12 +6,15 @@ use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
 use Drop\Core\Warning;
+use Drop\Core\Socials;
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 if (!empty($_GET["id"])) {
     $target_user = $_GET["id"];
     $followStatus = Followers::getFollowerStatus($target_user, User::getUserId($_SESSION["user"]));
+    $socials = Socials::getById($_GET["id"]);
+
 } else {
     $target_user = User::getUserId($_SESSION["user"]);
 }
@@ -71,6 +74,16 @@ $posts = Post::getUserProjectsById($target_user);
 
         </div>
         <p><?php echo XSS::specialChars($userData['bio']); ?></p>
+        <div class="d-flex flex-column">
+            <h3>Socials</h3>
+            <div class="d-flex flex-column justify-content-between">
+                <?php foreach ($socials as $social):?>
+                <a class="" href="<?php echo XSS::specialChars($social['link'])?>"><?php echo XSS::specialChars($social['linkName'])?></a>
+                <?php endforeach;?>
+            </div>
+
+        </div>
+        
         <div>
             <?php if($target_user !== User::getUserId($_SESSION["user"])) : ?> 
                 <form method="POST">
@@ -87,8 +100,8 @@ $posts = Post::getUserProjectsById($target_user);
                 </form>
             <?php endif ?>
             <?php if( (User::getById(User::getUserId($_SESSION["user"]))["role"] !== "User")  && (!empty($_GET["id"]))): ?>
-                <form method="POST">
-                    <button name="warning" class="btn btn-outline-danger align-self-center">warn</button>
+                <form method="POST" class="d-flex flex-row ">
+                    <button name="warning" class="btn btn-outline-danger ms-3 align-self-center">warn</button>
                 </form>
             <?php endif ?>
             <?php if (!User::checkIfReported(User::getUserId($_SESSION['user']), $_GET['id'])):?>
