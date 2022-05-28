@@ -350,7 +350,7 @@ class User
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role, publicViews from Users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -443,6 +443,94 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
         return $statement->fetch();
 
     }
+
+    /**
+     * Check if user is banned
+     */
+    public static function isBanned($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select banned from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        if($statement->fetch()['banned'] == 1) {
+            return true;
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
+     * Check if user is moderator
+     */
+    public static function isModerator($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select role from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        if($statement->fetch()['role'] === "Moderator") {
+            return true;
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
+     * Updating Username
+     */
+
+    public static function updateUsername($id, $username)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set firstname = :username where id = :id");
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Updating Email
+     */
+
+    public static function updateEmail($id, $email)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set email = :email where id = :id");
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
+     * Updating Views Settings
+     */
+    public static function updateViews($state, $userId )
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("update Users set publicViews = :state where id = :id");
+        $statement->bindValue(':id', $userId);
+        $statement->bindValue(':state', $state);
+        $statement->execute();
+    }
+
+
+    /**
+     * Can views be public or private
+     */
+
+    public static function canViewsBePublic($userId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select publicViews from Users where id = :user_id");
+        $statement->bindValue(":user_id", $userId);
+        $statement->execute();
+        return $statement->fetch()['publicViews'];
+    }
+
+
 
 
 }

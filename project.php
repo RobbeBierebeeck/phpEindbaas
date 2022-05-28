@@ -4,7 +4,8 @@ use Drop\Core\User;
 use Drop\Helpers\Security;
 use Drop\Core\XSS;
 use Drop\Core\Comment;
-include_once ('vendor/autoload.php');
+use Drop\Core\View;
+include_once('vendor/autoload.php');
 Security::onlyLoggedInUsers();
 
 $profileImg = User::getProfilePicture($_SESSION['user']);
@@ -19,24 +20,34 @@ if (isset($_GET["post"])) {
     $target_user = User::getUserId($_SESSION["user"]);
 }
 $userData = User::getById($id);
+
+//rerouting if get is empty
 if (!empty($_GET)) {
     $post = Post::getPostById($_GET['post']);
     $creator = Post::getCreatorByPost($_GET['post']);
 } else (
 header("Location: 404.html")
 );
-if (isset($_POST['deletePost'])){
-    Post::deletePostImage($post['id']);
-    Post::deleteProjectTags($post['id']);
-    Post::deletePostById($post['id']);
+
+//delete post
+
+if (!empty($_POST['deletePost'])) {
+    Post::deletePostImage($_POST['deletePost']);
+    Post::deleteProjectTags($_POST['deletePost']);
+    Post::deletePostById($_POST['deletePost']);
     header("Location: index.php");
 }
-if (isset($_POST['editPost'])){
-    Post::updatePost($_POST['title'],$_POST['tags'] ,$post['id']);
+
+//editing post
+
+if (isset($_POST['editPost'])) {
+    Post::updatePost($_POST['title'], $_POST['tags'], $post['id']);
 
     header("refresh:0");
 }
-if (isset($_POST['commentPost'])){
+
+// comments
+if (isset($_POST['commentPost'])) {
     try {
         $comment = new Comment();
         $comment->setComment($_POST['comment']);
@@ -48,6 +59,15 @@ if (isset($_POST['commentPost'])){
     }
 }
 $comments = Comment::getAll($post['id']);
+
+//views
+    if(!View::alreadyViewed($_SERVER['REMOTE_ADDR'], $_GET['post'], User::getUserId($_SESSION['user']))){
+        $view = new View();
+        $view->setUserId( User::getUserId($_SESSION['user']));
+        $view->setPostId($_GET['post']);
+        $view->setIp($_SERVER['REMOTE_ADDR']);
+        $view->save();
+    }
 ?><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -68,20 +88,20 @@ $comments = Comment::getAll($post['id']);
 <?php if (isset($_SESSION['user'])): ?>
     <?php include_once(__DIR__ . '/partials/header.inc.php'); ?>
 <?php else: ?>
-<nav class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">
-            <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            Drop
-        </a>
-        <div class="d-flex">
-            <a href="register.php" class="btn btn-primary me-3">Register</a>
-            <a href="login.php" class="btn btn-outline-primary">Login</a>
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">
+                <img src="images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                Drop
+            </a>
+            <div class="d-flex">
+                <a href="register.php" class="btn btn-primary me-3">Register</a>
+                <a href="login.php" class="btn btn-outline-primary">Login</a>
+            </div>
+
         </div>
 
-    </div>
-
-</nav>
+    </nav>
 <?php endif; ?>
 <div class="container mt-5 pt-5">
     <div class="row flex-lg-nowrap d-flex justify-content-center">
@@ -91,8 +111,8 @@ $comments = Comment::getAll($post['id']);
                      id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown"
                      aria-expanded="false" role="button" src="<?php echo $creator['profile_image'] ?>">
                 <div class="ms-3">
-                    <p class="mb-0"><strong><?php echo XSS::specialChars($post['title'])?></strong></p>
-                    <a href="profile.php?id=<?php echo $creator['id']?>"><small><?php echo XSS::specialChars($creator['firstname']);?> <?php echo XSS::specialChars($creator['lastname']);?></small></a>
+                    <p class="mb-0"><strong><?php echo XSS::specialChars($post['title']) ?></strong></p>
+                    <a href="profile.php?id=<?php echo $creator['id'] ?>"><small><?php echo XSS::specialChars($creator['firstname']); ?><?php echo XSS::specialChars($creator['lastname']); ?></small></a>
                 </div>
                 <div class="btn-group ms-auto p-2">
                     <button class="btn btn-secondary btn-sm dropdown-toggle optionsToggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,99 +125,175 @@ $comments = Comment::getAll($post['id']);
             </div>
             <div>
                 <?php if ($creator['id'] == $id) : ?>
-                <div class="d-flex position-absolute align-self-end">
-                    <button class="btn bg-light mt-2 ms-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="editPost" href="#editPostModalToggle">Edit Post</button></li>
-                        <li><button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"  href="#deletePostModalToggle">Delete Post</button></li>
-                        <?php if (Post::isShowcase($post['id']) == 0):?>
-                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Add to showcase</button></li>
-                        <?php else:?>
-                        <li><button id="showcase" data-post="<?php echo $post['id']?>"   class="dropdown-item" >Remove from showcase</button></li>
-                        <?php endif;?>
-                    </ul>
-                </div>
+                    <div class="d-flex position-absolute align-self-end">
+                        <button class="btn bg-light mt-2 ms-2" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <button type="submit" data-bs-toggle="modal" class="dropdown-item" name="editPost"
+                                        href="#editPostModalToggle">Edit Post
+                                </button>
+                            </li>
+                            <li>
+                                <button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"
+                                        href="#deletePostModalToggle">Delete Post
+                                </button>
+                            </li>
+                            <?php if (Post::isShowcase($post['id']) == 0): ?>
+                                <li>
+                                    <button id="showcase" data-post="<?php echo $post['id'] ?>" class="dropdown-item">
+                                        Add to showcase
+                                    </button>
+                                </li>
+                            <?php else: ?>
+                                <li>
+                                    <button id="showcase" data-post="<?php echo $post['id'] ?>" class="dropdown-item">
+                                        Remove from showcase
+                                    </button>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                <?php elseif (User::isModerator(User::getUserId($_SESSION['user']))): ?>
+
+                    <div class="d-flex position-absolute align-self-end">
+                        <button class="btn bg-light mt-2 ms-2" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <button type="submit" data-bs-toggle="modal" class="dropdown-item" name="deletePost"
+                                        href="#deletePostModalToggle">Delete Post
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 <?php endif; ?>
-                <img src="<?php echo $post['image']?>" class="img-fluid rounded-3" alt="Responsive image">
+
+
+                <img src="<?php echo $post['image'] ?>" class="img-fluid rounded-3" alt="Responsive image">
 
             </div>
-            <p class="mt-5 ms-5 me-5"><?php echo XSS::specialChars($post['description'])?></p>
+            <p class="mt-5 ms-5 me-5"><?php echo XSS::specialChars($post['description']) ?></p>
 
-            <div class="modal fade" id="deletePostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            You are about to delete your post. Are you sure?
-                        </div>
-                        <div class="modal-footer">
-                            <form id="deletePost" class="mb-0" action="" method="post">
-                                <button type="submit" class="btn btn-danger w-100" name="deletePost">Delete my post</button>
-                            </form>
+
+            <?php if ($creator['id'] == $id): ?>
+                <div class="modal fade" id="deletePostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                You are about to delete your post. Are you sure?
+                            </div>
+                            <div class="modal-footer">
+                                <form id="deletePost" class="mb-0" action="" method="post">
+                                    <input name="deletePost" value="<?php echo $_GET['post'] ?>" type="text" hidden>
+                                    <button type="submit" class="btn btn-danger w-100">Delete my post
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal fade" id="editPostModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Edit post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editPost" class="mb-0" action="" method="post">
-                                <div class="form-group mb-3">
-                                    <!-- Tag input feeld -->
-                                    <div class="mt-3 mb-3">
-                                        <label class="form-label" for="floatingInput">Tags</label>
-                                        <div class="input form-control" id="floatingInput">
-                                            <div class="input__tags"></div>
-                                            <input type="text" class="p-2" id="tags">
+                <div class="modal fade" id="editPostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Edit post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editPost" class="mb-0" action="" method="post">
+                                    <div class="form-group mb-3">
+                                        <!-- Tag input feeld -->
+                                        <div class="mt-3 mb-3">
+                                            <label class="form-label" for="floatingInput">Tags</label>
+                                            <div class="input form-control" id="floatingInput">
+                                                <div class="input__tags"></div>
+                                                <input type="text" class="p-2" id="tags">
+                                            </div>
+                                        </div>
+                                        <input type="text" name="tags" id="tags-fake">
+                                        <!-- Title input feeld -->
+                                        <div class="mb-5">
+                                            <label class="mb-1">Post title</label>
+                                            <div class="form">
+                                                <input type="text" name="title" class="form-control p-3"
+                                                       id="usernameInput"
+                                                       placeholder="Username" value="<?php echo $post['title']; ?>"
+                                                       required>
+                                            </div>
                                         </div>
                                     </div>
-                                    <input type="text" name="tags" id="tags-fake">
-                                    <!-- Title input feeld -->
-                                    <div class="mb-5">
-                                        <label class="mb-1">Post title</label>
-                                        <div class="form">
-                                            <input type="text" name="title" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $post['title'];?>" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes</button>
-                            </form>
+                                    <button type="submit" class="btn btn-primary w-100" name="editPost">Save changes
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php elseif (User::isModerator(User::getUserId($_SESSION['user']))): ?>
+                <div class="modal fade" id="deletePostModalToggle" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Delete post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                You are about to delete your post. Are you sure?
+                            </div>
+                            <div class="modal-footer">
+                                <form id="deletePost" class="mb-0" action="" method="post">
+                                    <input name="deletePost" value="<?php echo $_GET['post'] ?>" type="text" hidden>
+                                    <button type="submit" class="btn btn-danger w-100">Delete my post
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
         </div>
+
+
         <div class="row d-flex justify-content-center col-4 col-lg-4 col-md-8">
-            <div class="position-sticky" >
-                <div class="card shadow-0 border"  style="background-color: #f0f2f5;">
-                    <div class="card-body p-4 comments" >
-                        <form action="" method="post" class="form-outline mb-4 " >
+            <div class="position-sticky">
+                <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+                    <div class="card-body p-4 comments">
+                        <form action="" method="post" class="form-outline mb-4 ">
                             <h1>Feedback</h1>
                             <div class="d-flex flex-row">
-                                <input type="text" id="comment" name="comment" class="form-control" placeholder="Enter a comment" required>
-                                <input id="submitComment" type="submit" data-post="<?php echo $_GET['post']?>" value="Post" name="commentPost" class="btn btn-outline-primary ms-2">
+                                <input type="text" id="comment" name="comment" class="form-control"
+                                       placeholder="Enter a comment" required>
+                                <input id="submitComment" type="submit" data-post="<?php echo $_GET['post'] ?>"
+                                       value="Post" name="commentPost" class="btn btn-outline-primary ms-2">
                             </div>
                         </form>
                         <ul id="comments" class="overflow-auto card px-2 d-flex flex-column-reverse mh-10">
-                            <?php foreach($comments as $c):?>
+                            <?php foreach ($comments as $c): ?>
                                 <div class='card-body border-bottom'>
                                     <div class='d-flex justify-content-between'>
                                         <div class='d-flex flex-row align-items-center'>
-                                            <img src='<?php echo $c['profile_image'] ?>' alt='avatar' width='25' height='25' />
-                                            <p class='small mb-0 ms-2'><?php echo $c['firstname']?> <?php echo $c['lastname'] ?></p>
+                                            <img src='<?php echo $c['profile_image'] ?>' alt='avatar' width='25'
+                                                 height='25'/>
+                                            <p class='small mb-0 ms-2'><?php echo $c['firstname'] ?><?php echo $c['lastname'] ?></p>
                                         </div>
                                     </div>
-                                    <p class='test'><?php echo $c['comment']?></p>
+                                    <p class='test'><?php echo $c['comment'] ?></p>
                                 </div>
                             <?php endforeach; ?>
                         </ul>

@@ -507,12 +507,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `bio`, `role`, `created_at`, `profile_image`, `secondEmail`, `publicId`) VALUES
-(8, 'Robbe', 'bierebeeck', 'robbe.bierebeeck@student.thomasmore.be', '$2y$13$AyPr69z1Xqd1KjqiDr6lheWYteUq2Tg2lmIKMQiRiq1Be3lvewmVK', NULL, 'Admin', '2022-05-17 12:15:07', './upload/96530804_1670282383112621_2857099351530930176_o.jpg', NULL, NULL),
+(8, 'Robbe', 'bierebeeck', 'robbe.bierebeeck@student.thomasmore.be', '$2y$13$AyPr69z1Xqd1KjqiDr6lheWYteUq2Tg2lmIKMQiRiq1Be3lvewmVK', NULL, 'Moderator', '2022-05-17 12:15:07', './upload/96530804_1670282383112621_2857099351530930176_o.jpg', NULL, NULL),
 (9, 'hannah', 'claes', 'hannah@student.thomasmore.be', '$2y$13$1Ew9dNpjDPJa.CRyROwHpOiQrA1LP5XHfuyD0p9BFdM4gGc/wqxzu', NULL, 'User', '2022-05-04 22:27:13', './upload/headerLow.jpg', NULL, NULL),
 (10, 'Nick', 'bevers', 'r0702962@student.thomasmore.be', '$2y$13$BeKm2Pt7LkFwHtWI6j6I1.b4.8AfjT0Sz8ChLuoLPT1tR1VeSgs/e', NULL, 'User', '2022-05-14 15:22:54', './upload/Dia1.JPG', NULL, NULL),
 (11, 'Mystery', 'man', 'x.y@thomasmore.be', '$2y$13$6i1Rmqs19IEhSPKR76mw4uBsszEcSsUp7Dl7Km0bdw0kv0bX77W9K', "hey I\'m here to try out the app", 'User', '2022-05-15 20:22:45', './upload/mystery.png', NULL, NULL),
 (12, 'Bob', 'Storms', 'bob.storms@student.thomasmore.be', '$2y$13$qJuLEta.7X/1DcLEB834BudzEqHXUrMya9J9d5R0gwy6Tf4hzuhgK', NULL, 'User', '2022-05-23 13:37:27', './upload/Optie 1.jpg', NULL, NULL),
-(14, 'ad', 'hd', 'r0834380@student.thomasmore.be', '$2y$13$5WOfTOKCxTw2AJO70llw5.S9sxq3F/pOltz2fzI81c9m/rEeWUXxC', NULL, 'Admin', '2022-05-23 13:37:34', 'http://res.cloudinary.com/df5hbsklz/image/upload/v1652984285/profile_pictures/hk5lhjtx8iufkvw3oryj.webp', NULL, 'profile_pictures/hk5lhjtx8iufkvw3oryj');
+(14, 'ad', 'hd', 'r0834380@student.thomasmore.be', '$2y$13$5WOfTOKCxTw2AJO70llw5.S9sxq3F/pOltz2fzI81c9m/rEeWUXxC', NULL, 'Moderator', '2022-05-23 13:37:34', 'http://res.cloudinary.com/df5hbsklz/image/upload/v1652984285/profile_pictures/hk5lhjtx8iufkvw3oryj.webp', NULL, 'profile_pictures/hk5lhjtx8iufkvw3oryj');
 
 -- --------------------------------------------------------
 

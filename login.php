@@ -8,10 +8,14 @@ include_once ('vendor/autoload.php');
             $user = new User();
             $user->setEmail($_POST['email']);
             $user->setPassword($_POST['password'],$_POST['password']);
-            if ($user->canLogin()) {
+            if ($user->canLogin() && User::isBanned(User::getUserId($_POST['email']))=== false) {
                 session_start();
                 $_SESSION['user'] = $user->getEmail();
                 header("Location:index.php");
+            }
+            if (User::isBanned(User::getUserId($_POST['email']))=== true) {
+            Throw new Exception("You are banned");
+
             }
         }catch (\Throwable $e){
             $error = $e->getMessage();

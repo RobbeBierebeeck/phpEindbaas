@@ -18,6 +18,14 @@ include_once ('vendor/autoload.php');
             $post->setDescription($_POST['description']);
             $post->setUserId(User::getUserId($_SESSION['user']));
             $post->setImage($_FILES['file']);
+            //var_dump(Post::extractColors($_FILES['file']['tmp_name']));
+            //Post::extractColors($_FILES['file']['tmp_name']);
+            //Post::saveColors(Post::extractColors(Post::extractColors($_FILES['file']['tmp_name'])));
+
+
+
+
+
             if (isset($_POST['views'])){
                 $post->setEnableViews(1);
             }
@@ -26,6 +34,10 @@ include_once ('vendor/autoload.php');
             }
             $post->setTags($_POST['tags']);
             $post->save();
+
+            $colors = Post::extractColors($_FILES['file']['tmp_name']);
+            $hex = Post::convertIntToHex($colors);
+            Post::saveColors($hex, $post->getId());
             header('Location: index.php');
         } catch (Throwable $e) {
             $error= $e->getMessage();
@@ -86,13 +98,7 @@ include_once ('vendor/autoload.php');
                     <label for="content">Content</label>
                     <textarea class="form-control" id="content" name="description" rows="3" ></textarea>
                 </div>
-                <!--- Checkbox -->
-                <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="views">
-                    <label class="form-check-label" for="flexCheckDefault" >
-                        Make views public
-                    </label>
-                </div>
+
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary mt-3">Drop it</button>
             </form>

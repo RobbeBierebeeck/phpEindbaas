@@ -5,7 +5,11 @@ use Cloudinary\Api\Upload\UploadApi;
 use Drop\Core\DB;
 use Exception;
 use PDO;
+
+use PHPColorExtractor\PHPColorExtractor;
 include_once (__DIR__.'/../../../vendor/autoload.php');
+
+
 class Post
 {
     private $id;
@@ -14,7 +18,6 @@ class Post
     private $description;
     private $image;
     private $userId;
-    private $enableViews;
     private $publicId;
 
     /**
@@ -154,10 +157,13 @@ class Post
     public function setImage($image): void
     {
 
-
         if ($image['size'] !== 0) {
             if (filesize($image['tmp_name']) < 5000000) {
                 $image = (new UploadApi())->upload($image['tmp_name'], ["folder" => "posts", "format" => "webp", "quality" => "auto", "aspect_ratio" => "4:3", "width" => "800", "crop" => "fill", "gravity" => "face", "flags" => "progressive"]);
+                //extracting the colors from the image
+
+
+
                 $this->image = $image['url'];
                 $this->setPublicId($image['public_id']);
             } else {
@@ -184,9 +190,7 @@ class Post
     public static function deleteProjectTags($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project
-
-_id WHERE Projects.id = :id");
+        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project_id WHERE Projects.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -204,12 +208,11 @@ _id WHERE Projects.id = :id");
     {
         //saving the post
         $conn = DB::getConnection();
-        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, private_views, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :private_views, :publicId)");
+        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :publicId)");
         $statement->bindParam(':title', $this->title);
         $statement->bindParam(':image', $this->image);
         $statement->bindParam(':description', $this->description);
         $statement->bindParam(':user_id', $this->userId);
-        $statement->bindParam(':private_views', $this->enableViews);
         $statement->bindParam(':publicId', $this->publicId);
         $statement->execute();
         $this->id = $conn->lastInsertId();
@@ -231,41 +234,65 @@ _id WHERE Projects.id = :id");
             $statement->bindValue(':project_id', $this->id);
             $statement->execute();
         }
+
+        //colors
+        /*var_dump(self::extractColors($this->image));
+        die();/**/
+
     }
 
+    /**
+     * function to find views that are private
+     */
+
+    public static function findPrivateViews($data){
+
+        $posts = array();
+        foreach ($data as $key => $post){
+            if ($post['publicViews'] == 0) {
+                unset($post['views']);
+            }
+            $posts[] = $post;
+        }
+
+        return $posts;
+
+    }
 
     public static function getAll($start, $limit)
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
+Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+
+        return Self::findPrivateViews($statement->fetchAll());
 
     }
 
     public static function getAllOldest($start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
 , (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 INNER join Users on Projects.`user_id` = Users.`id`
 order by Projects.`posted_at` asc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
+
     }
 
     public static function getAllFollowing($start, $limit, $userId)
     {
       $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
 , (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
 
 INNER join Users on Projects.`user_id` = Users.`id`
@@ -276,13 +303,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
     }
 
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
+        $statement = $conn->prepare("select Users.`publicViews`,  Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
 ,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
         INNER join Users on Projects.`user_id` = Users.`id`
         INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
@@ -297,19 +324,19 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
         //compares similar array values and removes duplicates
         //Sort_regular flag prevents array from being converted to string and compares the array as it is
-        return array_unique($statement->fetchAll(), SORT_REGULAR);
+        return array_unique(Self::findPrivateViews($statement->fetchAll()), SORT_REGULAR);
 
     }
 
     public static function getUserProjectsById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Projects.`private_views`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
+        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
         from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
         order by Projects.`posted_at`");
         $statement->bindValue(':userid', $id);
         $statement->execute();
-        return $statement->fetchAll();
+        return Self::findPrivateViews($statement->fetchAll());
     }
     // Gets all data from post with project id
     public static function getPostById($id){
@@ -423,5 +450,53 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement->execute();
         return $statement->fetchAll();
     }
+
+    /**
+     * Colors
+     */
+
+    public static function extractColors($image){
+
+        $extractor = new PHPColorExtractor();
+        $extractor->setImage($image)->setTotalColors(5)->setGranularity(10);
+        $colors = $extractor->extractPalette();
+
+       return $colors;
+
+    }
+
+    public static function convertIntToHex($colors)
+    {
+        $hexColors = [];
+        foreach ($colors as $color) {
+            $hexColors[] = "#".$color;
+        }
+       return $hexColors;
+    }
+
+    public static function saveColors($colors, $postId)
+    {
+       $conn = DB::getConnection();
+        $statement = $conn->prepare("insert into colors (hex) values (:hex) on duplicate key update hex = :hex");
+        foreach ($colors as $color) {
+           $statement->bindValue(":hex", $color);
+           $statement->execute();
+           $conn->lastInsertId();
+
+           self::saveManyToMany($conn->lastInsertId(), $postId);
+
+       }
+
+    }
+    private static function saveManyToMany($colors, $postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("insert into project_colors (color_id, project_id) values (:colorId, :postId) on duplicate key update project_id = project_id");
+        $statement->bindValue(":colorId",$colors);
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+
+    }
+
 
 }

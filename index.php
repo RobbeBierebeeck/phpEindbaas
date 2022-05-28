@@ -9,6 +9,9 @@ include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
 
+/*$colors =  Post::extractColors("./images/jow.png");
+var_dump($colors);*/
+
 if(!empty($_SESSION["user"])){
     $pendingWarning = Warning::getPendingWarnings(User::getUserId($_SESSION["user"]));
     $warnings = Warning::getUserWarnings(User::getUserId($_SESSION["user"]));
@@ -29,7 +32,6 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
 }
-
 
 if(!empty ($_GET['filter'])){
 
@@ -111,8 +113,8 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
 <?php endif; ?>
 
 <?php if (!isset($_GET['search'])):?>
-<div class="mt-5">
-    <div class="btn-group mt-5 ms-5">
+<div class="mt-5 d-flex flex-column align-self-start m-auto container-lg">
+    <div class="btn-group align-self-start">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Filter
         </button>
@@ -126,7 +128,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
         </ul>
     </div>
 <?php endif;?>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto  container-lg">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 ">
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="col mt-4">
@@ -149,9 +151,11 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <div><i class="bi bi-heart-fill"></i><span id="likes"
                                                                            class="ms-2"><?php echo $post['likes'] ?></span>
                                 </div>
+                                <?php if(isset($post['views'])):?>
                                 <div><i class="bi bi-eye-fill ms-3"></i><span id="views"
                                                                               class="ms-2"><?php echo $post['views'] ?></span>
                                 </div>
+                                <?php endif;?>
                             </div>
                         </div>
                         <div class="list-group list-group-flush d-flex flex-row align-items-center">
