@@ -50,7 +50,7 @@ if (!empty($_POST)) {
                 <div class="alert alert-danger"><?php echo $error; ?></div>
             <?php endif; ?>
             <div class="mb-3 needs-validation">
-                <label>Leakable data</label>
+                <label>Email</label>
                 <div class="form-floating">
                     <input type="email" name="email" class="form-control email" id="emailInput" placeholder="name@example.com" required>
                     <label for="emailInput">Enter your email adress*</label>
@@ -58,7 +58,7 @@ if (!empty($_POST)) {
                 </div>
             </div>
             <div class="mt-3 mb-3">
-                <label>Should not be leaked</label>
+                <label>Password</label>
                 <div class="form-floating mb-2">
                     <input type="password" name="password" class="form-control" id="password" placeholder="name@example.com" required>
                     <label for="password">Enter your password*</label>
@@ -86,7 +86,7 @@ if (!empty($_POST)) {
                 <input type="file" name="profilePic" class="form-control" id="profilePic" accept=".png,.gif,.jpg,.webp">
             </div>
             <div class="col-12 pt-3">
-                <button type="submit" class="btn btn-primary">Verstuur email</button>
+                <button type="submit" class="btn btn-primary">Sign up</button>
             </div>
         </form>
     </div>
