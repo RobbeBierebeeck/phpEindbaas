@@ -4,6 +4,7 @@ use Drop\Core\Post;
 use Drop\Core\XSS;
 include_once(__DIR__ . '/vendor/autoload.php');
 
+session_start();
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
     $posts = Post::getShowcase($id);
@@ -29,7 +30,7 @@ if (!empty($_GET['id'])) {
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-
+<?php include_once (__DIR__.'/partials/header.inc.php')?>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <?php foreach ($posts as $post): ?>
     <div href="project.php?post=<?php echo $post['id'] ?>" class="col mt-4">
