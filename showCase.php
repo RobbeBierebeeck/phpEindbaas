@@ -31,6 +31,7 @@ if (!empty($_GET['id'])) {
 </head>
 <body>
 <?php include_once (__DIR__.'/partials/header.inc.php')?>
+<?php if(!empty($posts)):?>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-auto mt-5 container-lg">
     <?php foreach ($posts as $post): ?>
     <div href="project.php?post=<?php echo $post['id'] ?>" class="col mt-4">
@@ -43,6 +44,11 @@ if (!empty($_GET['id'])) {
         </div>
     </div>
     <?php endforeach; ?>
+    <?php else:?>
+<div class="d-flex vw-100 vh-100 align-items-center justify-content-center flex-column"><h3>You have nothing added to you showcase 😬</h3>
+<p>please 🙏🏼 go to a post and add it to your showcase ⭐️ to share your amazing work</p></div>
+    <?php endif;?>
+
 </div>
 </body>
 </html>
