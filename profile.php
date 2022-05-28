@@ -68,7 +68,7 @@ $posts = Post::getUserProjectsById($target_user);
             <?php endif ?>
         </p>
 
-        <?php if(empty($_GET["id"])) : ?>
+        <?php if(!empty($_GET["id"])) : ?>
             <p><?php echo Followers::getAllFollowers(User::getUserId($_SESSION["user"]))?> followers</p>
         <?php endif ?>
 
@@ -77,9 +77,13 @@ $posts = Post::getUserProjectsById($target_user);
         <div class="d-flex flex-column">
             <h3>Socials</h3>
             <div class="d-flex flex-column justify-content-between">
+                <?php if(!empty($socials)):?>
                 <?php foreach ($socials as $social):?>
                 <a class="" href="<?php echo XSS::specialChars($social['link'])?>"><?php echo XSS::specialChars($social['linkName'])?></a>
                 <?php endforeach;?>
+                <?php else:?>
+                <p>🤷‍♂️This user does not have socials</p>
+                <?php endif;?>
             </div>
 
         </div>
