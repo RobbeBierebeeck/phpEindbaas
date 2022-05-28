@@ -6,7 +6,7 @@ if (!empty($_POST["code"])){
     try {
         $code = $_POST["code"];
 
-        if (Invite::checkCodeValidation($code) == null) {
+        if (Invite::checkIfCodeAvailable($code) == null) {
                 $invite = new Invite();
                 $invite->setCode($code);
                 $invite->generateInvite();

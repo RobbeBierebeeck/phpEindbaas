@@ -45,11 +45,19 @@ class Invite
         $statement->execute();
     }
 
-    public static function checkCodeValidation($code){
+    public static function checkIfCodeAvailable($code){
         $hashCode = Invite::hashCode($code); 
         $conn = DB::getConnection();
         $statement = $conn->prepare("select * from invite_links where code = :code");
         $statement->bindValue(':code', $hashCode);
+        $statement->execute();
+        return $statement->fetch();
+    }
+
+    public static function checkLinkCode($code){
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select * from invite_links where code = :code");
+        $statement->bindValue(':code', $code);
         $statement->execute();
         return $statement->fetch();
     }

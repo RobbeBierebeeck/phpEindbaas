@@ -64,6 +64,10 @@ class User
         } else throw new Exception("Please use your thomasmore account to register");
     }
 
+    public function setAlumniEmail($email) {
+        $this->email = $email;
+    }
+
     /**
      * @return mixed
      */
