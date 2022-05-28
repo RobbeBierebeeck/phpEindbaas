@@ -19,7 +19,7 @@ if (!empty($_POST)) {
             $l->setStatus(1);
             $l->save();
             $like = 1;
-        } else if (Like::getLike($postId, User::getUserId($_SESSION['user']))['status'] === "1") {
+        } else if (Like::getLike($postId, User::getUserId($_SESSION['user']))['status'] == "1") {
             Like::updateStatus($postId, User::getUserId($_SESSION['user']), 0);
             $like = 0;
         } else {
