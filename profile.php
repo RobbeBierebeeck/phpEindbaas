@@ -118,27 +118,10 @@ $posts = Post::getUserProjectsById($target_user);
             <?php foreach ($posts as $post) : ?>
                 <div class="col mt-4">
                     <div href="project.php?post=<?php echo $post['id']?>" class="card col mt-4 d-flex ">
-                            <div class="d-flex position-absolute align-self-end">
-                                <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><button type="submit" class="dropdown-item" name="editPost" href="#">Edit Post</button></li>
-                                    <li><button type="submit" class="dropdown-item" name="deletePost" href="#">Delete Post</button></li>
-                                </ul>
-                            </div>
+
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body d-flex flex-column">
                             <a href="project.php?post=<?php echo $post['id']?>" class="card-title h5 text-decoration-none link-dark mb-2 "><?php echo XSS::specialChars($post['title']); ?></a>
-                            <a href="#" class="btn btn-primary"><i class="bi bi-heart pe-2"></i>Like</a>
-                            <div class=" d-flex flex-row align-items-center mt-2">
-                                <div><i class="bi bi-heart-fill"></i><span class="ms-2">100</span></div>
-                                <div><i class="bi bi-eye-fill ms-3"></i><span class="ms-2">100</span></div>
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush d-flex flex-row align-items-center">
-                            <span class="rounded-circle nav__profilePicture ms-3 m-2" style="background-image: url('<?php echo $post['profile_image'] ?>');"></span>
-                            <span>by <a href="profile.php?id=<?php echo $post['id']; ?>" class="fw-bolder"><?php echo XSS::specialChars($post['firstname']) . " " . XSS::specialChars($post['lastname']) ?></a> </span>
                         </div>
                     </div>
                 </div>
