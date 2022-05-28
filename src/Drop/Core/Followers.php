@@ -16,7 +16,7 @@ class Followers
 
     /**
      * Get the value of user_Id
-     */ 
+     */
     public function getUser_id()
     {
         return $this->user_id;
@@ -26,7 +26,7 @@ class Followers
      * Set the value of user_Id
      *
      * @return  self
-     */ 
+     */
     public function setUser_id($user_id)
     {
         $this->user_id = $user_id;
@@ -36,7 +36,7 @@ class Followers
 
     /**
      * Get the value of follower_id
-     */ 
+     */
     public function getFollower_id()
     {
         return $this->follower_id;
@@ -46,7 +46,7 @@ class Followers
      * Set the value of follower_id
      *
      * @return  self
-     */ 
+     */
     public function setFollower_id($follower_id)
     {
         $this->follower_id = $follower_id;
@@ -66,7 +66,7 @@ class Followers
     public static function getAllFollowers($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select * from Followers where following_id = :following_id");
+        $statement = $conn->prepare("select * from followers where following_id = :following_id");
         $statement->bindValue(":following_id", $userId);
         $statement->execute();
         $followers = $statement->fetchAll();
@@ -84,7 +84,7 @@ class Followers
     public static function getFollowerStatus($userId, $followerId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select * from Followers where following_id = :following_id and follower_id = :follower_id");
+        $statement = $conn->prepare("select * from followers where following_id = :following_id and follower_id = :follower_id");
         $statement->bindValue(":following_id", $userId);
         $statement->bindValue(":follower_id", $followerId);
         $statement->execute();

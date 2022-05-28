@@ -12,8 +12,8 @@ abstract class Moderator
     public static function getAllReportedUsers()
     {
         $conn = DB::getConnection();
-        $stmt = $conn->prepare("select distinct Users.`id`, Users.`firstName`, Users.`lastName`,Users.`email`, (select count(id) from reported_users where reported_id = Users.`id`) as timesReported  from reported_users 
-Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banned` = 0");
+        $stmt = $conn->prepare("select distinct users.`id`, users.`firstName`, users.`lastName`,users.`email`, (select count(id) from reported_users where reported_id = users.`id`) as timesReported  from reported_users 
+Inner join users on reported_users.`reported_id` = users.`id` where users.`banned` = 0");
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -21,7 +21,7 @@ Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banne
     public static function blockUser($userId)
     {
         $conn = DB::getConnection();
-        $stmt = $conn->prepare("update Users set banned = 1 where id = :userId");
+        $stmt = $conn->prepare("update users set banned = 1 where id = :userId");
         $stmt->bindValue(':userId', $userId);
         $stmt->execute();
     }
@@ -29,7 +29,7 @@ Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banne
     public static function getAllBlockedUsers()
     {
         $conn = DB::getConnection();
-        $stmt = $conn->prepare("select id, firstName, lastName, email from Users where banned = 1");
+        $stmt = $conn->prepare("select id, firstName, lastName, email from users where banned = 1");
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -37,7 +37,7 @@ Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banne
     public static function unBlockUser($userId)
     {
         $conn = DB::getConnection();
-        $stmt = $conn->prepare("update Users set banned = 0 where id = :userId");
+        $stmt = $conn->prepare("update users set banned = 0 where id = :userId");
         $stmt->bindValue(':userId', $userId);
         $stmt->execute();
     }
@@ -45,7 +45,7 @@ Inner join Users on reported_users.`reported_id` = Users.`id` where Users.`banne
     public static function banUser($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete from Users WHERE id = :id");
+        $statement = $conn->prepare("delete from users WHERE id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }

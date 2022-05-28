@@ -70,7 +70,7 @@ class Socials
     {
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Social_links (user_id, link, linkName) values (:user_id, :link, :platform)");
+        $statement = $conn->prepare("insert into social_links (user_id, link, linkName) values (:user_id, :link, :platform)");
         $statement->bindValue(':user_id', $this->userId);
         $statement->bindValue(':link', $this->socialLink);
         $statement->bindValue(':platform', $this->platform);
@@ -80,7 +80,7 @@ class Socials
     public static function deleteSocialLinks($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Social_links from Users INNER JOIN Social_links on Users.id = Social_links.user_id WHERE Users.id = :id");
+        $statement = $conn->prepare("delete social_links from users INNER JOIN social_links on users.id = social_links.user_id WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }

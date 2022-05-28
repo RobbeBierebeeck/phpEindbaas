@@ -42,7 +42,7 @@ class Report
 
     /**
      * Get the value of project_id
-     */ 
+     */
     public function getProject_id()
     {
         return $this->project_id;
@@ -63,14 +63,14 @@ class Report
     public static function deleteReportedUsers($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Reported_users from Users INNER JOIN Reported_users on Users.id = Reported_users.user_id WHERE Users.id = :id");
+        $statement = $conn->prepare("delete reported_users from users INNER JOIN reported_users on users.id = reported_users.user_id WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
 
     public function saveUserReport(){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Reported_users (reported_at, user_id, reported_id) values (now(), :user_id, :reported_id)");
+        $statement = $conn->prepare("insert into reported_users (reported_at, user_id, reported_id) values (now(), :user_id, :reported_id)");
         $statement->bindValue(":user_id", $this->user_id);
         $statement->bindValue(":reported_id", $this->report_id);
         $statement->execute();

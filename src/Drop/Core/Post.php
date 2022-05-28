@@ -72,7 +72,7 @@ class Post
     public static function findTag($tag)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare('SELECT * FROM Tags WHERE tag = :tag');
+        $statement = $conn->prepare('SELECT * FROM tags WHERE tag = :tag');
         $statement->bindValue(':tag', $tag);
         $statement->execute();
         return $statement->fetch();
@@ -177,7 +177,7 @@ class Post
     public static function deleteCloudinary($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare('SELECT publicId FROM Projects WHERE user_id = :userId');
+        $statement = $conn->prepare('SELECT publicId FROM projects WHERE user_id = :userId');
         $statement->bindValue(':userId', $userId);
         $statement->execute();
         $publicIds = $statement->fetchAll();
@@ -190,7 +190,7 @@ class Post
     public static function deleteProjectTags($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Project_Tags from Projects INNER JOIN Project_Tags on Projects.id = Project_Tags.project_id WHERE Projects.id = :id");
+        $statement = $conn->prepare("delete project_tags from projects INNER JOIN project_tags on projects.id = project_tags.project_id WHERE projects.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -198,7 +198,7 @@ class Post
     public static function deleteProjects($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Projects from Users INNER JOIN Projects on Users.id = Projects.user_id WHERE Users.id = :id");
+        $statement = $conn->prepare("delete projects from users INNER JOIN projects on users.id = projects.user_id WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -208,7 +208,7 @@ class Post
     {
         //saving the post
         $conn = DB::getConnection();
-        $statement = $conn->prepare("INSERT INTO Projects (title, image, description, posted_at, user_id, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :publicId)");
+        $statement = $conn->prepare("INSERT INTO projects (title, image, description, posted_at, user_id, publicId) VALUES (:title, :image, :description, NOW(), :user_id, :publicId)");
         $statement->bindParam(':title', $this->title);
         $statement->bindParam(':image', $this->image);
         $statement->bindParam(':description', $this->description);
@@ -218,7 +218,7 @@ class Post
         $this->id = $conn->lastInsertId();
 
         //saving tags
-        $statement = $conn->prepare("insert into Tags(tag) values (:tag)");
+        $statement = $conn->prepare("insert into tags(tag) values (:tag)");
         if ($this->tags != null) {
             foreach ($this->tags as $tag) {
                 if (!self::findTag($tag)) {
@@ -229,7 +229,7 @@ class Post
         }
         //saving the many to many relationship between tags and posts
         foreach ($this->tags as $tag) {
-            $statement = $conn->prepare("insert into Project_Tags(tag_id, project_id) values ((select id from Tags where tag = :tag), :project_id)");
+            $statement = $conn->prepare("insert into project_tags(tag_id, project_id) values ((select id from tags where tag = :tag), :project_id)");
             $statement->bindValue(':tag', $tag);
             $statement->bindValue(':project_id', $this->id);
             $statement->execute();
@@ -263,10 +263,10 @@ class Post
 
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
-Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
-INNER join Users on Projects.`user_id` = Users.`id`
-order by Projects.`posted_at` desc limit :start, :limit");
+        $statement = $conn->prepare("select projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`id` as user_id, users.`firstname`, users.`lastname`, users.`profile_image`,
+users.`publicViews`, (select count(user_id) from likes where project_id = projects.`id` and status = 1 ) as likes,  (select count(ip) from views where `project_id` = projects.id) as views from projects
+INNER join users on projects.`user_id` = users.`id`
+order by projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
@@ -278,10 +278,10 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function getAllOldest($start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
-INNER join Users on Projects.`user_id` = Users.`id`
-order by Projects.`posted_at` asc limit :start, :limit");
+        $statement = $conn->prepare("select users.`publicViews`, projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`id` as user_id, users.`firstname`, users.`lastname`, users.`profile_image`
+, (select count(user_id) from likes where project_id = projects.`id` and status = 1 ) as likes,  (select count(ip) from views where `project_id` = projects.id) as views from projects
+INNER join users on projects.`user_id` = users.`id`
+order by projects.`posted_at` asc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
@@ -291,14 +291,13 @@ order by Projects.`posted_at` asc limit :start, :limit");
 
     public static function getAllFollowing($start, $limit, $userId)
     {
-      $conn = DB::getConnection();
-        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
-
-INNER join Users on Projects.`user_id` = Users.`id`
-Inner join Followers on Projects.`user_id` = Followers.`following_id`
-where Followers.`follower_id` = :user_id
-order by Projects.`posted_at` desc limit :start, :limit");
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select users.`publicViews`, projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`id` as user_id, users.`firstname`, users.`lastname`, users.`profile_image`
+, (select count(user_id) from likes where project_id = projects.`id` and status = 1 ) as likes,  (select count(ip) from views where `project_id` = projects.id) as views from projects
+INNER join users on projects.`user_id` = users.`id`
+Inner join followers on projects.`user_id` = followers.`following_id`
+where followers.`follower_id` = :user_id
+order by projects.`posted_at` desc limit :start, :limit");
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
@@ -309,13 +308,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function search($search, $start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Users.`publicViews`,  Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` as user_id
-,(select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes, (select count(ip) from Views where `project_id` = Projects.id) as views from Projects 
-        INNER join Users on Projects.`user_id` = Users.`id`
-        INNER join Project_Tags on Projects.`id` = Project_Tags.`project_id`
-        INNER join Tags on Project_Tags.`tag_id` = Tags.`id` where Tags.`tag`
-        like :search or Projects.`title`like :search or Users.`firstname` like :search or Users.`lastname` like :search
-        order by Projects.`posted_at` desc limit :start , :limit");
+        $statement = $conn->prepare("select users.`publicViews`,  projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`firstname`, users.`lastname`, users.`profile_image`, users.`id` as user_id
+,(select count(user_id) from likes where project_id = projects.`id` and status = 1 ) as likes, (select count(ip) from views where `project_id` = projects.id) as views from projects 
+        INNER join users on projects.`user_id` = users.`id`
+        INNER join project_tags on projects.`id` = project_tags.`project_id`
+        INNER join tags on project_tags.`tag_id` = tags.`id` where tags.`tag`
+        like :search or projects.`title`like :search or users.`firstname` like :search or users.`lastname` like :search
+        order by projects.`posted_at` desc limit :start , :limit");
         $search = "%" . $search . "%";
         $statement->bindValue(':search', $search);
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -331,9 +330,9 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function getUserProjectsById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Users.`publicViews`, Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`firstname`, Users.`lastname`, Users.`profile_image`
-        from Projects INNER join Users on Projects.`user_id` = Users.`id` where Users.`id` = :userid
-        order by Projects.`posted_at`");
+        $statement = $conn->prepare("select users.`publicViews`, projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`firstname`, users.`lastname`, users.`profile_image`
+        from projects INNER join users on projects.`user_id` = users.`id` where users.`id` = :userid
+        order by projects.`posted_at`");
         $statement->bindValue(':userid', $id);
         $statement->execute();
         return Self::findPrivateViews($statement->fetchAll());
@@ -341,7 +340,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     // Gets all data from post with project id
     public static function getPostById($id){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select * from Projects where id = :id");
+        $statement = $conn->prepare("select * from projects where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         return $statement->fetch();
@@ -349,7 +348,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     // Gets data from post creator with project id
     public static function getCreatorByPost($id){
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Users.`firstname`, Users.`lastname`, Users.`profile_image`, Users.`id` from Projects INNER join Users on Projects.`user_id` = Users.`id` where Projects.`id` = :id");
+        $statement = $conn->prepare("select users.`firstname`, users.`lastname`, users.`profile_image`, users.`id` from projects INNER join users on projects.`user_id` = users.`id` where projects.`id` = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
         return $statement->fetch();
@@ -365,13 +364,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function updatePost($title, $tags, $id){
         //saving the post
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Projects set title = :title where id = :id");
+        $statement = $conn->prepare("update projects set title = :title where id = :id");
         $statement->bindValue(":title",  $title);
         $statement->bindValue(":id", $id);
         $statement->execute();
 
         //Deleting old many to many tags
-        $statement = $conn->prepare("delete from Project_Tags WHERE Project_Tags.project_id = :id");
+        $statement = $conn->prepare("delete from project_tags WHERE project_tags.project_id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
 
@@ -379,7 +378,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $tags = explode(',', $tags);
 
         //saving tags
-        $statement = $conn->prepare("insert into Tags(tag) values (:tag)");
+        $statement = $conn->prepare("insert into tags(tag) values (:tag)");
         if ($tags != null) {
             foreach ($tags as $tag) {
                 if (!self::findTag($tag)) {
@@ -390,7 +389,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         }
         //saving the many to many relationship between tags and posts
         foreach ($tags as $tag) {
-            $statement = $conn->prepare("insert into Project_Tags(tag_id, project_id) values ((select id from Tags where tag = :tag), :project_id)");
+            $statement = $conn->prepare("insert into project_tags(tag_id, project_id) values ((select id from tags where tag = :tag), :project_id)");
             $statement->bindValue(':tag', $tag);
             $statement->bindValue(':project_id', $id);
             $statement->execute();
@@ -400,7 +399,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function deletePostById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete from Projects where id = :postId");
+        $statement = $conn->prepare("delete from projects where id = :postId");
         $statement->bindValue(':postId', $id);
         $statement->execute();
     }
@@ -409,17 +408,17 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function deletePostImage($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare('SELECT publicId FROM Projects WHERE id = :id');
+        $statement = $conn->prepare('SELECT publicId FROM projects WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
         $publicIds = $statement->fetch();
-            (new UploadApi())->destroy($publicIds['publicId']);
+        (new UploadApi())->destroy($publicIds['publicId']);
     }
 
     public static function updateShowcase($postId, $showcase)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Projects set showcase = :showcase where id = :postId");
+        $statement = $conn->prepare("update projects set showcase = :showcase where id = :postId");
         $statement->bindValue(":showcase", $showcase);
         $statement->bindValue(":postId", $postId);
         $statement->execute();
@@ -428,7 +427,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function isShowcase($postId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("SELECT showcase FROM Projects WHERE id = :postId");
+        $statement = $conn->prepare("SELECT showcase FROM projects WHERE id = :postId");
         $statement->bindValue(":postId", $postId, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetch()['showcase'];
@@ -437,7 +436,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function getShowcase($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("SELECT * FROM Projects WHERE showcase = 1 AND user_id = :userId ");
+        $statement = $conn->prepare("SELECT * FROM projects WHERE showcase = 1 AND user_id = :userId ");
         $statement->bindValue(":userId", $userId,);
         $statement->execute();
         return $statement->fetchAll();
@@ -446,7 +445,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function getApi()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select id, title, image, posted_at from Projects");
+        $statement = $conn->prepare("select id, title, image, posted_at from projects");
         $statement->execute();
         return $statement->fetchAll();
     }
@@ -463,7 +462,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $extractor->setImage($image)->setTotalColors(5)->setGranularity(10);
         $colors = $extractor->extractPalette();
 
-       return $colors;
+        return $colors;
 
     }
 
@@ -475,25 +474,23 @@ order by Projects.`posted_at` desc limit :start, :limit");
         foreach ($colors as $color) {
             $hexColors[] = "#".$color;
         }
-       return $hexColors;
+        return $hexColors;
     }
 
     //saving the colors to the database
 
     public static function saveColors($colors, $postId)
     {
-       $conn = DB::getConnection();
+        $conn = DB::getConnection();
         $statement = $conn->prepare("insert into colors (hex) values (:hex) on duplicate key update hex = :hex");
         foreach ($colors as $color) {
 
-            if (!self::colorAlreadyExists($color)) {
+            if (self::colorAlreadyExists($color)== false) {
                 $statement->bindValue(":hex", $color);
                 $statement->execute();
-
-
             }
             self::saveManyToMany($color, $postId);
-       }
+        }
 
     }
 
@@ -516,7 +513,7 @@ order by Projects.`posted_at` desc limit :start, :limit");
         $statement = $conn->prepare("select hex from colors where hex = :hex");
         $statement->bindValue(":hex", $color);
         $statement->execute();
-        return $statement->fetch()['hex'];
+        return $statement->fetch();
     }
 
     public static function getColorsForPost($postId)
@@ -531,13 +528,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
     public static function getPostsByColor($color,$start, $limit)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
-Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
-INNER join Users on Projects.`user_id` = Users.`id`
+        $statement = $conn->prepare("select projects.`id`, projects.`title`, projects.`image`, projects.`description`, projects.`posted_at`, users.`id` as user_id, users.`firstname`, users.`lastname`, users.`profile_image`,
+users.`publicViews`, (select count(user_id) from likes where project_id = projects.`id` and status = 1 ) as likes,  (select count(ip) from views where `project_id` = projects.id) as views from projects
+INNER join users on projects.`user_id` = users.`id`
 Inner join project_colors on projects.`id`= project_colors.`project_id`
 inner join colors on project_colors.`color_id` = colors.`id`
 where colors.`hex` = :hex
-order by Projects.`posted_at` desc limit :start, :limit");
+order by projects.`posted_at` desc limit :start, :limit");
 
         $statement->bindValue(":hex", $color);
         $statement->bindValue(":start", $start, PDO::PARAM_INT);

@@ -99,9 +99,9 @@ class Comment
     public static function getAll($projectId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Comments.`comment`, Users.`firstname`, Users.`lastname`, Users.`profile_image` from comments 
-inner join Users on Comments.`user_id` = Users.`id`
-where  Comments.`project_id` = :projectId");
+        $statement = $conn->prepare("select comments.`comment`, users.`firstname`, users.`lastname`, users.`profile_image` from comments 
+inner join users on comments.`user_id` = users.`id`
+where  comments.`project_id` = :projectId");
         $statement->bindValue(':projectId', $projectId, PDO::PARAM_INT);
         $statement->execute();
         // fetch all records from the database and return them as objects of this __CLASS__ (Post)
@@ -122,7 +122,7 @@ where  Comments.`project_id` = :projectId");
     public static function deleteComments($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Comments from Users INNER JOIN Comments on Users.id = Comments.user_id WHERE Users.id = :id");
+        $statement = $conn->prepare("delete comments from users INNER JOIN comments on users.id = comments.user_id WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }

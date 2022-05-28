@@ -24,7 +24,7 @@ class User
     public static function findByEmail($email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select email from Users where email = :email");
+        $statement = $conn->prepare("select email from users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC); //connectie default instellen
@@ -33,7 +33,7 @@ class User
     public static function checkEmailAvailability($email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select email from Users where email = :email");
+        $statement = $conn->prepare("select email from users where email = :email");
         $statement->bindValue("email", $email);
         $statement->execute();
         $results = $statement->fetchAll();
@@ -237,7 +237,7 @@ class User
     function save()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("insert into Users (firstname, lastname, email, password, created_at, profile_image, publicId) values (:firstname, :lastname, :email, :password, NOW(), :profilePic, :publicId)");
+        $statement = $conn->prepare("insert into users (firstname, lastname, email, password, created_at, profile_image, publicId) values (:firstname, :lastname, :email, :password, NOW(), :profilePic, :publicId)");
         $statement->bindValue(':firstname', $this->firstName);
         $statement->bindValue(':lastname', $this->lastName);
         $statement->bindValue(':email', $this->email);
@@ -250,8 +250,8 @@ class User
     public static function getUserId($email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select id from Users where email = :email");
-        $statement->bindValue("email", $email);
+        $statement = $conn->prepare("select id from users where email = :email");
+        $statement->bindValue("email", $email, PDO::PARAM_STR);
         $statement->execute();
         $id = $statement->fetch(PDO::FETCH_ASSOC);
         return $id['id'];
@@ -277,7 +277,7 @@ class User
     public function canLogin()
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select email, password from Users where email = :email");
+        $statement = $conn->prepare("select email, password from users where email = :email");
         $statement->bindValue("email", $this->email);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -296,7 +296,7 @@ class User
     public static function editPassword($id, $oldpw, $newpw)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select password from Users where id = :id");
+        $statement = $conn->prepare("select password from users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $checkpassword = $statement->fetch(PDO::FETCH_ASSOC);
@@ -304,7 +304,7 @@ class User
         if ($checkpassword) {
             $hash = $checkpassword['password'];
             if (password_verify($oldpw, $hash)) {
-                $statement = $conn->prepare("update Users set password = :password where id = :id");
+                $statement = $conn->prepare("update users set password = :password where id = :id");
                 $statement->bindValue("password", self::hashPassword($newpw));
                 $statement->bindValue("id", $id);
                 $statement->execute();
@@ -338,7 +338,7 @@ class User
     public static function deleteFollowers($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Followers from Users INNER JOIN Followers on Users.id = Followers.following_id OR Users.id = Followers.follower_id WHERE Users.id = :id");
+        $statement = $conn->prepare("delete followers from users INNER JOIN followers on followers.id = followers.following_id OR users.id = followers.follower_id WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -346,7 +346,7 @@ class User
     public static function deleteUser($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("delete Users from Users WHERE Users.id = :id");
+        $statement = $conn->prepare("delete users from users WHERE users.id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
@@ -354,7 +354,7 @@ class User
     public static function getById($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role, publicViews from Users where id = :id");
+        $statement = $conn->prepare("select firstname, lastname, email, bio, profile_image, role, publicViews from users where id = :id");
         $statement->bindValue("id", $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -365,9 +365,8 @@ class User
     {
 
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select Comments.`id` as commentId, Users.`id`, Users.`profile_image`, Users.`firstname`, Users.`lastname` from Users
-
-Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :commentId and Users.`id` =:userId");
+        $statement = $conn->prepare("select comments.`id` as commentId, users.`id`, users.`profile_image`, users.`firstname`, users.`lastname` from users
+Inner join comments on `users`.`id` = comments.`user_id` where comments.`id` = :commentId and users.`id` =:userId");
         $statement->bindValue("commentId", $commentId);
         $statement->bindValue("userId", $userId);
         $statement->execute();
@@ -398,7 +397,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public function linkBio($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Users set bio = :bio where id = :id");
+        $statement = $conn->prepare("update users set bio = :bio where id = :id");
         $statement->bindValue(':bio', $this->bio);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -427,7 +426,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public function linkSecondEmail($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Users set second_email = :secondemail where id = :id");
+        $statement = $conn->prepare("update users set second_email = :secondemail where id = :id");
         $statement->bindValue(':secondemail', $this->secondEmail);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -440,7 +439,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function checkIfReported($userId, $reportedId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select * from Reported_users where user_id = :user_id and reported_id = :reported_id");
+        $statement = $conn->prepare("select * from reported_users where user_id = :user_id and reported_id = :reported_id");
         $statement->bindValue(":user_id", $userId);
         $statement->bindValue(":reported_id", $reportedId);
         $statement->execute();
@@ -454,7 +453,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function isBanned($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select banned from Users where id = :user_id");
+        $statement = $conn->prepare("select banned from users where id = :user_id");
         $statement->bindValue(":user_id", $userId);
         $statement->execute();
         if($statement->fetch()['banned'] == 1) {
@@ -471,10 +470,11 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function isModerator($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select role from Users where id = :user_id");
+        $statement = $conn->prepare("select role from users where id = :user_id");
         $statement->bindValue(":user_id", $userId);
         $statement->execute();
-        if($statement->fetch()['role'] === "Moderator") {
+        $role = $statement->fetch()['role'];
+        if($role === "Moderator" || $role === "Admin") {
             return true;
         } else {
             return false;
@@ -489,7 +489,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function updateUsername($id, $username)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Users set firstname = :username where id = :id");
+        $statement = $conn->prepare("update users set firstname = :username where id = :id");
         $statement->bindValue(':username', $username);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -502,7 +502,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function updateEmail($id, $email)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Users set email = :email where id = :id");
+        $statement = $conn->prepare("update users set email = :email where id = :id");
         $statement->bindValue(':email', $email);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -514,7 +514,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function updateViews($state, $userId )
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update Users set publicViews = :state where id = :id");
+        $statement = $conn->prepare("update users set publicViews = :state where id = :id");
         $statement->bindValue(':id', $userId);
         $statement->bindValue(':state', $state);
         $statement->execute();
@@ -528,7 +528,7 @@ Inner join Comments on `Users`.`id` = Comments.`user_id` where Comments.`id` = :
     public static function canViewsBePublic($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select publicViews from Users where id = :user_id");
+        $statement = $conn->prepare("select publicViews from users where id = :user_id");
         $statement->bindValue(":user_id", $userId);
         $statement->execute();
         return $statement->fetch()['publicViews'];

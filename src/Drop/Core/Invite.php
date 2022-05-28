@@ -13,13 +13,13 @@ class Invite
 
     /**
      * Get the value of code
-     */ 
+     */
     public function getCode()
     {
         return $this->code;
     }
 
-    
+
     public function setCode($code){
         $this->code = Invite::hashCode($code);
 
@@ -53,7 +53,7 @@ class Invite
     }
 
     public static function checkIfCodeAvailable($code){
-        $hashCode = Invite::hashCode($code); 
+        $hashCode = Invite::hashCode($code);
         $conn = DB::getConnection();
         $statement = $conn->prepare("select * from invite_links where code = :code");
         $statement->bindValue(':code', $hashCode);
