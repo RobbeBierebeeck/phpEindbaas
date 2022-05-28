@@ -32,6 +32,16 @@ if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
 }
+if(!empty($_GET['color'])){
+   $hexColor= Post::addHashtag($_GET['color']);
+   $posts = Post::getPostsByColor($hexColor, 0, 8);
+}
+if (!empty($_GET['page']) && !empty($_GET['color'])) {
+    $page = $_GET['page'];
+    $hexColor= Post::addHashtag($_GET['color']);
+    $posts = Post::getPostsByColor($hexColor, $_GET['page'] * $limitPerPage, $limitPerPage);
+
+}
 
 if(!empty ($_GET['filter'])){
 
@@ -146,7 +156,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                         <div class="colorPicker">
                             <div class="colorPicker-inner">
                                 <?php foreach ($colors as $color ):?>
-                                <div class="colorPicker-color" style="background-color: <?php echo $color['hex'] ?> "></div>
+                                <a class="colorPicker-color" href="index.php?color=<?php echo Post::removeHashtag($color['hex']) ?>" style="background-color: <?php echo $color['hex'] ?> "></a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -258,6 +268,31 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                         <li class="page-item">
                             <a class="page-link"
                                href="?filter=<?php echo $_GET['filter'] ?>&page=<?php echo $page + 1; ?>"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php elseif(isset($_GET['color'])):?>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?filter=<?php echo $_GET['color'] ?>&page=<?php echo $page - 1; ?>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?color=<?php echo $_GET['color'] ?>&page=0">1</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?color=<?php echo $_GET['color'] ?>&page=1">2</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?color=<?php echo $_GET['color'] ?>&page=2">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?filter=<?php echo $_GET['color'] ?>&page=<?php echo $page + 1; ?>"
                                aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>

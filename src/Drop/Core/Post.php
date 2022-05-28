@@ -528,4 +528,35 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetchAll();
     }
 
+    public static function getPostsByColor($color,$start, $limit)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select Projects.`id`, Projects.`title`, Projects.`image`, Projects.`description`, Projects.`posted_at`, Users.`id` as user_id, Users.`firstname`, Users.`lastname`, Users.`profile_image`,
+Users.`publicViews`, (select count(user_id) from Likes where project_id = Projects.`id` and status = 1 ) as likes,  (select count(ip) from Views where `project_id` = Projects.id) as views from Projects
+INNER join Users on Projects.`user_id` = Users.`id`
+Inner join project_colors on projects.`id`= project_colors.`project_id`
+inner join colors on project_colors.`color_id` = colors.`id`
+where colors.`hex` = :hex
+order by Projects.`posted_at` desc limit :start, :limit");
+
+        $statement->bindValue(":hex", $color);
+        $statement->bindValue(":start", $start, PDO::PARAM_INT);
+        $statement->bindValue(":limit", $limit, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+
+    }
+
+    public static function removeHashtag($color)
+    {
+        $color = str_replace("#", "", $color);
+        return $color;
+    }
+
+    public static function addHashtag($color)
+    {
+        $color = "#".$color;
+        return $color;
+    }
+
 }
