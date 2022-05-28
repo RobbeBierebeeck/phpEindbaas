@@ -140,11 +140,14 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                     <div href="project.php?post=<?php echo $post['id'] ?>" class="card col mt-4 ">
                         <img src="<?php echo $post['image'] ?>" class="card-img-top" alt="...">
 
+                        <?php $colors = Post::getColorsForPost($post['id'])?>
 
                         <!--- color picker -->
                         <div class="colorPicker">
                             <div class="colorPicker-inner">
-                                <div class="colorPicker-color" style="background-color: #0d6efd "></div>
+                                <?php foreach ($colors as $color ):?>
+                                <div class="colorPicker-color" style="background-color: <?php echo $color['hex'] ?> "></div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
 

@@ -451,6 +451,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetchAll();
     }
 
+
+
     /**
      * Colors
      */
@@ -465,6 +467,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
     }
 
+    //converting colors to hex
+
     public static function convertIntToHex($colors)
     {
         $hexColors = [];
@@ -473,6 +477,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
         }
        return $hexColors;
     }
+
+    //saving the colors to the database
 
     public static function saveColors($colors, $postId)
     {
@@ -483,14 +489,15 @@ order by Projects.`posted_at` desc limit :start, :limit");
             if (!self::colorAlreadyExists($color)) {
                 $statement->bindValue(":hex", $color);
                 $statement->execute();
-                $conn->lastInsertId();
 
-                self::saveManyToMany($color, $postId);
+
             }
-
+            self::saveManyToMany($color, $postId);
        }
 
     }
+
+    //saving many to many relationship
     private static function saveManyToMany($color, $postId)
     {
         $conn = DB::getConnection();
@@ -501,6 +508,8 @@ order by Projects.`posted_at` desc limit :start, :limit");
 
     }
 
+    //checking if color already exists in the database to avoid duplicates
+
     private static function colorAlreadyExists($color)
     {
         $conn = DB::getConnection();
@@ -510,5 +519,13 @@ order by Projects.`posted_at` desc limit :start, :limit");
         return $statement->fetch()['hex'];
     }
 
+    public static function getColorsForPost($postId)
+    {
+        $conn = DB::getConnection();
+        $statement = $conn->prepare("select colors.`hex` from colors inner join project_colors on colors.`id` = project_colors.`color_id`where project_colors.`project_id` = :postId");
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 
 }

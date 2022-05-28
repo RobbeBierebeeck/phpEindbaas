@@ -125,9 +125,12 @@ input {
     display: flex;
     flex-direction: row;
     align-items: center;
+
 }
 .colorPicker-color{
     width: 3em;
     height: 3em;
     border-radius: 3px;
+    margin-right: 1em;
+
 }
