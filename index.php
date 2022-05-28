@@ -112,6 +112,7 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
     </div>
 <?php endif; ?>
 
+<!-- dropdown menu -->
 <?php if (!isset($_GET['search'])):?>
 <div class="mt-5 d-flex flex-column align-self-start m-auto container-lg">
     <div class="btn-group align-self-start">
@@ -128,6 +129,9 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
         </ul>
     </div>
 <?php endif;?>
+
+
+    <!--posts -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 ">
         <?php if (isset($_SESSION['user'])): ?>
             <?php foreach ($posts as $post): ?>
@@ -165,6 +169,8 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                     </div>
                 </div>
             <?php endforeach; ?>
+
+        <!--- posts when people are not logged in -->
         <?php else: ?>
             <?php foreach ($posts as $post): ?>
                 <div href="project.php?post=<?php echo $post['id'] ?>" class="col mt-4">
