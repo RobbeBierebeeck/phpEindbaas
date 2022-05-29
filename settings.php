@@ -30,6 +30,7 @@ if (isset($_POST['delete'])) {
     Report::deleteReportedUsers($id);
     Socials::deleteSocialLinks($id);
     User::deleteFollowers($id);
+    User::deletePicture($id);
     User::deleteUser($id);
     session_destroy();
     header('Location: logout.php');

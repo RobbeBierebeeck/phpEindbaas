@@ -123,7 +123,7 @@ class Post
         if (strlen($title) > 0) {
             $this->title = $title;
         } else {
-            throw new Exception("Title can't be empty");
+            Throw new Exception("Title can't be empty");
         }
     }
 
@@ -167,10 +167,10 @@ class Post
                 $this->image = $image['url'];
                 $this->setPublicId($image['public_id']);
             } else {
-                throw new Exception("Maximum file size is 5MB");
+                Throw new Exception("Maximum file size is 5MB");
             }
         } else {
-            throw new Exception("Image can't be empty");
+            Throw new Exception("Image can't be empty");
         }
     }
 

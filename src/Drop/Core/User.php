@@ -61,7 +61,7 @@ class User
 
         if (preg_match($regex, $email)) {
             $this->email = $email;
-        } else throw new Exception("Please use your thomasmore account to register");
+        } else Throw new Exception("Please use your thomasmore account to register");
     }
 
     public function setAlumniEmail($email) {
@@ -169,7 +169,7 @@ class User
                 $this->profilePicture = $profilePicture['url'];
                 $this->setPublicId($profilePicture['public_id']);
             } else {
-                throw new Exception("Maximum file size is 5MB");
+                Throw new Exception("Maximum file size is 5MB");
             }
         } else {
             $this->profilePicture = "http://res.cloudinary.com/df5hbsklz/image/upload/v1652432880/profile_pictures/re80gpneludaiml3zxjp.webp";
@@ -260,9 +260,9 @@ class User
     public static function checkPasswords($password, $passwordConf)
     {
         if ($password != $passwordConf) {
-            throw new Exception("Passwords should be the same");
+            Throw new Exception("Passwords should be the same");
         } else if (strlen($password) < 6) {
-            throw new Exception("Passwords is to short");
+            Throw new Exception("Passwords is to short");
         } else return true;
     }
 
@@ -289,7 +289,7 @@ class User
                 return false;
             }
         } else {
-            throw new Exception("username or password is incorrect");
+            Throw new Exception("username or password is incorrect");
         }
     }
 
