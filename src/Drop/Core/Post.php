@@ -419,7 +419,7 @@ order by projects.`posted_at` desc limit :start, :limit");
     {
         $conn = DB::getConnection();
         $statement = $conn->prepare('SELECT publicId FROM projects WHERE id = :id');
-        $statement->bindValue(':id', $id);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
         $publicIds = $statement->fetch();
         (new UploadApi())->destroy($publicIds['publicId']);

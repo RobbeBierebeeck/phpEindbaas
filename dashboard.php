@@ -28,7 +28,9 @@
     }
 
     if (!empty($_GET['removePost'])){
-        Post::deletePostById($_GET['removePost']);
+        Post::deletePostImage($_GET['removePost']);
+        Post::deletePostById($_GET['removePost']) ;
+
     }
 
 ?><!doctype html>

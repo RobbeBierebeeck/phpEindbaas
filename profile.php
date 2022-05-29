@@ -69,7 +69,7 @@ $posts = Post::getUserProjectsById($target_user);
         </h3>
 
         <?php if(!empty($_GET["id"])) : ?>
-            <p><?php echo Followers::getAllFollowers(User::getUserId($_SESSION["user"]))?> followers</p>
+            <p><?php echo Followers::getAllFollowers($_GET['id']);?> followers</p>
         <?php endif ?>
 
         </div>

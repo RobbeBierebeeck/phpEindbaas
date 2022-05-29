@@ -426,7 +426,7 @@ Inner join comments on `users`.`id` = comments.`user_id` where comments.`id` = :
     public function linkSecondEmail($id)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("update users set second_email = :secondemail where id = :id");
+        $statement = $conn->prepare("update users set secondEmail = :secondemail where id = :id");
         $statement->bindValue(':secondemail', $this->secondEmail);
         $statement->bindValue(':id', $id);
         $statement->execute();

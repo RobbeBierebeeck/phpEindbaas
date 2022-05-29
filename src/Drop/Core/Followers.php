@@ -66,11 +66,11 @@ class Followers
     public static function getAllFollowers($userId)
     {
         $conn = DB::getConnection();
-        $statement = $conn->prepare("select * from followers where following_id = :following_id");
-        $statement->bindValue(":following_id", $userId);
+        $statement = $conn->prepare("select count(id) as count from followers where following_id = :userId");
+        $statement->bindValue(":userId", $userId);
         $statement->execute();
-        $followers = $statement->fetchAll();
-        return count($followers);
+        $followers = $statement->fetch();
+        return $followers['count'];
     }
 
     public static function deleteFollowers($userId, $followerId){
