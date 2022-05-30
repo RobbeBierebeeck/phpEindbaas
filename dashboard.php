@@ -2,6 +2,7 @@
     use Drop\Helpers\Security;
     use Drop\Core\Moderator;
     use Drop\Core\Post;
+    use Drop\Core\XSS;
     include_once (__DIR__ .'/vendor/autoload.php');
 
     Security::onlyLoggedInUsers();
@@ -135,7 +136,7 @@
                     <?php foreach ($blockedUsers as $blockedUser):?>
                     <tr>
                         <td><?php echo $blockedUser['id']?></td>
-                        <td><?php echo $blockedUser['firstName'] ." ". $blockedUser['lastName']?></td>
+                        <td><?php echo XSS::specialChars(  $blockedUser['firstName']) ." ". XSS::specialChars($blockedUser['lastName'])?></td>
                         <td><?php echo $blockedUser['email']?></td>
                         <td><a type="button" href="dashboard.php?blockedUsers&unblock=<?php echo $blockedUser['id']?>" class="btn btn-secondary">Unblock</a></td>
                         <td><a type="button" href="dashboard.php?banUser=<?php echo $blockedUser['id']?>" class="btn btn-danger">Ban User</a></td>
@@ -162,7 +163,7 @@
                         <?php foreach ($reportedUsers as $reportedUser):?>
                             <tr>
                                 <td><?php echo $reportedUser['id']?></td>
-                                <td><?php echo $reportedUser['firstName'] ." ". $reportedUser['lastName']?></td>
+                                <td><?php echo XSS::specialChars($reportedUser['firstName']) ." ". XSS::specialChars($reportedUser['lastName'])?></td>
                                 <td><?php echo $reportedUser['email']?></td>
                                 <td><?php echo $reportedUser['timesReported']?></td>
                                 <td><a type="button" href="dashboard.php?block=<?php echo $reportedUser['id']?>" class="btn btn-secondary">Block</a></td>
@@ -191,8 +192,8 @@
                         <?php foreach ($reportedPosts as $reportedPost):?>
                             <tr>
                                 <td><?php echo $reportedPost['id']?></td>
-                                <td><?php echo $reportedPost['title']?></td>
-                                <td><?php echo $reportedPost['firstname']?></td>
+                                <td><?php echo XSS::specialChars($reportedPost['title'])?></td>
+                                <td><?php echo XSS::specialChars($reportedPost['firstname'])?></td>
                                 <td><?php echo $reportedPost['count']?></td>
                                 <td><a type="button" href="dashboard.php?removePost=<?php echo $reportedPost['id']?>" class="btn btn-secondary">Remove post</a></td>
                             </tr>

@@ -2,6 +2,7 @@
 
 use Drop\Core\Socials;
 use Drop\Core\User;
+use Drop\Core\XSS;
 use Drop\Helpers\Security;
 
 include_once ('vendor/autoload.php');
@@ -49,7 +50,7 @@ $userData = User::getById($id);
                      aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                 <div class="ms-3">
                     <p class="mb-0">
-                        <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i
+                        <strong><?php echo XSS::specialChars($userData['firstname']); ?><?php echo XSS::specialChars( $userData['lastname']); ?></strong> <i
                                 class="text-muted">/</i><strong> Socials</strong></p>
                     <p><small>Update your username and manage your account</small></p>
                 </div>

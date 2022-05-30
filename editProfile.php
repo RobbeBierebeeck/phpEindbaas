@@ -2,6 +2,7 @@
 
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use Drop\Core\XSS;
 
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
@@ -55,7 +56,7 @@ if (isset($_POST['userData'])) {
                     <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                     <div class="ms-3">
                         <p class="mb-0">
-                            <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i class="text-muted">/</i><strong> Edit profile</strong>
+                            <strong><?php echo XSS::specialChars( $userData['firstname']); ?><?php echo XSS::specialChars( $userData['lastname']); ?></strong> <i class="text-muted">/</i><strong> Edit profile</strong>
                         </p>
                         <p><small>Update your username and manage your account</small></p>
                     </div>
@@ -111,7 +112,7 @@ if (isset($_POST['userData'])) {
                             <div class="mb-5">
                                 <label class="mb-1" for="name">Name</label>
                                 <div class="form">
-                                    <input type="text" name="name" class="form-control p-3" id="oldPassword" placeholder="" value="<?php echo $userData['firstname'] ?> <?php echo $userData['lastname'] ?>" required>
+                                    <input type="text" name="name" class="form-control p-3" id="oldPassword" placeholder="" value="<?php echo XSS::specialChars( $userData['firstname']) ?> <?php echo XSS::specialChars( $userData['lastname']) ?>" required>
                                 </div>
                             </div>
                             <div class="mb-5 mt-3">

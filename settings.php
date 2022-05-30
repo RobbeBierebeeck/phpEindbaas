@@ -8,6 +8,7 @@ use Drop\Core\Report;
 use Drop\Core\Socials;
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use  Drop\Core\XSS;
 
 include_once ('vendor/autoload.php');
 Security::onlyLoggedInUsers();
@@ -70,7 +71,7 @@ if (isset($_POST['views'])) {
                      aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                 <div class="ms-3">
                     <p class="mb-0">
-                        <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i
+                        <strong><?php echo XSS::specialChars( $userData['firstname']); ?><?php echo XSS::specialChars( $userData['lastname']); ?></strong> <i
                                 class="text-muted">/</i><strong> General</strong></p>
                     <p><small>Update your username and manage your account</small></p>
                 </div>
@@ -129,13 +130,13 @@ if (isset($_POST['views'])) {
                         <div class="mb-3">
                             <label class="mb-1">Username</label>
                             <div class="form">
-                                <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['firstname']?>" >
+                                <input type="text" name="username" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo XSS::specialChars( $userData['firstname'])?>" >
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">Email</label>
                             <div class="form">
-                                <input type="text" name="email" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php echo $userData['email']; ?>" >
+                                <input type="text" name="email" class="form-control p-3" id="usernameInput" placeholder="Username" value="<?php  echo XSS::specialChars( $userData['email']); ?>" >
                             </div>
                         </div>
                         <?php if ($userData['publicViews']==1):?>

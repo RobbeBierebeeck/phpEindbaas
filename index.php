@@ -5,9 +5,11 @@ use Drop\Core\Like;
 use Drop\Core\User;
 use Drop\Core\Warning;
 use Drop\Core\XSS;
+use Drop\Core\Pagination;
 include_once('vendor/autoload.php');
 $page = 1;
 $limitPerPage = 8;
+$pages = ceil(Pagination::getCountOfPosts() / $limitPerPage);
 
 /*$colors =  Post::extractColors("./images/jow.png");
 var_dump($colors);*/
@@ -26,20 +28,26 @@ if (!empty($_GET['page'])) {
 
 if (!empty($_GET['search'])) {
     $posts = Post::search($_GET['search'], 0, 8);
+    $pages = ceil(Pagination::getCountbySearch($_GET['search']) / $limitPerPage);
+
 }
 
 if (!empty($_GET['search']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
     $posts = Post::search($_GET['search'], $_GET['page'] * $limitPerPage, $limitPerPage);
+    $pages = ceil(Pagination::getCountbySearch($_GET['search']) / $limitPerPage);
 }
 if(!empty($_GET['color'])){
    $hexColor= Post::addHashtag($_GET['color']);
    $posts = Post::getPostsByColor($hexColor, 0, 8);
+   $pages = ceil(Pagination::getCountByColors(Post::addHashtag($_GET['color'])) / $limitPerPage);
 }
 if (!empty($_GET['page']) && !empty($_GET['color'])) {
     $page = $_GET['page'];
     $hexColor= Post::addHashtag($_GET['color']);
     $posts = Post::getPostsByColor($hexColor, $_GET['page'] * $limitPerPage, $limitPerPage);
+    $pages = ceil(Pagination::getCountByColors(Post::addHashtag($_GET['color'])) / $limitPerPage);
+
 
 }
 
@@ -231,12 +239,11 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
+                        <?php for($i = 0; $i < $pages; $i++ ):?>
                         <li class="page-item"><a class="page-link"
-                                                 href="?search=<?php echo $_GET['search'] ?>&page=0">1</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?search=<?php echo $_GET['search'] ?>&page=1">2</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?search=<?php echo $_GET['search'] ?>&page=2">3</a></li>
+                                                 href="?search=<?php echo $_GET['search'] ?>&page=<?php echo $i?>"><?php echo $i +1?></a></li>
+                        <?php endfor;?>
+
                         <li class="page-item">
                             <a class="page-link"
                                href="?search=<?php echo $_GET['search'] ?>&page=<?php echo $page + 1; ?>"
@@ -258,12 +265,11 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
+                        <?php for($i = 0; $i < $pages; $i++ ):?>
                         <li class="page-item"><a class="page-link"
-                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=0">1</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=1">2</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=2">3</a></li>
+                                                 href="?filter=<?php echo $_GET['filter'] ?>&page=<?php echo $i?>"><?php echo $i +1?></a></li>
+                        <?php endfor;?>
+
                         <li class="page-item">
                             <a class="page-link"
                                href="?filter=<?php echo $_GET['filter'] ?>&page=<?php echo $page + 1; ?>"
@@ -283,12 +289,11 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
+                        <?php for($i = 0; $i < $pages; $i++ ):?>
                         <li class="page-item"><a class="page-link"
-                                                 href="?color=<?php echo $_GET['color'] ?>&page=0">1</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?color=<?php echo $_GET['color'] ?>&page=1">2</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="?color=<?php echo $_GET['color'] ?>&page=2">3</a></li>
+                                                 href="?color=<?php echo $_GET['color'] ?>&page=<?php echo $i?>"><?php echo $i +1?></a></li>
+                        <?php endfor;?>
+
                         <li class="page-item">
                             <a class="page-link"
                                href="?filter=<?php echo $_GET['color'] ?>&page=<?php echo $page + 1; ?>"
@@ -307,9 +312,10 @@ if(!empty($_GET['filter']) && !empty($_GET['page'])){
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="?page=0">1</a></li>
-                        <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
-                        <li class="page-item"><a class="page-link" href="?page=2">3</a></li>
+
+                        <?php for($i = 0; $i < $pages; $i++ ):?>
+                        <li class="page-item"><a class="page-link" href="?page=<?php echo $i?>"><?php echo $i +1?></a></li>
+                        <?php endfor;?>
                         <li class="page-item">
                             <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>

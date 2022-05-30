@@ -245,7 +245,7 @@ $comments = Comment::getAll($post['id']);
                                             <div class="form">
                                                 <input type="text" name="title" class="form-control p-3"
                                                        id="usernameInput"
-                                                       placeholder="Username" value="<?php echo $post['title']; ?>"
+                                                       placeholder="Username" value="<?php echo XSS::specialChars( $post['title']); ?>"
                                                        required>
                                             </div>
                                         </div>
@@ -305,7 +305,7 @@ $comments = Comment::getAll($post['id']);
                                         <div class='d-flex flex-row align-items-center'>
                                             <img src='<?php echo $c['profile_image'] ?>' alt='avatar' width='25'
                                                  height='25'/>
-                                            <p class='small mb-0 ms-2'><?php echo $c['firstname'] ?><?php echo $c['lastname'] ?></p>
+                                            <p class='small mb-0 ms-2'><?php echo XSS::specialChars( $c['firstname']) ?><?php echo XSS::specialChars( $c['lastname']) ?></p>
                                         </div>
                                     </div>
                                     <p class='test'><?php echo $c['comment'] ?></p>

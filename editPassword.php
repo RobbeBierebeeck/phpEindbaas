@@ -2,6 +2,7 @@
 
 use Drop\Core\User;
 use Drop\Helpers\Security;
+use Drop\Core\XSS;
 
 include_once ('vendor/autoload.php');
 
@@ -34,7 +35,7 @@ if (isset($_POST['saveNewPw'])) {
                     <img class="avatar avatar-48 bg-light rounded-circle text-white dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" role="button" src="<?php echo $profileImg['profile_image'] ?>">
                     <div class="ms-3">
                         <p class="mb-0">
-                            <strong><?php echo $userData['firstname']; ?><?php echo $userData['lastname']; ?></strong> <i class="text-muted">/</i><strong> Change password</strong>
+                            <strong><?php echo XSS::specialChars( $userData['firstname']); ?><?php echo XSS::specialChars( $userData['lastname']); ?></strong> <i class="text-muted">/</i><strong> Change password</strong>
                         </p>
                         <p><small>Update your username and manage your account</small></p>
                     </div>
